@@ -1,0 +1,154 @@
+﻿@using CzuczenLand.ExtendingFunctionalities.Consts.Entities.EntitiesFieldsNames.Hr
+@model CzuczenLand.Web.Models.ExtendingModels.Plantation.PlantationViewModel
+
+<div id="customersBox" class="customers-container">
+    <div id="customersBtn" class="text-c-brown material-icons cursor-pointer">cached</div>
+    @Html.Partial("CustomerZone/_customers")
+</div>
+
+@Html.Partial("Quests/_questsPanel", Model.QuestsViewModel)
+
+<div id="plantationDashboard" class="col-md-4 m-b-10">
+    
+    <div id="donCrown" class="@(Model.PlantationStorageInfoViewModel != null && Model.DonData.WeHaveDon ? "" : "d-none")" title="Jesteś Don'em dzielnicy">
+        <span class="material-icons dashboard-icon">gps_fixed</span>
+    </div>
+    
+    <div class="col-md-12 m-b-5 width-100 d-inline-block">
+        <div class="d-inline-block" title="Poziom plantacji">
+            <span class="material-icons dashboard-icon">dashboard</span>
+            <span id="plantationLevel"> @(Model.PlantationStorageInfoViewModel?.Level)</span>
+        </div>
+        <div class="pull-right">
+            <div class="show-popover d-inline-block m-r-10" title="Zadania tygodniowe">
+                <span id="weeklyQuestsInProgressCount">@(Model.PlantationStorageInfoViewModel?.StartedWeeklyQuestsCount + "/" + Model.PlantationStorageInfoViewModel?.UnlockedWeeklyQuestsCount)</span>
+                <div class="popover_content pre-scrollable unlock-popover unlock-quests-popover">
+                    <span class="pull-right m-b-5">Rozpoczęte/Odblokowane/Maksymalnie</span>
+                    <span id="weeklyQuestsPlaces" class="m-b-5">Miejsca zadań tygodniowych 
+                        @(Model.PlantationStorageInfoViewModel?.StartedWeeklyQuestsCount + "/" + Model.PlantationStorageInfoViewModel?.UnlockedWeeklyQuestsCount + "/" + @Model.PlantationStorageInfoViewModel?.MaxWeeklyQuestsCount)
+                    </span>
+                    @if (Model.PlantationStorageInfoViewModel?.UnlockedWeeklyQuestsCount < Model.PlantationStorageInfoViewModel?.MaxWeeklyQuestsCount)
+                    {
+                        <button id="addMaxWeeklyQuestsCount" class="btn-small m-t-5 border-5 text-c-black bg-c-chocolate-imp">
+                            Odblokuj
+                        </button>
+                    }
+                </div>
+            </div>
+            
+            <span class="show-popover d-inline-block" title="Zadania dzienne">
+                <span id="dailyQuestsInProgressCount">@(Model.PlantationStorageInfoViewModel?.StartedDailyQuestsCount + "/" + Model.PlantationStorageInfoViewModel?.UnlockedDailyQuestsCount)</span>
+                <div class="popover_content pre-scrollable unlock-popover unlock-quests-popover">
+                    <span class="pull-right m-b-5">Rozpoczęte/Odblokowane/Maksymalnie</span>
+                    <span id="dailyQuestsPlaces" class="m-b-5">Miejsca zadań dziennych 
+                        @(Model.PlantationStorageInfoViewModel?.StartedDailyQuestsCount + "/" + Model.PlantationStorageInfoViewModel?.UnlockedDailyQuestsCount + "/" + @Model.PlantationStorageInfoViewModel?.MaxDailyQuestsCount)
+                    </span>
+                    @if (Model.PlantationStorageInfoViewModel?.UnlockedDailyQuestsCount < Model.PlantationStorageInfoViewModel?.MaxDailyQuestsCount)
+                    {
+                        <button id="addMaxDailyQuestsCount" class="btn-small m-t-5 border-5 text-c-black bg-c-chocolate-imp">
+                            Odblokuj
+                        </button>
+                    }
+                </div>
+            </span>
+        </div>
+    </div>
+    <div class="col-md-12 simple-shadow padding-0 show-popover plantation-gained-exp">
+        <span id="plantationGainedExp" class="popover_content player-info-popover">Zdobyte doświadczenie: @(Model.PlantationStorageInfoViewModel?.GainedExperience + "pkt")</span>
+        
+        <div id="plantationCurrExpBar" class="progress-bar plantation-curr-exp-bar" role="progressbar"
+             aria-valuenow="@Model.CurrExpPercent" aria-valuemin="0" aria-valuemax="100"
+             style="@("width:" + Model.CurrExpWidthPercent)">
+        </div>
+
+        <div id="plantationCurrExp" class="pull-left plantation-curr-exp">@(Model.PlantationStorageInfoViewModel?.CurrExp + "pkt")</div>
+        <div id="plantationExpToNextLevel" class="pull-right plantation-exp-to-next-level"> @(Model.PlantationStorageInfoViewModel?.ExpToNextLevel + "pkt")</div>
+    </div>
+    
+    <div id="currencyBox" class="col-md-12 m-t-5 width-100 d-inline-block">
+        <div class="pull-left m-r-5" title="@PlantationStorageFieldsHrNames.QuestToken">
+            <span id="questToken"> @(Model.PlantationStorageInfoViewModel?.QuestToken)</span>
+            <span class="material-icons font-size-inherit text-c-green">radio_button_checked</span>
+        </div>
+        <div class="pull-left m-r-5" title="@PlantationStorageFieldsHrNames.DealerToken">
+            <span id="dealerToken"> @(Model.PlantationStorageInfoViewModel?.DealerToken)</span>
+            <span class="material-icons font-size-inherit text-c-blue">radio_button_checked</span>
+        </div>
+        <div class="pull-left m-r-5" title="@PlantationStorageFieldsHrNames.BlackMarketToken">
+            <span id="blackMarketToken"> @(Model.PlantationStorageInfoViewModel?.BlackMarketToken)</span>
+            <span class="material-icons font-size-inherit text-c-brown">radio_button_checked</span>
+        </div>
+        <div class="pull-left m-r-5" title="@PlantationStorageFieldsHrNames.DonToken">
+            <span id="donToken"> @(Model.PlantationStorageInfoViewModel?.DonToken)</span>
+            <span class="material-icons font-size-inherit text-c-grey">radio_button_checked</span>
+        </div>
+        <div class="pull-left m-r-5" title="@PlantationStorageFieldsHrNames.UnlockToken">
+            <span id="unlockToken"> @(Model.PlantationStorageInfoViewModel?.UnlockToken)</span>
+            <span class="material-icons font-size-inherit text-c-yellow">radio_button_checked</span>
+        </div>
+
+        <div class="d-contents m-r-5">
+            <span title="Kasa plantacji" id="plantationGold">@(Model.PlantationStorageInfoViewModel?.Gold)</span>
+            <span class="material-icons plantation-money-icon">attach_money</span>
+        </div>
+        
+        <div class="pull-right" title="@PlantationStorageFieldsHrNames.Prestige">
+            <span id="prestige"> @(Model.PlantationStorageInfoViewModel?.Prestige)</span>
+            <span class="material-icons dashboard-icon">accessibility</span>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-2">
+    <div class="simple-shadow bg-c-inherit">
+        <div id="questsBtn" class="btn js-right-sidebar quests-btn game-navi-btn" data-close="true">Zadania</div>
+        <div id="showMarket" class="btn game-navi-btn" data-toggle="modal" data-target=".showPlantationStorage">Zasoby</div>
+        <div id="showBlackMarket" class="btn game-navi-btn" data-toggle="modal" data-target=".showBlackMarket">Czarny rynek</div>
+    </div>
+    <div id="buffsBox" class="d-inline-flex">
+        @foreach (var bonus in Model.Buffs)
+        {
+            @Html.Partial("Others/_bonus", bonus)
+        }
+        <div class="show-popover m-t-5 m-r-5">
+            <span class="material-icons text-c-green">
+                add
+            </span>
+            <div class="popover_content pre-scrollable unlock-popover">
+                <span class="pull-right">Aktywne/Odblokowane/Maksymalnie</span>
+                <span id="buffsPlaces">Miejsca na wzmocnienia 
+                    @(Model.PlantationStorageInfoViewModel?.BuffSlotsInUse + "/" + Model.PlantationStorageInfoViewModel?.UnlockedBuffsSlots + "/" + @Model.PlantationStorageInfoViewModel?.MaxBuffsSlots)
+                </span>
+                @if (Model.PlantationStorageInfoViewModel?.UnlockedBuffsSlots < Model.PlantationStorageInfoViewModel?.MaxBuffsSlots)
+                {
+                    <button id="addMaxBuffSlots" class="btn-small text-c-black bg-c-chocolate">
+                        Odblokuj
+                    </button>    
+                }
+            </div>
+        </div>
+    </div>
+    <div id="artifactsBox" class="d-inline-flex">
+        @foreach (var artefact in Model.Artefacts)
+        {
+            @Html.Partial("Others/_bonus", artefact)
+        }
+        <div class="show-popover m-t-5 m-r-5">
+            <span class="material-icons text-c-yellow pu">
+                add
+            </span>
+            <div class="popover_content pre-scrollable unlock-popover">
+                <span class="pull-right">Aktywne/Odblokowane/Maksymalnie</span>
+                <span id="artifactsPlaces">Miejsca na artefakty 
+                    @(Model.PlantationStorageInfoViewModel?.ArtifactSlotsInUse + "/" + Model.PlantationStorageInfoViewModel?.UnlockedArtifactSlots + "/" + @Model.PlantationStorageInfoViewModel?.MaxArtifactSlots)
+                </span>
+                @if (Model.PlantationStorageInfoViewModel?.UnlockedArtifactSlots < Model.PlantationStorageInfoViewModel?.MaxArtifactSlots)
+                {
+                    <button id="addMaxArtifactsSlots" class="btn-small text-c-black bg-c-chocolate">
+                        Odblokuj
+                    </button>   
+                }
+            </div>
+        </div>
+    </div>
+</div>

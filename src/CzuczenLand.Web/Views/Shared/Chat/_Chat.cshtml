@@ -1,0 +1,36 @@
+﻿<link href="~/Views/Shared/Chat/_Chat.css" rel="stylesheet" type="text/css" />
+
+<div id="chatBox" class="chat-container">
+    <div id="chatBtn" class="material-icons cursor-pointer">insert_comment</div>
+    
+    <div class="messages_right_bottom_position">
+        <div class="chat_window messages_position">
+            <div class="top_menu">
+                <div class="buttons">
+                    <div id="closeChat" class="material-icons close-chat-btn">close</div>
+                </div>
+                <div class="title">Czat</div>
+            </div>
+            <ul id="chatMessages" class="messages"></ul>
+            <div>
+                <div class="p-b-10 p-l-10 p-r-10 d-flex">
+                    <input id="messageInput" class="width-100 border-groove text-c-black border-radius-10px-imp p-b-5 p-l-5 p-r-5 p-t-5"/>
+                    <button id="sendMessageBtn" class="btn text-center border-radius-10px-imp m-l-5">Wyślij</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="message_template">
+            <li class="message">
+                <div class="avatar"></div>
+                <div class="text_wrapper">
+                    <div class="text d-contents">
+                        <div id="sendMessageTime" class="text-center border-inset font-11"></div>
+                        <div id="userName" class="text-center text-bold border-bottom"></div>
+                        <div id="messageBox" class="text-align-left white-space-pre-wrap"></div>
+                    </div>
+                </div>
+            </li>
+        </div>
+    </div>
+</div>

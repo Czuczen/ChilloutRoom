@@ -1,0 +1,168 @@
+﻿@using Abp.Web.Mvc.Extensions
+@using CzuczenLand.Authorization
+@using Newtonsoft.Json
+@model CzuczenLand.Web.Models.ExtendingModels.ConfigurationPanel.EntityNamesViewModel
+
+@{
+    ViewBag.ActiveMenu = PageNames.ConfigurationPanel;
+}
+
+@section styles
+{
+    @Html.IncludeStyle("~/Views/ConfigurationPanel/Index.css")
+    @Html.IncludeStyle("~/Views/Shared/Shared.css")
+}
+
+@section scripts
+{
+    @Html.IncludeScript("~/Views/Shared/Shared.js")
+    @Html.IncludeScript("~/Views/ConfigurationPanel/Index.js")
+    @Html.IncludeScript("~/Views/ConfigurationPanel/EditOrCreate/_EditOrCreateModal.js")
+}
+
+<div id="gameClock" class="game-clock"></div>
+<div class="height-65vh">
+    @if (IsGranted(PermissionNames.Crud_Admin) || IsGranted(PermissionNames.Crud_DistrictWarden))
+    {
+        <div class="text-center">
+            <button id="startStructureTests" type="button" class="btn btn-primary waves-effect" data-toggle="modal" data-target=".showStructureTestsModal">Sprawdź strukturę</button>
+            @if (IsGranted(PermissionNames.Crud_Admin))
+            {
+                <button id="districtCloner" type="button" class="btn btn-primary waves-effect m-5" data-toggle="modal" data-target=".showDistrictClonerModal">Kloner</button>
+            }
+            <button id="checkLogs" type="button" class="btn btn-primary waves-effect" data-toggle="modal" data-target=".showCheckLogs">Sprawdź logi</button>
+        </div>
+    }
+    <div style="clear: both"></div>
+    <div class="text-center">
+        <h2>
+            <i id="draftTextBoxIcon" title="Brudnopis" class="material-icons cursor-pointer">description</i>
+            Wyszukiwanie
+            <a href="https://docs.google.com/document/d/1_1ns2BlWxTXcXqMjmUpDiQJw_vTqq7KpCSDTb-7XMjc/edit?usp=share_link" target="_blank" rel="noopener noreferrer">
+                <i class="material-icons text-c-black">info</i>
+            </a>
+        </h2>
+    </div>
+    <input id="entities" value="@JsonConvert.SerializeObject(Model)" type="hidden"/>
+    <div id="showHideEditOrCreateModalFakeBtn" class="d-none" data-toggle="modal" data-target=".showEditOrCreateModal"></div>
+    <div class="m-b-10 text-center">
+        <div id="select2Searcher"></div>
+    </div>
+    <div id="dt-card" class="row clearfix height-100">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 height-100">
+
+            <div id="actionsBox" class="col-md-12 text-center p-t-10 m-b-10 d-none">
+                <div class="text-center col-md-4 m-b-10 m-t-10">
+                    Ilość widocznych rekordów:
+                    <span id="visibleRecordsCount"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="m-b-5">
+                        <button id="createButton" type="button" title="Utwórz" class="btn btn-primary btn-circle waves-effect waves-circle waves-float" data-toggle="modal" data-target=".showEditOrCreateModal">
+                            <i class="material-icons">add</i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="text-center col-md-4 m-b-10 m-t-10">
+                    Ilość wszystkich rekordów:
+                    <span id="allRecordsCount"></span>
+                </div>
+            </div>
+
+            <div id="dt-div" class="datatable-box"></div>
+
+        </div>
+    </div>
+
+    <div id="editOrCreateModalBox">
+        <div id="editOrCreateModal" class="modal fade showEditOrCreateModal" tabindex="-1" role="dialog" aria-labelledby="editOrCreateModalLabel">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="districtClonerModal" class="modal fade showDistrictClonerModal" tabindex="-1" role="dialog" aria-labelledby="districtClonerModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content border-radius-10px-imp w-auto">
+                <div class="m-10 p-10">
+                    
+                    <div class="m-10 p-10 text-center district-cloner-border">
+                        <div>
+                            <span class="fa-2x">Klonuj z folderu aplikacji</span>
+                        </div>
+                        <button id="cloneDistrictFromAppFolder" type="button" class="districtClone btn btn-primary waves-effect p-10 m-10">
+                            Klonuj
+                        </button>
+                    </div>
+                    
+                    <div class="m-10 p-10 text-center district-cloner-border">
+                        <div class="text-center">
+                            <span class="fa-2x">Klonuj do folderu aplikacji</span>
+                        </div>
+                        <label class="m-r-5">Id dzielnicy</label>
+                        <input id="districtId" value="" type="number">
+                        
+                        <button id="cloneExistingDistrictToAppFolder" type="button" class="districtClone btn btn-primary waves-effect p-10 m-10">
+                            Klonuj
+                        </button>
+                    </div>
+                    
+                    <div class="m-10 p-10 text-center district-cloner-border">
+                        <div class="text-center">
+                            <span class="fa-2x">Klonuj z plików xls na dysku google</span>
+                        </div>
+                        <label class="m-r-5">Id plików (po przecinku)</label>
+                        <input id="filesIds" value="" type="text">
+       
+                        <button id="cloneDistrictFromXlsFiles" type="button" class="districtClone btn btn-primary waves-effect p-10 m-10">
+                            Klonuj
+                        </button>
+                    </div>
+                    
+                    <div class="m-10 p-10 text-center district-cloner-border">
+                        <div class="text-center">
+                            <span class="fa-2x">Klonuj z istniejącej dzielnicy</span>
+                        </div>
+                        <div class="m-t-5">
+                            <label class="m-r-5">Id dzielnicy</label>
+                            <input id="existingDistrictId" value="" type="number">
+                        </div>
+                        <div class="m-t-5">
+                            <label class="m-r-5">Ilość klonów</label>
+                            <input id="howMany" value="1" type="number">
+                        </div>
+                        
+                        <button id="cloneDistrictByAnotherExistingDistrict" type="button" class="districtClone btn btn-primary waves-effect p-10 m-10">
+                            Klonuj
+                        </button>
+                    </div>
+                    
+                    <div class="text-center ">
+                        <button id="closeDistrictClonerModalBtn" type="button" class="btn bg-c-chocolate-imp width-100 btn-default waves-effect" data-dismiss="modal">Zamknij</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="structureTestsModal" class="modal fade showStructureTestsModal" tabindex="-1" role="dialog" aria-labelledby="structureTestsModalLabel" data-backdrop="static">
+        <div class="modal-dialog width-100">
+            <div class="modal-content border-radius-10px-imp">
+
+            </div>
+        </div>
+    </div>
+
+    <div id="checkLogsModal" class="modal fade showCheckLogs" tabindex="-1" role="dialog" aria-labelledby="checkLogsModalLabel" data-backdrop="static">
+        <div class="modal-dialog width-100">
+            <div class="modal-content border-radius-10px-imp">
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+.item-card {
+    display: grid;
+    padding: 5px;
+    margin: 5px;
+    border: 10px #31C5D7;
+    border-radius: 10px;
+    font-size: large;
+}
+
+.storage-product-box {
+    padding: 5px;
+    margin: 5px;
+    border-radius: 10px;
+    border: ridge;
+}
+
+.product-item {
+    display: grid;
+    padding: 5px;
+    color: #0BF61B;
+    margin: 5px;
+    border-radius: 10px;
+    border: ridge;
+}
+
+.card-button {
+    background-color: chocolate;
+    margin-right: 5px;
+    border-radius: 10px;
+    color: white;
+}
+
+.product-a {
+    color: whitesmoke;
+    cursor: pointer;    
+}
+
+.product-info {
+    left: 0;
+    width: auto;
+}
+
+.money-icon {
+    font-size: inherit; 
+    color: #0BF61B;
+}
+
+.storage-gold {
+    color: whitesmoke;
+    position: sticky;
+    top: 0;
+    border: 5px outset;   
+}
+
+.district-info {
+    display: grid;
+    color: darkorange;
+    overflow-wrap: anywhere;
+}
+
+.quest-info-border {
+    border: 2px ridge #4ecc24;
+}

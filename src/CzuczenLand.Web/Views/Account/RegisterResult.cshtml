@@ -1,0 +1,19 @@
+﻿@model CzuczenLand.Web.Models.Account.RegisterResultViewModel
+@{
+    ViewBag.Title = "Zarejestrowano pomyślnie";
+}
+<h4>Zarejestrowano pomyślnie</h4>
+<ul>
+    <li><span class="text-muted">Imię i Nazwisko:</span> @Model.NameAndSurname</li>
+    <li><span class="text-muted">Nazwa najemcy:</span> @Model.TenancyName</li>
+    <li><span class="text-muted">Nazwa użytkownika:</span> @Model.UserName</li>
+    <li><span class="text-muted">Adres e-mail:</span> @Model.EmailAddress</li>
+</ul>
+<div>
+    @if (!Model.IsActive)
+    {
+        <div class="alert alert-warning" role="alert">
+            Czekam na wiadomość aktywacyjną
+        </div>
+    }
+</div>

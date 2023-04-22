@@ -1,0 +1,182 @@
+﻿@using Abp.Web.Mvc.Extensions
+@model CzuczenLand.Web.Models.ExtendingModels.TicTacToe.TicTacToeViewModel
+
+@{
+    ViewBag.ActiveMenu = PageNames.TicTacToe;
+}
+
+@section styles
+{
+    @Html.IncludeStyle("~/Views/TicTacToe/Index.css")
+    @Html.IncludeStyle("~/Views/Shared/Shared.css")
+}
+
+@section scripts
+{
+    @Html.IncludeScript("~/Views/Shared/Shared.js")
+    @Html.IncludeScript("~/Views/TicTacToe/Index.js")
+}
+
+<div id="playerConnectionId"></div>
+
+<div id="ticTacToeGameBox">
+    
+    <div class="col-md-12 m-b-40 text-center">
+        
+        <div class="col-md-12 m-b-10">
+            <div class="col-md-12 m-b-5">
+                <div class="m-t-5 show-popover">
+                    <span class="simple-popover online-players">Gracze online</span>
+                    <span class="material-icons online-players-icon" >person_outline</span>
+                    <span id="playersOnline"> 0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 player-information left">
+
+            <div id="playerName" class="user-single-info">
+                <h4 class="text-bold">@ViewBag.CurrUserName</h4>
+            </div>
+            
+            <div id="playerPlayedGames" class="user-single-info">
+                Rozegrane rozgrywki
+                <span class="pull-right">@Model.GamesPlayed</span>
+            </div>
+
+            <div id="playerWinGames" class="user-single-info">
+                Wygrane
+                <span class="pull-right">@Model.GamesWon</span>
+            </div>
+
+            <div id="playerLostGames" class="user-single-info">
+                Przegrane
+                <span class="pull-right">@Model.GamesLost</span>
+            </div>
+            
+            <div id="playerDrawsGames" class="user-single-info">
+                Remisy
+                <span class="pull-right">@Model.TiedGames</span>
+            </div>
+            
+            <div class="guide-icon" title="Rozgrywki zapisywane są tylko vs GRACZ">
+                <i class="material-icons">info</i>
+            </div>
+            
+        </div>
+        
+        <div class="col-md-4 opponent-information right d-none">
+
+             <div id="opponentPlayerName" class="user-single-info">
+                <h4 class="text-bold"></h4>
+            </div>
+            
+            <div id="opponentGamesPlayed" class="user-single-info">
+                Rozegrane rozgrywki
+                <span class="pull-right"></span>
+            </div>
+        
+            <div id="opponentGamesWon" class="user-single-info">
+                Wygrane
+                <span class="pull-right"></span>
+            </div>
+        
+            <div id="opponentGamesLost" class="user-single-info">
+                Przegrane
+                <span class="pull-right"></span>
+            </div>
+            
+            <div id="opponentTiedGames" class="user-single-info">
+                Remisy
+                <span class="pull-right"></span>
+            </div>
+        </div>
+    </div>
+    
+    <div style="clear: both"></div>
+    
+    <div>
+        <div id="enemy-screen" class="center">
+            <h1>Zagraj</h1>
+            <div id="cpuDifficultyAccordion" class="text-center">
+                <button id="choose-cpu" class="choose" data-toggle="collapse" data-target="#collapseCpuDifficultyAccordion" aria-expanded="true" aria-controls="collapseAriaCpuDifficulty">
+                    vs CPU
+                </button>
+                <div id="collapseCpuDifficultyAccordion" class="collapse" aria-labelledby="headingCpuDifficultyAccordion">
+                    <div class="d-flex font-10">
+                        <button type="button" id="cpu-difficulty-level-easy" class="choose-cpu-difficulty">Łatwy</button>
+                        <button type="button" id="cpu-difficulty-level-normal" class="choose-cpu-difficulty">Średni</button>
+                        <button type="button" id="cpu-difficulty-level-hard" class="choose-cpu-difficulty">Trudny</button>
+                        <button type="button" id="cpu-difficulty-level-insane" class="choose-cpu-difficulty">Szalony</button>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" id="choose-human" class="choose">vs GRACZ</button>
+        </div>
+
+        <div id="wait-for-enemy" class="text-center d-none">
+            <h2 class="loading_dots">Szukam przeciwnika</h2>
+            <br/>
+            <button type="button" id="cancelWaitForOpponent" class="choose">ANULUJ</button>
+        </div>
+
+        <div id="wait-for-enemy-choice" class="text-center d-none">
+            <h2 class="loading_dots">Czekam na wybór przeciwnika</h2>
+        </div>
+
+        <div id="game-screen" class="center d-none">
+            
+            <div class="d-inline-flex col-md-12 width-100">
+                <div id="playerMoveInfo" class="text-center col-md-6 width-100">
+                    <div id="playerTimeToMove">-</div>
+                    <div id="playerSymbol" class="fa-2x text-c-gray"></div>
+                </div>
+
+                <div id="opponentMoveInfo" class="text-center col-md-6 width-100">
+                    <div id="opponentTimeToMove">-</div>
+                    <div id="opponentSymbol" class="fa-2x text-c-red"></div>
+                </div>
+            </div>
+            
+            <div id="ticTacToeTable">
+                 <table class="center">
+                     <tr>
+                         <td>
+                             <button type="button" class="cell" id="cell00"></button>
+                         </td>
+                         <td>
+                             <button type="button" class="cell" id="cell01"></button>
+                         </td>
+                         <td>
+                             <button type="button" class="cell" id="cell02"></button>
+                         </td>
+                     </tr>
+                     <tr>
+                         <td>
+                             <button type="button" class="cell" id="cell10"></button>
+                         </td>
+                         <td>
+                             <button type="button" class="cell" id="cell11"></button>
+                         </td>
+                         <td>
+                             <button type="button" class="cell" id="cell12"></button>
+                         </td>
+                     </tr>
+                     <tr>
+                         <td>
+                             <button type="button" class="cell" id="cell20"></button>
+                         </td>
+                         <td>
+                             <button type="button" class="cell" id="cell21"></button>
+                         </td>
+                         <td>
+                             <button type="button" class="cell" id="cell22"></button>
+                         </td>
+                     </tr>
+                 </table>
+            </div>
+            
+        </div>
+    </div>
+</div>

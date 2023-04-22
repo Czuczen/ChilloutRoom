@@ -1,0 +1,82 @@
+﻿@using CzuczenLand.Web.Helpers
+@model CzuczenLand.Web.Models.ExtendingModels.Plantation.GameStorage.CurrencyExchangeViewModel
+
+<div class="col-md-12 product-item">
+    <div class="col-md-12">
+        <div class="col-md-6">
+            <div class="fa-2x">@(Model.Name)</div>
+            <div>@Model.Description</div>
+            <div>Kurs wymiany: 1:@Model.ExchangeRate</div>
+        </div>
+
+        <div class="col-md-6 d-inline-flex">
+            <span class="m-r-5">Posiadane:</span>
+            <span id="@("ownedAmount-" + Model.PlantationStorageIdWithCurrencyName)" class="ownedAmount">@Model.OwnedAmount</span>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-6 m-t-5">
+            <div class="col-md-12 m-t-30">
+                <input id="@("sellAmount-" + Model.PlantationStorageIdWithCurrencyName)" class="sellAmount m-t-30" data-entity="@Model.CurrencyName" type="range" value="1" min="1" 
+                       max="@ViewHelper.GetInputMaxValueForCurrencyExchange(Model.CurrencyName)"
+                       step="@ViewHelper.GetInputStepForCurrencyExchange(Model.CurrencyName)">
+            </div>
+
+            <div class="col-md-4 pull-left d-inline-flex">
+                <button id="@("sellBtn-" + Model.PlantationStorageIdWithCurrencyName)" class="sellBtn card-button">Wymień</button>
+                <span id="@("sellRangeInputValueBox-" + Model.PlantationStorageIdWithCurrencyName)">1</span>
+            </div>
+
+            <div class="col-md-4 d-inline-block">
+                <span>@(" po ")</span>
+                <div class="d-inline-flex">
+                    <span id="@("sellPrice-" + Model.PlantationStorageIdWithCurrencyName)">@Model.SellPrice</span>
+                    <span class="material-icons money-icon">attach_money</span>
+                </div>
+            </div>
+
+            <div class="col-md-4 pull-right">
+                <span>Łączny zysk </span>
+                <div class="d-inline-flex">
+                    <span id="@("itemsProfit-" + Model.PlantationStorageIdWithCurrencyName)" class="itemsProfit pull-right">@Model.SellPrice</span>
+                    <span class="material-icons m-l-5 money-icon" >attach_money</span>
+                </div>
+            </div>
+        </div>
+        
+        @if (!Model.IsOnlyToPlantationGoldTransfer)
+        {
+            <div class="col-md-6 m-t-30">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <input id="@("buyAmount-" + Model.PlantationStorageIdWithCurrencyName)" class="buyAmount m-t-30" data-entity="@Model.CurrencyName" type="range" value="1" min="1" 
+                               max="@ViewHelper.GetInputMaxValueForCurrencyExchange(Model.CurrencyName)"
+                               step="@ViewHelper.GetInputStepForCurrencyExchange(Model.CurrencyName)">
+                    </div>
+
+                    <div class="col-md-4 pull-left d-inline-flex">
+                        <button id="@("buyBtn-" + Model.PlantationStorageIdWithCurrencyName)" class="buyBtn card-button">Wymień</button>
+                        <span id="@("buyRangeInputValueBox-" + Model.PlantationStorageIdWithCurrencyName)">1</span>
+                    </div>
+
+                    <div class="col-md-4 d-inline-block">
+                        <span>@(" po ")</span>
+                        <div class="d-inline-flex">
+                            <span id="@("buyPrice-" + Model.PlantationStorageIdWithCurrencyName)">@Model.BuyPrice</span>
+                            <span class="material-icons money-icon">attach_money</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 pull-right">
+                        <span>Łączny koszt </span>
+                        <div class="d-inline-flex">
+                            <span id="@("itemsExpense-" + Model.PlantationStorageIdWithCurrencyName)" class="itemsExpense">@Model.BuyPrice</span>
+                            <span class="material-icons m-l-5 money-icon">attach_money</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

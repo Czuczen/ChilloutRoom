@@ -1,0 +1,12 @@
+﻿@using CzuczenLand.Web.Helpers
+@model CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.StructureTests.Dto.StructureTest
+
+<div id="@Model.TestId" class="text-center border-groove">
+    <a class="fa-2x cursor-pointer" data-toggle="collapse" data-target="@("#collapse-" + Model.TestId)" aria-expanded="true" aria-controls="@("collapseAria-" + Model.TestId)">
+        <span style="background-color: @Model.StatusColor">@Model.StatusText</span>
+        @Model.TestName
+    </a>
+    <div id="@("collapse-" + Model.TestId)" class="collapse " aria-labelledby="@("heading-" + Model.TestId)">
+        @ViewHelper.GenerateStructureTestsTable(Model)
+    </div>
+</div>

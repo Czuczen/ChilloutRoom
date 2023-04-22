@@ -1,0 +1,31 @@
+﻿@using CzuczenLand.Web.Helpers
+@model CzuczenLand.Web.Models.ExtendingModels.ConfigurationPanel.EditOrCreateViewModel
+
+<div class="clearfix row input-box">
+    <div class="col-sm-12">
+        <div class="form-group form-float">
+            <div class="clearfix row">
+                @if (Model.IsManyEdit)
+                {
+                    <input id="@("checkBoxFor-" + Model.CurrProp.Name)" value="@Model.CurrProp.Name" type="checkbox">
+                    <label for="@("checkBoxFor-" + Model.CurrProp.Name)"></label>
+                }
+                
+                <div class="form-line @Model.SetDisabledColorOnEditMany">
+                    @if (Model.IsNotDropDownField)
+                    {
+                        <input class="validate form-control" @Model.SetFieldAsDisabled id="@Model.CurrProp.Name" name="@Model.CurrProp.Name" 
+                               value="@Model.CurrValue" @Model.FieldTypeAttr @Model.FieldIsRequired>
+
+                        <label for="@Model.CurrProp.Name" class="form-label">@Model.CurrPropHrName</label>
+                    }
+                    else
+                    {
+                        @Html.GenerateDropDownField(Model.CurrProp, Model, Model.CurrValue, Model.FieldTypeAttr)
+                        <label for="@Model.CurrProp.Name" class="form-label">@Model.CurrPropHrName</label>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

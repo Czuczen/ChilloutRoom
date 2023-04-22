@@ -1,0 +1,31 @@
+.quest-box {
+    margin-left: 1px; 
+    border: 5px ridge #A47047; 
+    background-color: #423d3d; 
+    color: lightgreen
+}
+
+.requirements-box {
+    margin: 5px; 
+    padding: 5px; 
+    border: 2px ridge #5b4616
+}
+
+.drops-box {
+    margin: 5px; 
+    padding: 5px; 
+    border: 2px ridge #4ecc24;
+}
+
+.close-mobile-quest-panel {
+    position: fixed;
+    color: black;
+    display: none;
+    bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .close-mobile-quest-panel {
+        display: block;
+    }
+}

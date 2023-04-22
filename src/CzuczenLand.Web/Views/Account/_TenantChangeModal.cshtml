@@ -1,0 +1,19 @@
+﻿@using Abp.MultiTenancy
+@using CzuczenLand.Web.Models.Common.Modals
+@Html.Partial("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("Zmień najemcę"))
+
+<div class="modal-body">
+    <form name="TenantChangeForm" role="form" novalidate class="form-validation">
+        <div class="form-group form-float">
+            <div class="form-line">
+                <input class="form-control" type="text" name="TenancyName" maxlength="@AbpTenantBase.MaxTenancyNameLength" value="@Model.TenancyName">
+                <label class="form-label">Nazwa najemcy</label>
+            </div>
+        </div>
+        <span class="help-block">Zostaw puste by zmienić na admina</span>
+    </form>
+</div>
+
+@Html.Partial("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")
+
+<script src="@Url.Content("~/Views/Account/_TenantChangeModal.js")" type="text/javascript"></script>

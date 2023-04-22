@@ -1,0 +1,69 @@
+﻿@using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.SelectListLoader
+@using CzuczenLand.ExtendingFunctionalities.Consts.Quest
+@model IGrouping<string, CzuczenLand.Web.Models.ExtendingModels.Plantation.QuestInfo.QuestInfoViewModel>
+
+<div id="@("quests-" + Model.Key)" class="text-center">
+    <a class="product-a font-25 text-c-gray" data-toggle="collapse" data-target="@("#collapse-" + Model.Key)" aria-expanded="true" aria-controls="@("collapse-" + Model.Key)">
+        @SelectListLoaderHelper.QuestTypesNamesDbToHr[Model.Key]
+    </a>
+    <div id="@("collapse-" + Model.Key)" class="collapse " aria-labelledby="headingQuests">
+        @foreach (var questInfo in Model.Select(item => item).OrderBy(item => item.PlantationLevelRequirement))
+        {
+            <div class="text-center">
+                <a class="product-a font-20 text-c-blue-005a87-imp" data-toggle="collapse" data-target="@("#collapse-" + questInfo.Id)" aria-expanded="true" aria-controls="@("collapse-" + questInfo.Id)">
+                    @questInfo.Name
+                </a>
+                <div id="@("collapse-" + questInfo.Id)" class="collapse " aria-labelledby="headingQuests">
+                    <div class="col-md-12 product-item">
+                        <div class="text-c-whitesmoke">Zadanie</div>
+                        <span>Wymagany poziom plantacji: @questInfo.PlantationLevelRequirement</span>
+                        <span>Czy jest dostępne od początku: @(questInfo.IsAvailableInitially ? "Tak" : "Nie")</span>
+                        <span>Czy jest powtarzalne: @(questInfo.IsRepetitive ? "Tak" : "Nie")</span>
+                        @if (questInfo.QuestType == DbQuestTypesNames.Event)
+                        {
+                            <div>Dostępne od @questInfo.StartTime do @questInfo.EndTime</div>
+                            if (questInfo.CyclicTime != null && questInfo.CyclicTime > 0)
+                            {
+                                <div>Zadanie cykliczne.</div>
+                                <div>Cykliczność co @(questInfo.CyclicTimeAsString)</div>
+                                <div>Ponownie dostępne od @(questInfo.NewStartTime) do @(questInfo.NewEndTime)</div>
+                            }
+                        }
+                        @if (questInfo.Duration != null && questInfo.Duration > 0)
+                        {
+                            <div>Czas na wykonanie: @(questInfo.Duration + "sek") </div>
+                        }
+                        <span class="text-c-whitesmoke">Opis</span>
+                        <span>@questInfo.MessageContentOne</span>
+                        <span>@questInfo.MessageContentTwo</span>
+                        <span>@questInfo.MessageContentThree</span>
+                        @if (string.IsNullOrWhiteSpace(questInfo.MessageContentOne) && string.IsNullOrWhiteSpace(questInfo.MessageContentTwo) 
+                             && string.IsNullOrWhiteSpace(questInfo.MessageContentThree))
+                        {
+                            <span>Brak</span>
+                        }
+                        
+                        <div class="col-md-12">
+                            @{
+                                <div class="quest-info-border">
+                                    <div class="text-c-whitesmoke">Wymagania</div>
+                                    @foreach (var req in questInfo.Requirements)
+                                    {
+                                        <div>@req.Name</div>
+                                    }
+                                </div>
+                                <div class="m-t-5 quest-info-border">
+                                    <div class="text-c-whitesmoke">Nagrody</div>
+                                    @foreach (var drop in questInfo.Drops)
+                                    {
+                                        <div>@drop.Name</div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

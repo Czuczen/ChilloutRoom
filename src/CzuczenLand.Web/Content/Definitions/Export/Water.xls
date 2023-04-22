@@ -1,0 +1,8 @@
+﻿"CapacityInPotRequirement","IncreaseGrowingSpeed","IncreaseTimeOfInsensitivity","IncreaseChanceForSeed","IncreaseDriedFruitAmount","IncreaseSeedAmount","IncreaseGainedExp","SetName","Name","PlantationLevelRequirement","SellPrice","BuyPrice","IsShopItem","BlackMarketMinSellPrice","BlackMarketMaxSellPrice","IsBlackMarketWorkerItem","PlayerCanSellInBlackMarket","IgnoreChangeGuid","OwnedAmount","GeneratedTypeId","PlantationStorageId","Id"
+"5,00","0,50","50","1","2,00","0","5,00","","Woda poziom 1","0","0,70","1,40","True","0,30","1,80","True","True","00000000-0000-0000-0000-000000000000","300,00","6","","1"
+"7,00","1,60","1500","2","4,00","1","55,00","","Woda poziom 2","5","1,00","2,00","True","0,50","3,00","True","True","00000000-0000-0000-0000-000000000000","0,00","12","","2"
+"8,00","12,00","4400","2","7,00","2","300,00","","Woda poziom 3","10","1,30","2,60","True","1,00","4,00","True","True","00000000-0000-0000-0000-000000000000","0,00","18","","3"
+"9,00","22,00","7300","3","10,00","2","500,00","Hodowca","Woda poziom 4","15","1,60","3,20","True","1,00","5,00","True","True","00000000-0000-0000-0000-000000000000","0,00","24","","4"
+"10,00","32,00","10000","4","12,00","2","1000,00","","Woda poziom 5","20","1,80","3,60","True","1,20","5,00","True","True","00000000-0000-0000-0000-000000000000","0,00","30","","5"
+"11,00","50,00","15000","4","15,00","3","2500,00","Mistrz","Woda poziom 6","25","2,00","4,00","True","1,50","6,00","False","True","00000000-0000-0000-0000-000000000000","0,00","36","","6"
+"15,00","80,00","30000","10","30,00","5","10000,00","Mega set","Mega Woda","15","","","False","2,00","10,00","False","True","00000000-0000-0000-0000-000000000000","0,00","71","","7"

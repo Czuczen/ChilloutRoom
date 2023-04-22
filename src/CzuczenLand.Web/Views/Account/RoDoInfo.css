@@ -1,0 +1,47 @@
+.cookie-notice-container {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    --wp-admin-theme-color: #007cba;
+    --wp-admin-theme-color-darker-10: #006ba1;
+    --wp-admin-theme-color-darker-20: #005a87;
+    font-style: normal;
+    font-size: 13px;
+    letter-spacing: 0;
+    line-height: 20px;
+    font-weight: 400;
+    font-family: -apple-system,BlinkMacSystemFont,Arial,Roboto,"Helvetica Neue",sans-serif;
+    padding: 5px 10px;
+    text-align: center;
+    width: 100%;
+    z-index: 1;
+    box-sizing: border-box;
+    display: block;
+    color: #fff;
+}
+
+.cookie-revoke-hidden {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    --wp-admin-theme-color: #007cba;
+    --wp-admin-theme-color-darker-10: #006ba1;
+    --wp-admin-theme-color-darker-20: #005a87;
+    font-style: normal;
+    color: #6b6b6b;
+    bottom: 0;
+    position: fixed;
+    min-width: 100%;
+    height: auto;
+    z-index: 1;
+    font-size: 13px;
+    letter-spacing: 0;
+    line-height: 20px;
+    left: 0;
+    text-align: center;
+    font-weight: 400;
+    font-family: -apple-system,BlinkMacSystemFont,Arial,Roboto,"Helvetica Neue",sans-serif;
+    box-sizing: border-box;
+    animation-name: fadeIn;
+    background-color: rgba(211,0,0,0.9);
+}
+
+.cs-text {
+    margin: 8px;
+}

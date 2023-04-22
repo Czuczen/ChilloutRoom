@@ -1,0 +1,74 @@
+﻿@using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.SelectListLoader
+@using CzuczenLand.ExtendingFunctionalities.Consts.Quest
+@model CzuczenLand.Web.Models.ExtendingModels.Plantation.QuestsViewModel
+
+<aside id="rightsidebar" class="right-sidebar z-index-1050-imp">
+    <div id="allQuestsBox">
+        <ul class="nav nav-tabs" role="tablist">
+            @foreach (var pair in SelectListLoaderHelper.QuestTypesNamesDbToHr)
+            {
+                <li id="@("inProgressQuestsLi-" + pair.Key)" class="col-md-12 tab-bookmark @(pair.Key == DbQuestTypesNames.Daily ? "active" : "")" style="background-color: inherit;"><a href="@("#inProgressQuests-" + pair.Key)" data-toggle="tab">@pair.Value</a></li>
+            }
+        </ul>
+        <div class="tab-content">
+            @foreach (var pair in SelectListLoaderHelper.QuestTypesNamesDbToHr)
+            {
+                <div id="@("inProgressQuests-" + pair.Key)" role="tabpanel" class="tab-pane fade bg-c-inherit-imp @(pair.Key == DbQuestTypesNames.Daily ? "active in" : "")">
+                    @foreach (var quest in Model.InProgressQuests.Where(item => item.QuestType == pair.Key))
+                    {
+                        @Html.Partial("~/Views/Plantation/Quests/_quest.cshtml", quest)
+                    }       
+                </div>            
+            }
+        </div>
+        
+        <a class="cursor-pointer text-center btn d-grid width-100 btn-info m-t-5" data-toggle="collapse" data-target="@("#collapse-availableQuests")" aria-expanded="true" aria-controls="@("collapseAria-availableQuests")">
+            <div class="text-center p-t-5">Dostępne</div>
+        </a>
+        
+        <div id="@("collapse-availableQuests")" class="collapse " aria-labelledby="@("heading-availableQuests")">
+            <ul class="nav nav-tabs" role="tablist">
+                @foreach (var pair in SelectListLoaderHelper.QuestTypesNamesDbToHr.Where(item => item.Key != DbQuestTypesNames.Achievement))
+                {
+                    <li id="@("availableQuestsLi-" + pair.Key)" class="col-md-12 tab-bookmark @(pair.Key == DbQuestTypesNames.Daily ? "active" : "")" style="background-color: inherit;"><a href="@("#availableQuests-" + pair.Key)" data-toggle="tab">@pair.Value</a></li>
+                }
+            </ul>
+            <div class="tab-content">
+                @foreach (var pair in SelectListLoaderHelper.QuestTypesNamesDbToHr.Where(item => item.Key != DbQuestTypesNames.Achievement))
+                {
+                    <div id="@("availableQuests-" + pair.Key)" role="tabpanel" class="tab-pane fade bg-c-inherit-imp @(pair.Key == DbQuestTypesNames.Daily ? "active in" : "")">
+                        @foreach (var quest in Model.AvailableQuests.Where(item => item.QuestType == pair.Key))
+                        {
+                            @Html.Partial("~/Views/Plantation/Quests/_quest.cshtml", quest)
+                        }       
+                    </div>            
+                }
+            </div>
+        </div>
+        
+        <a class="cursor-pointer text-center d-grid width-100 btn btn-info m-t-5" data-toggle="collapse" data-target="@("#collapse-completedQuests")" aria-expanded="true" aria-controls="@("collapseAria-completedQuests")">
+            <div class="text-center p-t-5">Ukończone</div>
+        </a>
+        
+        <div id="@("collapse-completedQuests")" class="collapse " aria-labelledby="@("heading-completedQuests")">
+            <ul class="nav nav-tabs" role="tablist">
+                @foreach (var pair in SelectListLoaderHelper.QuestTypesNamesDbToHr)
+                {
+                    <li class="col-md-12 tab-bookmark @(pair.Key == DbQuestTypesNames.Daily ? "active" : "")" style="background-color: inherit;"><a href="@("#completedQuests-" + pair.Key)" data-toggle="tab">@pair.Value</a></li>
+                }
+            </ul>
+            <div class="tab-content">
+                @foreach (var pair in SelectListLoaderHelper.QuestTypesNamesDbToHr)
+                {
+                    <div id="@("completedQuests-" + pair.Key)" role="tabpanel" class="tab-pane fade bg-c-inherit-imp @(pair.Key == DbQuestTypesNames.Daily ? "active in" : "")">
+                        @foreach (var quest in Model.CompletedQuests.Where(item => item.QuestType == pair.Key))
+                        {
+                            @Html.Partial("~/Views/Plantation/Quests/_quest.cshtml", quest)
+                        }       
+                    </div>            
+                }
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-secondary simple-shadow-imp close-mobile-quest-panel js-right-sidebar" data-close="true">X</button>
+</aside>

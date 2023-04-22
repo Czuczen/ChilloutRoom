@@ -1,0 +1,42 @@
+﻿.select2-container.select2-container--classic.select2-container--open {
+    text-align: center;
+}
+
+.select2-container.select2-container--default.select2-container--open {
+    text-align: center;
+}
+
+.select2-search__field{
+    text-align: center;   
+}
+
+#dataTableSearcher > thead > tr:nth-child(1) > th {
+    border-style: outset;
+}
+
+.error {
+    color: red;
+}
+
+.datatable-box {
+    padding: 10px; 
+    margin-top: 15px; 
+    height: 100%; 
+    min-height: 60vh; 
+    overflow: auto
+}
+
+.info-tooltip-card {
+    border: 2px ridge indianred; 
+    border-radius: 5px; 
+    font-size: large; 
+    padding: 8px
+}
+
+#closeStructureModalBtn:hover {
+    background-color: #006600 !important;
+}
+
+.district-cloner-border {
+    border: 2px ridge #5b4616;
+}

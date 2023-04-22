@@ -1,0 +1,11 @@
+﻿#blackMarketBuyDataTableSearcher > thead > tr:nth-child(1) > th {
+    border-style: outset;
+}
+
+#blackMarketSellDataTableSearcher > thead > tr:nth-child(1) > th {
+    border-style: outset;
+}
+
+#blackMarketIssuedDataTableSearcher > thead > tr:nth-child(1) > th {
+    border-style: outset;
+}

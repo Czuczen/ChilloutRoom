@@ -1,0 +1,88 @@
+.game-notification-item {
+    display: none; 
+    cursor: pointer
+}
+
+.player-info-popover {
+    left: 0; 
+    width: auto
+}
+
+.person-icon {
+    font-size: inherit; 
+    color: sandybrown;
+}
+
+.player-money-icon {
+    font-size: inherit; 
+    color: orange;
+}
+
+.dashboard-icon {
+    font-size: inherit; 
+    color: navajowhite
+}
+
+.plantation-gained-exp {
+    width: 100%; 
+    height: 20px
+}
+
+.plantation-curr-exp-bar {
+    display: flex;
+    height: 20px; 
+    background-color: firebrick
+}
+
+.plantation-curr-exp {
+    color: orange; 
+    position: absolute; 
+    left: 0;
+}
+
+.plantation-exp-to-next-level {
+    color: deepskyblue; 
+    position: absolute; 
+    right: 0;
+}
+
+.plantation-money-icon {
+    font-size: inherit; 
+    color: #0BF61B;
+}
+
+.quests-btn {
+    width: 100%;
+    font-size: x-large;
+}
+
+.game-navi-btn {
+    color: steelblue;
+    width: 100%; 
+    font-size: x-large !important;
+}
+
+.create-plant-btn {
+    cursor: pointer; 
+    color: blue
+}
+
+.unlock-popover {
+    bottom: 0;
+    border: none;
+    left: 0;
+    width: auto;
+    padding: 25px;
+}
+
+.unlock-quests-popover {
+    bottom: auto;
+    left: auto;
+}
+
+@media (max-width: 768px) {
+    .unlock-quests-popover {
+        bottom: auto;
+        left: 0;
+    }
+}

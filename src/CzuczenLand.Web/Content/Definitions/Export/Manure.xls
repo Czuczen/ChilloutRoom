@@ -1,0 +1,8 @@
+﻿"CapacityInPotRequirement","IncreaseGrowingSpeed","IncreaseTimeOfInsensitivity","IncreaseChanceForSeed","IncreaseDriedFruitAmount","IncreaseSeedAmount","IncreaseGainedExp","SetName","Name","PlantationLevelRequirement","SellPrice","BuyPrice","IsShopItem","BlackMarketMinSellPrice","BlackMarketMaxSellPrice","IsBlackMarketWorkerItem","PlayerCanSellInBlackMarket","IgnoreChangeGuid","OwnedAmount","GeneratedTypeId","PlantationStorageId","Id"
+"5,00","0,50","50","1","2,00","0","5,00","","Nawóz poziom 1","0","0,20","0,40","True","0,10","0,60","True","True","00000000-0000-0000-0000-000000000000","1500,00","3","","1"
+"7,00","1,60","1500","1","4,00","1","55,00","","Nawóz poziom 2","5","0,30","0,60","True","0,10","1,00","True","True","00000000-0000-0000-0000-000000000000","0,00","9","","2"
+"8,00","12,00","4400","1","7,00","1","300,00","","Nawóz poziom 3","10","0,40","0,80","True","0,20","1,20","True","True","00000000-0000-0000-0000-000000000000","0,00","15","","3"
+"9,00","22,00","7300","2","10,00","2","500,00","Hodowca","Nawóz poziom 4","15","0,50","1,00","True","0,30","2,00","True","True","00000000-0000-0000-0000-000000000000","0,00","21","","4"
+"10,00","32,00","10000","3","12,00","2","1000,00","","Nawóz poziom 5","20","0,70","1,40","True","0,40","1,60","True","True","00000000-0000-0000-0000-000000000000","0,00","27","","5"
+"11,00","50,00","15000","4","15,00","2","2500,00","Mistrz","Nawóz poziom 6","25","1,00","2,00","True","0,50","3,00","False","True","00000000-0000-0000-0000-000000000000","0,00","33","","6"
+"15,00","80,00","30000","10","15,00","5","10000,00","Mega set","Mega Nawóz","15","","","False","2,00","5,00","False","True","00000000-0000-0000-0000-000000000000","0,00","67","","7"

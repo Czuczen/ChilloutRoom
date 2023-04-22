@@ -1,0 +1,35 @@
+﻿@using CzuczenLand.Web.Helpers
+@model CzuczenLand.Web.Models.ExtendingModels.ConfigurationPanel.DistrictCloneViewModel
+
+<link rel="stylesheet" type="text/css" href="~/Views/District/_districtsClone.css">
+
+<div>
+    @if (Model.IsValid)
+    {
+        foreach (var disCtx in Model.DistrictContexts)
+        {
+            <div class="warden-info">@("Opiekun - " + disCtx.WardenName)</div>
+            <div class="warden-info">@("Hasło - " + disCtx.WardenPassword)</div>
+
+            @ViewHelper.GenerateDistrictsCloneTable(new List<object> {disCtx.District})
+            @ViewHelper.GenerateDistrictsCloneTable(disCtx.GeneratedTypes.Cast<object>().ToList())
+            @ViewHelper.GenerateDistrictsCloneTable(disCtx.Requirements.Cast<object>().ToList())
+            @ViewHelper.GenerateDistrictsCloneTable(disCtx.Drops.Cast<object>().ToList())
+            @ViewHelper.GenerateDistrictsCloneTable(disCtx.DriedFruits.Cast<object>().ToList())
+            @ViewHelper.GenerateDistrictsCloneTable(disCtx.Lamps.Cast<object>().ToList())
+            @ViewHelper.GenerateDistrictsCloneTable(disCtx.Manures.Cast<object>().ToList())
+            @ViewHelper.GenerateDistrictsCloneTable(disCtx.Pots.Cast<object>().ToList())
+            @ViewHelper.GenerateDistrictsCloneTable(disCtx.Seeds.Cast<object>().ToList())
+            @ViewHelper.GenerateDistrictsCloneTable(disCtx.Soils.Cast<object>().ToList())
+            @ViewHelper.GenerateDistrictsCloneTable(disCtx.Waters.Cast<object>().ToList())
+            @ViewHelper.GenerateDistrictsCloneTable(disCtx.Bonuses.Cast<object>().ToList())
+            @ViewHelper.GenerateDistrictsCloneTable(disCtx.Quests.Cast<object>().ToList())
+            @ViewHelper.GenerateDistrictsCloneTable(disCtx.QuestsRequirementsProgress.Cast<object>().ToList())
+            @ViewHelper.GenerateDistrictsCloneTable(disCtx.DropsQuests.Cast<object>().ToList())
+        }
+    }
+    else
+    {
+        <h1 class="permission-message">@Model.ValidationMessage</h1>
+    }
+</div>

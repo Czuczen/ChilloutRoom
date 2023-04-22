@@ -1,0 +1,25 @@
+﻿@using Abp.Timing
+@using CzuczenLand.ExtendingFunctionalities.Utils
+@using CzuczenLand.Web.Helpers
+@model CzuczenLand.Web.Models.ExtendingModels.ConfigurationPanel.StructureTestsViewModel
+
+<div class="p-l-5 p-r-5 p-t-10">
+    <div class="text-center">
+        Czas życia aplikacji: @(DateTimeUtils.ConvertSecondsToDdHhMmSs((Clock.Now - Model.CurrProcess.StartTime.ToUniversalTime()).TotalSeconds))
+    </div>
+    <div class="text-center">
+        Ilość wątków aplikacji: @(Model.CurrProcess.Threads.Count)
+    </div>
+    @if (Model.HasPermission)
+    {
+        @Html.RenderStructureTests(Model)
+
+        <div class="text-center">
+            <button id="closeStructureModalBtn" type="button" class="btn bg-c-green-imp width-100 btn-default waves-effect" data-dismiss="modal">Ok</button>
+        </div>
+    }
+    else
+    {
+        <h1 class="text-center">@Model.PermissionInfo</h1>
+    }
+</div>

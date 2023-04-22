@@ -1,0 +1,21 @@
+﻿@using Newtonsoft.Json
+@model CzuczenLand.Web.Models.ExtendingModels.ConfigurationPanel.EditOrCreateViewModel
+
+<div id="connectionSelectors" class="clearfix row d-none">
+    @foreach (var entity in Model.ConnectionSelectors)
+    {
+        <div class="col-sm-12">
+            <div class="form-group form-float">
+                <div class="clearfix row">
+                    <select id="@("selector-" + entity.Key)" name="@("selector-" + entity.Key)"
+                            class="validate form-control connectionSelector width-100 text-center"
+                            data-existing_connections="@(Model.ExistingConnections.ContainsKey(entity.Key) ? JsonConvert.SerializeObject(Model.ExistingConnections[entity.Key]) : "")"
+                            data-hr_name="@entity.Value"
+                            data-existing_connections_district_id="@(Model.ExistingConnectionsDistrictId)"
+                            required="required">
+                    </select>
+                </div>
+            </div>
+        </div>
+    }
+</div>

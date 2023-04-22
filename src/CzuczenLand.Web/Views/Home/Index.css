@@ -1,0 +1,17 @@
+body {
+    background-image: url("https://cdn.wallpapersafari.com/60/62/Xf1tNx.jpg");
+}
+
+.news-img {
+    min-width: fit-content; 
+    filter: blur(2px);
+}
+
+.news-navi-panel {
+    text-align:center; 
+    position: relative
+}
+
+#chatBtn {
+    color: white;
+}

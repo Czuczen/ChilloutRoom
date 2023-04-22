@@ -1,0 +1,25 @@
+﻿@using CzuczenLand.Web.Helpers
+@model CzuczenLand.Web.Models.ExtendingModels.Plantation.PlantationViewModel
+
+<div id="plantationPlants" class="col-md-12">
+    <div id="newPlant" class="col-md-2 text-center m-b-20">
+        <div class="col-md-12">
+            <div id="toCreateCount" class="pull-right" title="Kolejka akcji">0</div>
+        </div>
+        <div id="Lamp" data-hr_name="lampę" class="product">
+        </div>
+        <div id="Manure" data-hr_name="nawóz" class="product">
+        </div>
+        <div id="Soil" data-hr_name="glebę" class="product">
+        </div>
+        <div id="Water" data-hr_name="wodę" class="product">
+        </div>
+        <div id="Pot" data-hr_name="doniczkę" class="product">
+        </div>
+        <div id="Seed" data-hr_name="nasiono" class="product">
+        </div>
+    
+        <div id="createPlant" class="material-icons fa-5x primary create-plant-btn">add</div>
+    </div>
+    @Html.RenderPlantationStoragePlants(Model.PlantsInfo)
+</div>

@@ -1,0 +1,20 @@
+﻿@using CzuczenLand.Web.Helpers
+@model CzuczenLand.Web.Models.ExtendingModels.ConfigurationPanel.EditOrCreateViewModel
+
+<div class="modal-body">
+    <h4 class="text-center">@Model.Header</h4>
+    <div class="text-center">@Model.EntityHrName@(Model.ObjectId != null ? ": " + Model.ObjectId : "")</div>
+    <form name="editOrCreateForm" role="form" novalidate class="form-validation">
+        <h4 class="text-center">@Model.EditManyHeaderInfo</h4>
+        <input id="crudAction" type="hidden" value="@Model.CrudAction">
+        <input id="editManyAction" type="hidden" value="@Model.EditManyAction">
+        <br/>
+        @Html.RenderFormInputs(Model)
+        @Html.RenderFormSelectors(Model)
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default close-button waves-effect" data-dismiss="modal">Anuluj</button>
+    <button type="button" class="btn btn-primary save-button waves-effect">Zapisz</button>
+</div>

@@ -1,0 +1,86 @@
+﻿@using Abp.Web.Mvc.Extensions
+@model List<CzuczenLand.Web.Models.ExtendingModels.Home.NewsViewModel>
+
+@{
+    ViewBag.ActiveMenu = PageNames.Home;
+}
+
+@section styles
+{
+    @Html.IncludeStyle("~/Views/Shared/Shared.css")
+    @Html.IncludeStyle("~/Views/Home/Index.css")
+}
+
+@section scripts
+{
+    @Html.IncludeScript("~/Views/Shared/Shared.js")
+    @Html.IncludeScript("~/Views/Home/Index.js")
+}
+
+<div class="slideshow-container">
+    @{
+        var amountIndexes = 0;
+        foreach (var news in Model)
+        {
+            amountIndexes++;
+            <div id="@("news-" + amountIndexes)" class="mySlides slider-fade">
+                <img class="img-responsive news-img"
+                     src="@(news.ImageUrl)"
+                     alt="@(news.Name)">
+                <div class="text" style="@("color: " + news.TextColor)">
+                    <h1>@(news.Header)</h1>
+                    <h3>@(news.MessageContentOne)</h3>
+                    <h3>@(news.MessageContentTwo)</h3>
+                    <h3>@(news.MessageContentThree)</h3>
+                </div>
+            </div>
+        }
+    }
+
+    <div class="mySlides slider-fade height-30vh">
+        <iframe class="embed-responsive-item p-0 width-height-100" type="text/html" 
+                src="https://www.youtube.com/embed/CDBrF1KIzdE?autoplay=1&mute=1&loop=1&playlist=CDBrF1KIzdE"
+                auframeborder="0"
+                allow="autoplay"
+        >
+        </iframe>
+        <div class="text">
+            <span class="mix-colors">Moje filmy</span>
+        </div>
+    </div>
+    <div class="mySlides slider-fade height-30vh">
+        <iframe class="embed-responsive-item p-0 width-height-100" type="text/html" 
+                src="https://www.youtube.com/embed/UkhslP_ob7s?autoplay=1&mute=1&loop=1&playlist=UkhslP_ob7s"
+                auframeborder="0"
+                allow="autoplay"
+        >
+        </iframe>
+        <div class="text">
+            <span class="mix-colors">Gameplay</span>
+        </div>
+    </div>
+</div>
+<br>
+<div class="news-navi-panel">
+    <div class="col-md-12">
+        @{
+            var indexesAmount = 0;
+            for (var i = 0; i < Model.Count; i++)
+            {
+                indexesAmount = i + 1;
+                <span id="@("currSlide-" + indexesAmount)" class="dot"></span>
+            }
+            
+            <span id="@("currSlide-" + (indexesAmount + 1))" class="dot"></span>
+            <span id="@("currSlide-" + (indexesAmount + 2))" class="dot"></span>
+        }
+    </div>
+    <div class="col-md-12 m-t-20 d-inline-block">
+        <div class="col-md-3"></div>
+        
+            <button id="prevBtn" class="col-md-3 fa-2x mix-colors slider-btn">&#10094;</button>
+            <button id="nextBtn" class="col-md-3 fa-2x mix-colors slider-btn">&#10095;</button>
+        
+        <div class="col-md-3"></div>
+    </div>
+</div>

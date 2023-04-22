@@ -1,0 +1,131 @@
+﻿@using Abp.Web.Mvc.Extensions
+@model CzuczenLand.Web.Models.Account.LoginFormViewModel
+
+@section Styles
+{
+    @Html.IncludeStyle("~/Views/Account/RoDoInfo.css")
+    @Html.IncludeStyle("~/Views/Account/Login.css")
+}
+@section Scripts
+{
+    @Html.IncludeScript("~/Views/Account/Login.js")
+}
+
+<div class="card">
+    <div class="body">
+        <form id="LoginForm" method="POST" asp-action="Login">
+            <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+            <input type="hidden" name="returnUrlHash" />
+            <h4 class="text-center">Zaloguj</h4>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">person</i>
+                </span>
+                <div class="form-line">
+                    <input type="text" class="form-control" name="UsernameOrEmailAddress" placeholder="Nick" required autofocus maxlength="100">
+                </div>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">lock</i>
+                </span>
+                <div class="form-line">
+                    <input type="password" class="form-control" name="Password" placeholder="Hasło" required maxlength="100">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-8 p-t-5">
+                    <input type="checkbox" name="RememberMe" id="rememberme" class="filled-in chk-col-pink" value="true">
+                    <label for="rememberme">Zapamiętaj mnie</label>
+                </div>
+                <div class="col-xs-4">
+                    <button id="LoginButton" class="btn btn-block bg-pink waves-effect" type="submit">Zaloguj</button>
+                </div>
+            </div>
+            @if (Model.IsSelfRegistrationAllowed)
+            {
+                <div class="row m-t-15 m-b--20">
+                    <div class="col-xs-12">
+                        <a class="btn btn-primary text-c-white-imp" href="@Url.Action("Register", "Account")">Zarejestruj</a>
+                    </div>
+                </div>
+            }
+        </form>
+    </div>
+</div>
+
+<div id="policyPrivacy" class="modal fade policyPrivacy" tabindex="-1" role="dialog" aria-labelledby="policyPrivacy" aria-hidden="true">
+    <div class="modal-dialog m-1 mw-100 w-auto modal-lg">
+        <div class="modal-content">
+            <div  class="cs-text p-t-10">
+                1. Serwis nie zbiera w sposób automatyczny żadnych informacji, z wyjątkiem informacji zawartych w plikach cookies.    
+            </div>
+            
+            <div class="cs-text">
+                2. Pliki cookies (tzw. „ciasteczka”) stanowią dane informatyczne, w szczególności pliki tekstowe, które przechowywane są w urządzeniu końcowym Użytkownika Serwisu i przeznaczone są do korzystania ze stron internetowych Serwisu. Cookies zazwyczaj zawierają nazwę strony internetowej, z której pochodzą, czas przechowywania ich na urządzeniu końcowym oraz unikalny numer.    
+            </div>
+            
+            <div class="cs-text">
+                3. Podmiotem zamieszczającym na urządzeniu końcowym Użytkownika Serwisu pliki cookies oraz uzyskującym do nich dostęp jest operator Serwisu czuczengames@gmail.com
+            </div>
+            
+            <div class="cs-text">
+                4. Pliki cookies wykorzystywane są w celu:
+                
+                <div class="cs-text">
+                    1. dostosowania zawartości stron internetowych Serwisu do preferencji Użytkownika oraz optymalizacji korzystania ze stron internetowych; w szczególności pliki te pozwalają rozpoznać urządzenie Użytkownika Serwisu i odpowiednio wyświetlić stronę internetową, dostosowaną do jego indywidualnych potrzeb;                            
+                </div>
+                <div class="cs-text">
+                    2. tworzenia statystyk, które pomagają zrozumieć, w jaki sposób Użytkownicy Serwisu korzystają ze stron internetowych, co umożliwia ulepszanie ich struktury i zawartości;                            
+                </div>
+                <div class="cs-text">
+                    3. utrzymanie sesji Użytkownika Serwisu (po zalogowaniu), dzięki której Użytkownik nie musi na każdej podstronie Serwisu ponownie wpisywać loginu i hasła;                            
+                </div>
+            </div>
+
+            <div class="cs-text">
+                5. W ramach Serwisu stosowane są następujące rodzaje plików cookies:       
+                
+                <div class="cs-text">
+                    1. „niezbędne” pliki cookies, umożliwiające korzystanie z usług dostępnych w ramach Serwisu, np. uwierzytelniające pliki cookies wykorzystywane do usług wymagających uwierzytelniania w ramach Serwisu;               
+                </div>
+                <div class="cs-text">
+                    2. pliki cookies służące do zapewnienia bezpieczeństwa, np. wykorzystywane do wykrywania nadużyć w zakresie uwierzytelniania w ramach Serwisu;                         
+                </div>
+                <div class="cs-text">
+                    3. „wydajnościowe” pliki cookies, umożliwiające zbieranie informacji o sposobie korzystania ze stron internetowych Serwisu;                   
+                </div>
+                <div class="cs-text">
+                    4. „funkcjonalne” pliki cookies, umożliwiające „zapamiętanie” wybranych przez Użytkownika ustawień i personalizację interfejsu Użytkownika, np. w zakresie wybranego języka lub regionu, z którego pochodzi Użytkownik, rozmiaru czcionki, wyglądu strony internetowej itp.;                
+                </div>
+                <div class="cs-text">
+                    5.„reklamowe” pliki cookies, umożliwiające dostarczanie Użytkownikom treści reklamowych bardziej dostosowanych do ich zainteresowań.                  
+                </div>
+            </div>
+
+            <div class="cs-text">
+                6. W wielu przypadkach oprogramowanie służące do przeglądania stron internetowych (przeglądarka internetowa) domyślnie dopuszcza przechowywanie plików cookies w urządzeniu końcowym Użytkownika. Użytkownicy Serwisu mogą dokonać w każdym czasie zmiany ustawień dotyczących plików cookies. Ustawienia te mogą zostać zmienione w szczególności w taki sposób, aby blokować automatyczną obsługę plików cookies w ustawieniach przeglądarki internetowej bądź informować o ich każdorazowym zamieszczeniu w urządzeniu Użytkownika Serwisu. Szczegółowe informacje o możliwości i sposobach obsługi plików cookies dostępne są w ustawieniach oprogramowania (przeglądarki internetowej).  
+            </div>
+            
+            <div class="cs-text">
+                7. Operator Serwisu informuje, że ograniczenia stosowania plików cookies mogą wpłynąć na niektóre funkcjonalności dostępne na stronach internetowych Serwisu.  
+            </div>
+            
+            <div class="cs-text">
+                8. Pliki cookies zamieszczane w urządzeniu końcowym Użytkownika Serwisu i wykorzystywane mogą być również przez współpracujących z operatorem Serwisu reklamodawców oraz partnerów.       
+            </div>
+            <div class="text-center m-t-5 p-b-5">
+                <a data-toggle="modal" data-target=".policyPrivacy">Zamknij</a>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div role="banner" class="cookie-revoke-hidden" aria-label="Informacja o ciasteczkach">
+    <div class="cookie-notice-container">
+        <span>Strona korzysta z plików cookies w celu realizacji usług i zgodnie z Polityką Prywatności. Możesz określić warunki przechowywania lub dostępu do plików cookies w Twojej przeglądarce.
+            <a class="m-r-30" data-toggle="modal" data-target=".policyPrivacy" aria-label="Więcej informacji">Więcej informacji</a>
+        </span>
+    </div>
+</div>

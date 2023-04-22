@@ -1,0 +1,90 @@
+﻿@using Abp.Authorization.Users
+@model CzuczenLand.Web.Models.Account.RegisterViewModel
+@section Styles
+{
+    <link href="~/Views/Account/RoDoInfo.css" rel="stylesheet" />
+    <link href="~/Views/Account/Login.css" rel="stylesheet" />
+}
+
+@section Scripts
+{
+    <script type="text/javascript" src="~/Views/Account/Register.js"></script>
+}
+
+<div class="card">
+    <div class="body">
+        <form id="RegisterForm" asp-action="Register" method="POST">
+            <h4 class="text-center">Rejestracja</h4>
+            
+            @Html.AntiForgeryToken()
+
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-danger">
+                    <i class="fa fa-warning"></i> @ViewBag.ErrorMessage
+                </div>
+            }
+
+            <input type="hidden" name="IsExternalLogin" value="@Model.IsExternalLogin.ToString()" />
+            <input type="hidden" name="ExternalLoginAuthSchema" value="@Model.ExternalLoginAuthSchema" />
+
+            <div class="form-group form-float d-none">
+                <div class="form-line">
+                    <input id="FirstName" type="text" class="form-control" name="Name" value="Brak" required maxlength="@AbpUserBase.MaxNameLength">
+                    <label class="form-label">Imię</label>
+                </div>
+            </div>
+
+            <div class="form-group form-float d-none">
+                <div class="form-line">
+                    <input type="text" class="form-control" name="Surname" value="Brak" required maxlength="@AbpUserBase.MaxSurnameLength">
+                    <label class="form-label">Drugie imię</label>
+                </div>
+            </div>
+            
+            <div class="form-group form-float d-none">
+                <div class="form-line">
+                    <input id="UserName" type="text" class="form-control" name="UserName" value="Brak" required maxlength="@AbpUserBase.MaxUserNameLength">
+                    <label class="form-label">Nick</label>
+                </div>
+            </div>
+
+            <div class="form-group form-float">
+                <div class="form-line">
+                    <input id="registerEmail" type="text" name="RegisterEmail" class="form-control" value="@(Model.EmailAddress?.Replace("@chilloutroom.pl", ""))" required maxlength="@AbpUserBase.MaxEmailAddressLength">
+                    <input id="tempRegisterEmail" type="email" class="form-control d-none" name="EmailAddress" value="@Model.EmailAddress" required maxlength="@AbpUserBase.MaxEmailAddressLength">
+                    <label class="form-label">Nick</label>
+                </div>
+            </div>
+
+            <div class="form-group form-float">
+                <div class="form-line">
+                    <input id="Password" type="password" class="form-control" name="Password" required maxlength="@AbpUserBase.MaxPlainPasswordLength">
+                    <label class="form-label">Hasło</label>
+                </div>
+            </div>
+            
+            <div class="form-group form-float">
+                <div class="form-line">
+                    <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" required maxlength="@AbpUserBase.MaxPlainPasswordLength">
+                    <label class="form-label">Potwierdź hasło</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <a href="@Url.Action("Login", "Account")" cl class="btn btn-default waves-effect">Wróć</a>
+                    <button id="RegisterButton" class="btn bg-pink waves-effect" type="submit">Zarejestruj</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div role="banner" class="cookie-revoke-hidden">
+    <div class="cookie-notice-container">
+        <span>
+            Proszę nie podawać danych osobowych.
+        </span>
+    </div>
+</div>

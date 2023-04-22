@@ -1,0 +1,118 @@
+﻿@model CzuczenLand.Web.Models.ExtendingModels.ConfigurationPanel.LogsViewModel
+
+<div class="p-l-5 p-r-5 p-t-10">
+    @if (Model.HasPermission)
+    {
+        <div id="infoLogs" class="text-center border-groove">
+            <a class="fa-2x cursor-pointer" data-toggle="collapse" data-target="#collapse-infoLogs" aria-expanded="true" aria-controls="collapseAria-infoLogs">
+                Info
+            </a>
+            <div id="collapse-infoLogs" class="collapse text-left" aria-labelledby="heading-infoLogs">
+                @if (Model.InfoLogs.Any())
+                {
+                    foreach (var log in Model.InfoLogs)
+                    {
+                        <div class="border-inset border-color-chocolate m-5 p-5">
+                            @{
+                                foreach (var line in log)
+                                {
+                                    <div>@line</div>
+                                }
+                            }
+                        </div>
+                    }    
+                }
+                else
+                {
+                    <div class="border-inset m-5 p-5">Brak</div>
+                }
+            </div>
+        </div>
+
+        <div id="debugLogs" class="text-center border-groove">
+            <a class="fa-2x cursor-pointer" data-toggle="collapse" data-target="#collapse-debugLogs" aria-expanded="true" aria-controls="collapseAria-debugLogs">
+                Debug
+            </a>
+            <div id="collapse-debugLogs" class="collapse text-left" aria-labelledby="heading-debugLogs">
+                @if (Model.DebugLogs.Any())
+                {
+                    foreach (var log in Model.DebugLogs)
+                    {
+                        <div class="border-inset border-color-chocolate m-5 p-5">
+                            @{
+                                foreach (var line in log)
+                                {
+                                    <div>@line</div>
+                                }
+                            }
+                        </div>
+                    }    
+                }
+                else
+                {
+                    <div class="border-inset m-5 p-5">Brak</div>
+                }
+            </div>
+        </div>
+        
+        <div id="warnLogs" class="text-center border-groove">
+            <a class="fa-2x cursor-pointer" data-toggle="collapse" data-target="#collapse-warnLogs" aria-expanded="true" aria-controls="collapseAria-warnLogs">
+                Warn
+            </a>
+            <div id="collapse-warnLogs" class="collapse text-left" aria-labelledby="heading-warnLogs">
+                @if (Model.WarnLogs.Any())
+                {
+                    foreach (var log in Model.WarnLogs)
+                    {
+                        <div class="border-inset border-color-chocolate m-5 p-5">
+                            @{
+                                foreach (var line in log)
+                                {
+                                    <div>@line</div>
+                                }
+                            }
+                        </div>
+                    }    
+                }
+                else
+                {
+                    <div class="border-inset m-5 p-5">Brak</div>
+                }
+            </div>
+        </div>
+        
+        <div id="errorLogs" class="text-center border-groove">
+            <a class="fa-2x cursor-pointer" data-toggle="collapse" data-target="#collapse-errorLogs" aria-expanded="true" aria-controls="collapseAria-errorLogs">
+                Error
+            </a>
+            <div id="collapse-errorLogs" class="collapse text-left" aria-labelledby="heading-errorLogs">
+                @if (Model.ErrorLogs.Any())
+                {
+                    foreach (var log in Model.ErrorLogs)
+                    {
+                        <div class="border-inset border-color-chocolate m-5 p-5">
+                            @{
+                                foreach (var line in log)
+                                {
+                                    <div>@line</div>
+                                }
+                            }
+                        </div>
+                    }    
+                }
+                else
+                {
+                    <div class="border-inset m-5 p-5">Brak</div>
+                }
+            </div>
+        </div>
+
+        <div class="text-center ">
+            <button id="closeCheckLogsModalBtn" type="button" class="btn bg-c-green-imp width-100 btn-default waves-effect" data-dismiss="modal">Ok</button>
+        </div>
+    }
+    else
+    {
+        <h1 class="text-center">@Model.PermissionInfo</h1>
+    }
+</div>

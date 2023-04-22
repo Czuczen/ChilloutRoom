@@ -1,0 +1,17 @@
+﻿@using CzuczenLand.Web.Helpers
+@model CzuczenLand.Web.Models.ExtendingModels.Plantation.DistrictViewModel
+
+@{
+    var collapseGuid = Guid.NewGuid();
+}
+
+<div class="text-center">
+    <a class="product-a font-20 text-c-blue-005a87-imp" data-toggle="collapse" data-target="@("#collapse-" + collapseGuid)" aria-expanded="true" aria-controls="@("collapse-" + collapseGuid)">
+        @Model.Name
+    </a>
+    <div id="@("collapse-" + collapseGuid)" class="collapse " aria-labelledby="headingQuests">
+        <div class="col-md-12 product-item">
+            @ViewHelper.CreateProductInfo(Model)
+        </div>
+    </div>
+</div>

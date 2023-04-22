@@ -1,0 +1,47 @@
+﻿@using CzuczenLand.ExtendingFunctionalities.Utils
+@using CzuczenLand.Web.Helpers
+@model CzuczenLand.Web.Models.ExtendingModels.Plantation.PlantViewModel
+
+@Model.SetSameDescriptionLikeSeed
+<div id="@("plant-" + Model.PlantInfoViewModel.Id)"  class="playerPlant col-md-2 text-center m-b-20 d-flex">
+    <div class="col-md-12">
+        <div class="col-md-12">
+            <span id="@("timeRemainingSpan-" + Model.PlantInfoViewModel.Id)" title="Czas do urośnięcia" class="pull-left">@DateTimeUtils.ConvertSecondsToDdHhMmSs(Model.PlantInfoViewModel.TimeRemaining)</span>
+            <span id="@("timeOfInsensitivity-" + Model.PlantInfoViewModel.Id)" title="Czas do więdnięcia" class="pull-right">@DateTimeUtils.ConvertSecondsToDdHhMmSs(Model.PlantInfoViewModel.TimeOfInsensitivity)</span>
+        </div>
+        <div class="col-md-12">
+            <div id="@("popover-" + Model.PlantInfoViewModel.Id)" class="show-popover">
+                <img id="@("plantImage-" + Model.PlantInfoViewModel.Id)" class="img-responsive simple-shadow" src="@Model.PlantInfoViewModel.ImageUrl" alt="@Model.PlantInfoViewModel.Name">
+                <div id="@("popoverContent-" + Model.PlantInfoViewModel.Id)" class="popover_content pre-scrollable width-auto-imp">
+                    <h5 class="text-c-chartreuse-imp">Roślinka:</h5>
+                    @ViewHelper.CreateProductInfo(Model.PlantInfoViewModel)
+                    <h5 class="text-c-chartreuse-imp">Użyta lampa:</h5>
+                    @ViewHelper.CreateProductInfo(Model.LampInfoViewModel)
+                    <h5 class="text-c-chartreuse-imp">Użyty nawóz:</h5>
+                    @ViewHelper.CreateProductInfo(Model.ManureInfoViewModel)
+                    <h5 class="text-c-chartreuse-imp">Użyta gleba:</h5>
+                    @ViewHelper.CreateProductInfo(Model.SoilInfoViewModel)
+                    <h5 class="text-c-chartreuse-imp">Użyta woda:</h5>
+                    @ViewHelper.CreateProductInfo(Model.WaterInfoViewModel)
+                    <h5 class="text-c-chartreuse-imp">Użyta doniczka:</h5>
+                    @ViewHelper.CreateProductInfo(Model.PotInfoViewModel)
+                    <h5 class="text-c-chartreuse-imp">Użyte nasiono:</h5>
+                    @ViewHelper.CreateProductInfo(Model.SeedInfoViewModel)
+                </div>
+            </div>
+            
+            <div id="@("wiltBar-" + Model.PlantInfoViewModel.Id)" class="progress-bar progress-bar-danger progress-bar-striped plant-wilt-bar @Model.WiltBarIsActive @Model.WiltBarIsHidden"
+                 role="progressbar" aria-valuenow="@Model.WiltAsDisplayDecimal" aria-valuemin="0" aria-valuemax="100" style="@("width:" + Model.WiltAsPercentage)">
+                @Model.WiltBarText
+            </div>  
+            
+            <div id="@("growingBar-" + Model.PlantInfoViewModel.Id)" class="progress-bar progress-bar-success progress-bar-striped bg-c-green-imp @Model.GrowingBarIsActive" 
+                 role="progressbar" aria-valuenow="@Model.GrowingLevelAsDisplayDecimal" aria-valuemin="0" aria-valuemax="100" style="@("width:" + Model.GrowingBarFill)">
+                @Model.GrowingBarText
+            </div>
+            
+            <button id="@("removePlant-" + Model.PlantInfoViewModel.Id)" type="button" value="@Model.PlantInfoViewModel.Id" class="removePlant width-100 col-md-12 btn btn-danger @Model.RemoveBtnIsShowed">Wyrzuć</button>
+            <button id="@("collectPlant-" + Model.PlantInfoViewModel.Id)" type="button" value="@Model.PlantInfoViewModel.Id" class="collectPlant width-100 blink_me col-md-12 btn btn-success @Model.CollectBtnIsShowed">Zbierz</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+﻿@using CzuczenLand.Web.Helpers
+@model CzuczenLand.Web.Models.ExtendingModels.Plantation.BonusViewModel
+
+<div class="show-popover m-t-5 m-r-5">
+    <span class="material-icons" style="color: @Model.Color">@(Model.IsArtifact ? "filter_list" : "history")</span>
+    <div id="@("activeBonus-" + Model.Id)" class="popover_content pre-scrollable product-info text-c-green-0BF61B">
+        @if (Model.IsArtifact)
+        {
+            @ViewHelper.CreateProductInfo(Model)
+        }
+        else
+        {
+            <span class="text-c-yellow m-b-10" id="@("remainingActiveTimeBuff-" + Model.Id)">Pozostały czas: @Model.RemainingActiveTimeAsDdHhMmSs</span>
+            @ViewHelper.CreateProductInfo(Model)   
+        }
+    </div>
+</div>

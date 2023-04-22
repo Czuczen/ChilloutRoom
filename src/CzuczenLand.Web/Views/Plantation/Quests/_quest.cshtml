@@ -1,0 +1,93 @@
+﻿@using CzuczenLand.ExtendingFunctionalities.Consts.Quest
+@using Newtonsoft.Json
+@model CzuczenLand.Web.Models.ExtendingModels.Plantation.QuestInfo.QuestInfoViewModel
+
+<div id="@("questTab-" + Model.Id)" class="quest-panel-tab">
+    <a id="@("btnCollapse-" + Model.Id)" class="cursor-pointer text-c-whitesmoke text-center btn width-100 m-1 bg-c-chocolate" data-toggle="collapse" data-target="@("#collapse-" + Model.Id)" aria-expanded="true" aria-controls="@("collapseAria-" + Model.Id)">
+        <div class="text-center d-inline-flex">
+            @if (Model.CyclicTime != null && Model.CyclicTime > 0)
+            {
+                <div class="pull-left"><i class="material-icons">redo</i> </div>
+            }
+            @if (Model.Duration != null && Model.Duration > 0)
+            {
+                <div class="pull-left"><i class="material-icons">alarm</i> </div>
+            }
+            @if (Model.IsRepetitive)
+            {
+                <div class="pull-left"><i class="material-icons">refresh</i> </div>
+            }
+            <div class="white-space-pre-wrap">@Model.Name</div>
+            <div class="pull-right"><i class="material-icons" title="Rozwiń">keyboard_arrow_down</i></div>
+        </div>
+    </a>
+
+    <div id="@("collapse-" + Model.Id)" class="collapse" aria-labelledby="@("heading-" + Model.Id)">
+        <div id="@("questBox-" + Model.Id)" class="col-lg-12 col-sm-12 col-md-12 text-left quest-box d-grid">
+            @{
+                <div class="col-lg-12 col-sm-12 col-md-12">
+                    <div>@Model.MessageContentOne</div>
+                    <div>@Model.MessageContentTwo</div>
+                    <div>@Model.MessageContentThree</div>
+                    @if (Model.QuestType == DbQuestTypesNames.Event)
+                    {
+                        <div>Dostępne od @Model.StartTime do @Model.EndTime</div>
+                        if (Model.CyclicTime != null && Model.CyclicTime > 0)
+                        {
+                            <div>Zadanie cykliczne.</div>
+                            <div>Cykliczność co @(Model.CyclicTimeAsString)</div>
+                            <div>Ponownie dostępne od @(Model.NewStartTime) do @(Model.NewEndTime)</div>
+                        }
+                    }
+                    @if (Model.Duration != null && Model.Duration > 0)
+                    {
+                        <div>Czas na wykonanie: @(Model.Duration + "sek") </div>
+                        if (Model.InProgress)
+                        {
+                            <div id="@("remainingTime-" + Model.Id)">Pozostały czas: @(Model.Duration - Model.CurrentDuration)sek</div>    
+                        }
+                    }
+                </div>
+                <br/>
+                var requirementsProgress = JsonConvert.DeserializeObject<Dictionary<int, decimal>>(Model.RequirementsProgress);
+                <div class="text-center">Wymagania</div>
+                <div class="col-lg-12 col-sm-12 col-md-12 requirements-box">
+                    @foreach (var req in Model.Requirements)
+                    {
+                        var requirementProgressPercentage = (requirementsProgress[req.Id] / req.Amount * 100).ToString("0.##").Replace(",", ".") + "%";
+                        <div>@req.Name</div>
+                        <div class="d-grid">
+                            <div id="@("reqBox-" + Model.Id + "_" + req.Id)" class="progress-bar progress-bar-success text-c-inherit" role="progressbar"
+                                 style="@("width:" + requirementProgressPercentage)">
+                                @(requirementsProgress[req.Id] + "/" + req.Amount)
+                            </div>
+                        </div>
+                    }
+                </div>
+                
+                <div class="text-center">Nagrody</div>
+                <div class="col-lg-12 col-sm-12 col-md-12 drops-box">
+                    @foreach (var drop in Model.Drops)
+                    {
+                        <div>@drop.Name</div>
+                    }
+                </div>
+                
+                if (!Model.IsComplete)
+                {
+                    <div>
+                        @if (!Model.InProgress)
+                        {
+                            <button id="@("takeQuestBtn-" + Model.Id)" data-is_event_quest="@(Model.QuestType == DbQuestTypesNames.Event)" data-is_repetitive="@Model.IsRepetitive" data-quest_id="@Model.Id" class="take-quest-btn btn m-5 btn-sm btn-primary">Rozpocznij</button>
+                        }
+                        else
+                        {
+                            <button id="@("completeQuestBtn-" + Model.Id)" data-is_event_quest="@(Model.QuestType == DbQuestTypesNames.Event)" data-is_repetitive="@Model.IsRepetitive" data-quest_id="@Model.Id" class="@(Model.QuestType) complete-quest-btn btn m-5 btn-sm btn-success @(!Model.AllRequirementsIsDone ? "d-none" : "")">Ukończ</button>
+                            <button id="@("abandonQuestBtn-" + Model.Id)" data-is_event_quest="@(Model.QuestType == DbQuestTypesNames.Event)" data-is_repetitive="@Model.IsRepetitive" data-quest_id="@Model.Id" class="abandon-quest-btn btn m-5 right btn-sm btn-primary @(Model.QuestType == DbQuestTypesNames.Achievement ? "d-none" : "")">Porzuć</button>                    
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

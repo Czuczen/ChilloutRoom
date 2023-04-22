@@ -1,0 +1,118 @@
+body {
+    font-family: "Calibri", "Roboto", sans-serif;
+    background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(235,142,49,1) 58%, rgba(0,176,255,1) 100%);
+}
+
+#plantation {
+    color: whitesmoke;
+}
+
+.select2-selection--single {
+    background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(0,176,255,1) 0%, rgba(55,189,37,1) 58%)!important;
+}
+
+.select2-dropdown {
+    background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(0,176,255,1) 0%, rgba(55,189,37,1) 58%)!important;
+}
+
+.select2-search__field {
+    color: black;
+}
+
+.simple-shadow {
+    -moz-box-shadow: 2px 3px 33px 11px rgba(0,0,0,0.46);
+    -o-box-shadow: 2px 3px 33px 11px rgba(0,0,0,0.46);
+    -webkit-box-shadow: 2px 3px 33px 11px rgba(0,0,0,0.46);
+    box-shadow: 2px 3px 33px 11px rgba(0,0,0,0.46);
+}
+
+.simple-shadow-imp {
+    -moz-box-shadow: 2px 3px 33px 11px rgba(0,0,0,0.46)!important;
+    -o-box-shadow: 2px 3px 33px 11px rgba(0,0,0,0.46)!important;
+    -webkit-box-shadow: 2px 3px 33px 11px rgba(0,0,0,0.46)!important;
+    box-shadow: 2px 3px 33px 11px rgba(0,0,0,0.46)!important;
+}
+
+input.select2-search__field {
+    background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(0,176,255,1) 0%, rgba(55,189,37,1) 58%)!important;
+}
+
+.select2-container--classic .select2-selection--single .select2-selection__rendered {
+    color: whitesmoke;
+}
+
+.select2-selection__placeholder {
+    color: black!important;
+    text-shadow: none;
+}
+
+.select2-selection__arrow {
+    background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(0,176,255,1) 0%, rgba(55,189,37,1) 58%)!important;
+}
+
+.arrow-scroll-up {
+    position: fixed;
+    left: 7px;
+    bottom: 7px;
+    display: none;
+    z-index: 1;
+}
+
+.customers-container {
+    width: 0;
+    height: 0;
+    position: fixed;
+    right: 60px;
+    bottom: 30px;
+    z-index: 9999;
+    display: none;
+}
+
+.notifications_position {
+    position: fixed;
+    right: 5px;
+    bottom: 200px;
+    display: block;
+    z-index: 1040;
+}
+
+.popover_content {
+    border: 16px ridge #A47047;
+    border-radius: 22px;
+    overflow: auto;
+    transform: translate(0, -20px);
+    transition: all 0.5s cubic-bezier(0.75, -0.02, 0.2, 0.97);
+    position: absolute;
+    background-color: #3c3c3c;
+    top: 15px;
+    left: -80px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    z-index: 20;
+    width: max-content;
+    display: none;
+}
+
+.show-popover:hover .popover_content {
+    display: grid;
+    transform: translate(0, -20px);
+    transition: all 0.5s cubic-bezier(0.75, -0.02, 0.2, 0.97);
+}
+
+.plant-wilt-bar {
+    float: right;
+    background-color: red !important;
+}
+
+.tab-bookmark {
+    width: 100% !important;
+}
+
+.guide-slider-icon {
+    width: 0;
+    height: 0;
+    position: fixed;
+    right: 30px;
+    top: 80px;
+    z-index: 12;
+}

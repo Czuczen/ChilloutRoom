@@ -1,0 +1,146 @@
+body {
+    font-family: "Calibri", "Roboto", sans-serif;
+    background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(235,142,49,1) 58%, rgba(0,176,255,1) 100%);
+    color: white;
+}
+
+.player-information {
+    border: 16px ridge #A47047;
+    border-radius: 22px;
+    background-color: #3c3c3c;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
+.user-single-info {
+    margin: 0.5rem;
+    padding: 0.5rem;
+}
+
+.opponent-information {
+    border: 16px ridge #A47047;
+    border-radius: 22px;
+    background-color: #a60f0f;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
+@media (max-width: 991px) {
+    .opponent-information {
+        width: 100%;
+    }
+}
+
+#enemy-screen,
+#intro-screen {
+    max-width: 420px;
+    text-align: center; 
+}
+
+#enemy-screen h2,
+#intro-screen h2 {
+    padding: 0 15px; 
+}
+
+#intro-screen button {
+    font-size: 3.4em;
+    padding: 3% 6%; 
+    margin: 0 4%;
+}
+
+#enemy-screen button {
+    display: block;
+    margin: 0.6em auto;
+    font-size: 1.9em;
+    padding: 0.2em 0.4em;
+}
+
+table {
+    max-width: 420px;
+    max-height: 420px;
+    width: 85vw; 
+    height: 85vw;
+    border-spacing: 4px 2px!important; 
+}
+
+td {
+    padding: 0;
+    width: 33%;
+    height: 33%;
+}
+
+.cell {
+    border: 10px ridge #332318;
+    border-radius: 6px;
+    background-color: #5a5a5a;
+    font-size: 3.4em !important;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.win-cell {
+    background-color: #c88;
+}
+
+.player-two {
+    color: #933;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    color: #333;
+}
+
+.choose {
+    border-radius: 0.3em;
+}
+
+.choose-cpu-difficulty {
+    background-color: #4cae4c !important;
+    border-radius: 0.3em;
+    font-size: medium !important;
+}
+
+.choose-cpu-difficulty:hover {
+    background-color: #0BF61B !important;
+}
+
+.choose-cpu-difficulty,
+.choose:active {
+    background-color: #ccc;
+}
+
+.btn-green {
+    background-color: #70d260;
+}
+
+.btn-green:active {
+    background-color: #60c050 !important;
+}
+
+.center {
+    margin: 0 auto;
+}
+
+.cannot-use {
+    cursor: not-allowed;
+}
+
+.lock-filed {
+    cursor: not-allowed;
+}
+
+.online-players {
+    left: 40% !important; 
+    width: auto;
+}
+
+.online-players-icon {
+    font-size: inherit; 
+    color: sandybrown;
+}
+
+.guide-icon {
+    right: 0;
+    top: 0;
+    position: absolute;    
+}

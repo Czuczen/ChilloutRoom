@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<localizationDictionary culture="pl">
+  <texts>
+
+    <text name="InternalServerError" value="Coś poszło nie tak." />
+    <text name="ValidationError" value="Błędne zapytanie." />
+    
+    <text name="HomePage" value="Strona główna" />
+    <text name="ConfigurationPanel" value="Panel konfiguracyjny" />
+    <text name="Plantation" value="Plantacja" />
+    <text name="TicTacToe" value="Kółko i krzyżyk" />
+    <text name="Admin" value="Administrator" />
+    <text name="DistrictWarden" value="Opiekun dzielnicy" />
+    
+    <text name="About" value="O mnie" />
+    <text name="WellcomeMessage" value="Witaj w ChilloutRoom!" />
+    
+    <text name="FormIsNotValidMessage" value="Formularz jest nieprawidłowy. Sprawdź i napraw błędy." />
+    <text name="TenantNameCanNotBeEmpty" value="Nazwa najemcy nie może być pusta" />
+
+    <text name="InvalidUserNameOrPassword" value="Nieprawidłowa nazwa użytkownika lub hasło" />
+    <text name="ThereIsNoTenantDefinedWithName{0}" value="Nie ma najemcy zdefiniowanego z nazwą {0}" />
+    <text name="TenantIsNotActive" value="Najemca {0} nie jest aktywny." />
+    <text name="UserIsNotActiveAndCanNotLogin" value="Użytkownik {0} jest nieaktywny i nie może się zalogować." />
+    <text name="UserEmailIsNotConfirmedAndCanNotLogin">Twój adres e-mail nie jest potwierdzony. Nie możesz się zalogować</text>
+    <text name="UserLockedOutMessage">Konto użytkownika zostało zablokowane. Spróbuj ponownie później.</text>
+    <text name="PleaseEnterLoginInformation" value="Wprowadź dane logowania" />
+    <text name="TenancyName" value="Nazwa najemcy" />
+    <text name="UserNameOrEmail" value="Nazwa użytkownika lub email" />
+    <text name="Password" value="Hasło" />
+    <text name="RememberMe" value="Zapamiętaj mnie" />
+    <text name="LogIn" value="Zaloguj sie" />
+
+    <text name="LoginFailed" value="Logowanie nie powiodło się!" />
+
+    <text name="NameSurname" value="Imię Nazwisko" />
+    <text name="UserName" value="Nazwa użytkownika" />
+    <text name="Name" value="Imię" />
+    <text name="Surname" value="Nazwisko" />
+    <text name="EmailAddress" value="Adres e-mail" />
+
+
+    <text name="Tenants" value="Najemnicy" />
+    
+    <text name="SavedSuccessfully" value="Zapisano pomyślnie" />
+    <text name="CreateNewTenant" value="Utwórz nowego najemcę" />
+    <text name="AdminEmailAddress" value="Adres e-mail administratora" />
+    <text name="Save" value="Zapisz" />
+    <text name="Cancel" value="Anuluj" />
+    <text name="TenantName_Regex_Description" value="Nazwa najemcy musi składać się z co najmniej 2 znaków, zaczynać się od litery i kończyć literą, cyfrą, myślnikiem lub podkreśleniem." />
+    <text name="DefaultPasswordIs" value="Domyślne hasło to {0}" />
+    <text name="CanBeEmptyToLoginAsHost" value="Może być pusty, aby zalogować się jako host." />
+    <text name="Register" value="Zarejestruj" />
+    <text name="OrLoginWith" value="Lub zaloguj się za pomocą" />
+    <text name="WaitingForActivationMessage" value="Twoje konto czeka na aktywację przez administratora systemu." />
+    <text name="TenantSelection" value="Wybór Najemcy" />
+    <text name="TenantSelection_Detail" value="Wybierz jednego z następujących najemców." />
+    <text name="Logout" value="Wyloguj" />
+
+    <text name="RegisterFormUserNameInvalidMessage">Nie wpisuj adresu e-mail dla nazwy użytkownika.</text>
+
+    <text name="DatabaseConnectionString" value="Ciąg połączenia z bazą danych" />
+
+    <text name="Users" value="Użytkownicy" />
+    
+    <text name="IsActive" value="Jest aktywny" />
+    <text name="FullName" value="Pełna nazwa" />
+    <text name="CreateNewUser" value="Utwórz nowego użytkownika" />
+    <text name="Yes" value="Tak" />
+    <text name="No" value="Nie" />
+    <text name="Optional" value="Opcjonalny" />
+    <text name="LeaveEmptyToSwitchToHost">Pozostaw puste, aby przełączyć się na hosta</text>
+
+    <text name="CurrentTenant">Obecny najemca</text>
+    <text name="NotSelected">Nie zaznaczone</text>
+    <text name="Change">Zmiana</text>
+    <text name="ChangeTenant">Zmień najemcę</text>
+
+    <text name="MultiLevelMenu">Menu wielopoziomowe</text>
+    <text name="Back">Wróć</text>
+    <text name="SuccessfullyRegistered">Zarejestrowano pomyślnie</text>
+    <text name="WaitingForEmailActivation">Twój adres e-mail powinien zostać aktywowany</text>
+
+    <text name="Roles" value="Role">Role</text>
+
+    <text name="Actions">Akcje</text>
+    <text name="RoleName">Nazwa roli</text>
+    <text name="DisplayName">Wyświetlana nazwa</text>
+    <text name="CreateNewRole">Utwórz nową rolę</text>
+    <text name="EditRole">Edytuj rolę</text>
+    <text name="EditUser">Edytuj użytkownika</text>
+    <text name="Edit">Edytuj</text>
+    <text name="Delete">Usuń</text>
+  </texts>
+</localizationDictionary>
