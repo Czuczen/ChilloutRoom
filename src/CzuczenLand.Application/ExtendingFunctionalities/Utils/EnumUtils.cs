@@ -1,13 +1,22 @@
 ﻿namespace CzuczenLand.ExtendingFunctionalities.Utils;
 
+/// <summary>
+/// Klasa pomocnicza dla typu - enum
+/// </summary>
 public static class EnumUtils
 {
+    /// <summary>
+    /// Strony transakcji na czarnym rynku.
+    /// </summary>
     public enum BlackMarketPages
     {
         Seller,
         Buyer
     }
-        
+
+    /// <summary>
+    /// Obsługiwane typy pól
+    /// </summary>
     public enum PropTypes
     {
         String,
@@ -20,13 +29,19 @@ public static class EnumUtils
         Guid
     }
 
+    /// <summary>
+    /// Statusy testów struktury
+    /// </summary>
     public enum StructureTestsStatuses
     {
         Ok,
         Error,
         Warn
     }
-        
+
+    /// <summary>
+    /// Strategie parsowania
+    /// </summary>
     public enum ParseStrategies
     {
         Db,
@@ -34,20 +49,29 @@ public static class EnumUtils
         Edit,
     }
 
+    /// <summary>
+    /// Typy ładowania danych do analizy encji na której nastąpiła zmiana
+    /// </summary>
     public enum AnalysisBuildTypes
     {
         Product,
         Storage,
         BlackMarket
     }
-        
+     
+    /// <summary>
+    /// Typy analizy encji na której nastąpiła zmiana
+    /// </summary>
     public enum AnalysisTypes
     {
         ProductOrStorage,
         Plant,
         BlackMarket
     }
-        
+
+    /// <summary>
+    /// Encje rozszerzające boilerplate
+    /// </summary>
     public enum Entities
     {
         DriedFruit,
@@ -73,7 +97,10 @@ public static class EnumUtils
             
         DropQuest,
     }
-        
+
+    /// <summary>
+    /// Encje do których ma dostęp administrator w panelu konfiguracyjnym
+    /// </summary>
     public enum EntitiesPermissionAdmin
     {
         District,
@@ -81,7 +108,10 @@ public static class EnumUtils
         PlantationStorage,
         News,
     }
-        
+
+    /// <summary>
+    /// Encje do których ma dostęp opiekun dzielnicy w panelu konfiguracyjnym
+    /// </summary>
     public enum EntitiesPermissionWarden
     {
         DriedFruit,
