@@ -2155,6 +2155,7 @@
     <Content Include="Views\Account\_Layout.min.css">
       <DependentUpon>_Layout.css</DependentUpon>
     </Content>
+    <Content Include="Views\Account\_PolicyPrivacy.cshtml" />
     <Content Include="Views\Account\_TenantChange.js" />
     <Content Include="Views\Account\_TenantChangeModal.js" />
     <Content Include="Views\ConfigurationPanel\EditOrCreate\_FormSelectors.cshtml" />
