@@ -14,20 +14,41 @@ using Microsoft.AspNet.SignalR;
 
 namespace CzuczenLand.ExtendingFunctionalities.SignalRHubs.Plantation.Plant;
 
+/// <summary>
+/// Hub SignalR obsługujący rośliny plantacji.
+/// </summary>
 [AbpMvcAuthorize]
 public class PlantHub : Hub, ITransientDependency
 {
+    /// <summary>
+    /// Serwis do zarządzania magazynami plantacji.
+    /// </summary>
     private readonly IPlantationStorageService _plantationStorageService;
-    private readonly IRepository<ExtendingModels.Models.General.Plant> _plantRepository;
     
     /// <summary>
-    /// Musi być public i musi mieć setter
+    /// Repozytorium przechowujące rośliny w bazie danych.
+    /// </summary>
+    private readonly IRepository<ExtendingModels.Models.General.Plant> _plantRepository;
+    
+    
+    /// <summary>
+    /// Właściwość pozwalająca na uzyskanie dostępu do sesji Abp, która przechowuje informacje dotyczące aktualnie zalogowanego użytkownika.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
     /// </summary>
     public IAbpSession AbpSession { get; set; }
         
+    /// <summary>
+    /// Interfejs ILogger służy do rejestrowania komunikatów z aplikacji.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
+    /// </summary>
     public ILogger Logger { get; set; }
         
     
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="plantationStorageService">Serwis magazynu plantacji.</param>
+    /// <param name="plantRepository">Repozytorium roślin.</param>
     public PlantHub(
         IPlantationStorageService plantationStorageService,
         IRepository<ExtendingModels.Models.General.Plant> plantRepository
@@ -39,6 +60,11 @@ public class PlantHub : Hub, ITransientDependency
         Logger = NullLogger.Instance;
     }
 
+    /// <summary>
+    /// Metoda asynchroniczna, odpowiedzialna za odświeżenie stanu roślin gracza na podstawie przekazanych identyfikatorów roślin.
+    /// </summary>
+    /// <param name="plantsIds">Lista identyfikatorów roślin do odświeżenia.</param>
+    /// <returns>Informacje o aktualnym stanie odświeżonych roślin gracza.</returns>
     [UnitOfWork]
     public virtual async Task<List<RefreshPlant>> RefreshPlayerPlants(List<int> plantsIds)
     {

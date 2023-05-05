@@ -20,7 +20,7 @@ using Microsoft.AspNet.SignalR;
 namespace CzuczenLand.ExtendingFunctionalities.SignalRHubs.Plantation.Storage;
 
 /// <summary>
-/// Hub SignalR obsługujący magazyn/zasoby plantacji
+/// Hub SignalR obsługujący magazyn/zasoby plantacji.
 /// </summary>
 [AbpMvcAuthorize]
 public class StorageHub : Hub, ITransientDependency
@@ -71,12 +71,12 @@ public class StorageHub : Hub, ITransientDependency
     private readonly IRepository<District> _districtRepository;
     
     /// <summary>
-    /// Repozytorium przechowujące magazyny plantacji w bazie danych.
+    /// Serwis do zarządzania magazynami plantacji.
     /// </summary>
     private readonly IPlantationStorageService _plantationStorageService;
     
     /// <summary>
-    /// Repozytorium przechowujące magazyny gracza w bazie danych.
+    /// Serwis do zarządzania magazynami gracza.
     /// </summary>
     private readonly IPlayerStorageService _playerStorageService;
 
