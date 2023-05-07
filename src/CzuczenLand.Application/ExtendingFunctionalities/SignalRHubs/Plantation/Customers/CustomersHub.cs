@@ -14,22 +14,53 @@ using Microsoft.AspNet.SignalR;
 
 namespace CzuczenLand.ExtendingFunctionalities.SignalRHubs.Plantation.Customers;
 
+/// <summary>
+/// Hub SignalR obsługujący strefę klienta.
+/// </summary>
 [AbpMvcAuthorize]
 public class CustomersHub : Hub, ITransientDependency
 {
+    /// <summary>
+    /// Repozytorium przechowujące typ generowany w bazie danych.
+    /// </summary>
     private readonly IRepository<GeneratedType> _generatedTypeRepository;
+    
+    /// <summary>
+    /// Repozytorium przechowujące susz w bazie danych.
+    /// </summary>
     private readonly IRepository<DriedFruit> _driedFruitRepository;
+    
+    /// <summary>
+    /// Repozytorium przechowujące dzielnice w bazie danych.
+    /// </summary>
     private readonly IRepository<District> _districtRepository;
+    
+    /// <summary>
+    /// Serwis do zarządzania magazynami plantacji.
+    /// </summary>
     private readonly IPlantationStorageService _plantationStorageService;
 
+    
     /// <summary>
-    /// Musi być public i musi mieć setter
+    /// Właściwość pozwalająca na uzyskanie dostępu do sesji Abp, która przechowuje informacje dotyczące aktualnie zalogowanego użytkownika.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
     /// </summary>
     public IAbpSession AbpSession { get; set; }
         
+    /// <summary>
+    /// Interfejs ILogger służy do rejestrowania komunikatów z aplikacji.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
+    /// </summary>
     public ILogger Logger { get; set; }
     
     
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="generatedTypeRepository"></param>
+    /// <param name="driedFruitRepository"></param>
+    /// <param name="districtRepository"></param>
+    /// <param name="plantationStorageService"></param>
     public CustomersHub(
         IRepository<GeneratedType> generatedTypeRepository,
         IRepository<DriedFruit> driedFruitRepository,
@@ -46,6 +77,14 @@ public class CustomersHub : Hub, ITransientDependency
         _plantationStorageService = plantationStorageService;
     }
 
+    /// <summary>
+    /// Metoda pozwalająca na sprzedaż suszu dla danego użytkownika na podstawie id typu suszu i ilości.
+    /// Sprzedaż suszu klientowi przez użytkownika. 
+    /// </summary>
+    /// <param name="typeId">Id typu suszu.</param>
+    /// <param name="amount">Ilość sprzedawanego suszu.</param>
+    /// <param name="offerId">Id oferty kupna.</param>
+    /// <returns>Obiekt zawierający informacje o sprzedaży.</returns>
     [UnitOfWork]
     public virtual async Task<object> SellDriedFruit(int typeId, decimal amount, Guid offerId)
     {
