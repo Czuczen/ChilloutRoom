@@ -5,12 +5,29 @@ using CzuczenLand.ExtendingModels.Models.General;
 
 namespace CzuczenLand.ExtendingFunctionalities.SignalRHubs.Plantation.Bonus;
 
+/// <summary>
+/// Klasa pomocnicza dla hub'a bonusów.
+/// </summary>
 public static class BonusHubHelper
 {
+    /// <summary>
+    /// Stała przechowująca nazwę akcji "Pull".
+    /// </summary>
     private const string Pull = "Pull";
-    private const string Put = "Put";
-        
     
+    /// <summary>
+    /// Stała przechowująca nazwę akcji "Put".
+    /// </summary>
+    private const string Put = "Put";
+
+    /// <summary>
+    /// Metoda przetwarzająca akcję wkładania lub wyciągania artefaktu.
+    /// </summary>
+    /// <param name="bonusActivation">Obiekt zawierający informacje o aktywacji bonusu.</param>
+    /// <param name="bonus">Obiekt reprezentujący bonus.</param>
+    /// <param name="playerPlantationStorage">Obiekt reprezentujący magazyn plantacji gracza.</param>
+    /// <param name="artifactAction">Akcja, jaką należy wykonać na arfefakcie (wyciągnięcie lub włożenie).</param>
+    /// <param name="ignoreChangeService">Serwis ignorowania zmian.</param>
     public static async Task ProcessArtifact(BonusActivation bonusActivation, ExtendingModels.Models.Products.Bonus bonus, 
         PlantationStorage playerPlantationStorage, string artifactAction, IIgnoreChangeService ignoreChangeService)
     {
@@ -80,6 +97,13 @@ public static class BonusHubHelper
         }
     }
 
+    /// <summary>
+    /// Metoda przetwarzająca aktywację wzmocnienia dla gracza.
+    /// </summary>
+    /// <param name="bonusActivation">Obiekt zawierający informacje o aktywacji bonusu.</param>
+    /// <param name="bonus">Obiekt reprezentujący bonus.</param>
+    /// <param name="playerPlantationStorage">Obiekt reprezentujący magazyn plantacji gracza.</param>
+    /// <param name="ignoreChangeService">Serwis ignorowania zmian.</param>
     public static async Task ProcessBuff(BonusActivation bonusActivation, ExtendingModels.Models.Products.Bonus bonus, 
         PlantationStorage playerPlantationStorage, IIgnoreChangeService ignoreChangeService)
     {
