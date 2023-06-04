@@ -145,7 +145,7 @@ public class StorageHub : Hub, ITransientDependency
     /// <param name="entity">Nazwa encji.</param>
     /// <param name="howMany">Ilość przetwarzanych zasobów.</param>
     /// <param name="action">Typ akcji (np. "buy" lub "sell").</param>
-    /// <returns></returns>
+    /// <returns>Obiekt transakcji sklepu.</returns>
     [UnitOfWork]
     public virtual async Task<ShopTransaction> ResourcesTransaction(int productId, string entity, decimal howMany, string action)
     {
