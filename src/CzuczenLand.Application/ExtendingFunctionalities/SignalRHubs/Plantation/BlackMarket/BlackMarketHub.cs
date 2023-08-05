@@ -24,6 +24,8 @@ namespace CzuczenLand.ExtendingFunctionalities.SignalRHubs.Plantation.BlackMarke
 
 /// <summary>
 /// Hub SignalR obsługujący czarny rynek.
+/// [AbpAuthorize] dawało wyjątek - Abp.Authorization.AbpAuthorizationException: Current user did not login to the application!
+/// Nic nie psuł ale jednak wyskakiwał. W każdym hub'ie wyskakiwał. Użycie [AbpMvcAuthorize] rozwiązało problem.
 /// </summary>
 [AbpMvcAuthorize]
 public class BlackMarketHub : Hub, ITransientDependency

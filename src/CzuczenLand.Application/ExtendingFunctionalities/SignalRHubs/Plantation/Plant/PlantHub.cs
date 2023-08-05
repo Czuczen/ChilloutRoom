@@ -16,6 +16,8 @@ namespace CzuczenLand.ExtendingFunctionalities.SignalRHubs.Plantation.Plant;
 
 /// <summary>
 /// Hub SignalR obsługujący rośliny plantacji.
+/// [AbpAuthorize] dawało wyjątek - Abp.Authorization.AbpAuthorizationException: Current user did not login to the application!
+/// Nic nie psuł ale jednak wyskakiwał. W każdym hub'ie wyskakiwał. Użycie [AbpMvcAuthorize] rozwiązało problem.
 /// </summary>
 [AbpMvcAuthorize]
 public class PlantHub : Hub, ITransientDependency

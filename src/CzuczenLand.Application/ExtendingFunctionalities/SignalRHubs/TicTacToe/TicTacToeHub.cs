@@ -17,6 +17,8 @@ namespace CzuczenLand.ExtendingFunctionalities.SignalRHubs.TicTacToe;
 
 /// <summary>
 /// Hub SignalR obsługujący grę w kółko i krzyżyk.
+/// [AbpAuthorize] dawało wyjątek - Abp.Authorization.AbpAuthorizationException: Current user did not login to the application!
+/// Nic nie psuł ale jednak wyskakiwał. W każdym hub'ie wyskakiwał. Użycie [AbpMvcAuthorize] rozwiązało problem.
 /// </summary>
 [AbpMvcAuthorize]
 public class TicTacToeHub : Hub, ITransientDependency
