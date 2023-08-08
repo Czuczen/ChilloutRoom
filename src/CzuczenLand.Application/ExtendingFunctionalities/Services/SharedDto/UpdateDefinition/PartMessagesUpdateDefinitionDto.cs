@@ -4,7 +4,7 @@ using CzuczenLand.ExtendingFunctionalities.Consts.Entities.SharedEntitiesFieldsN
 namespace CzuczenLand.ExtendingFunctionalities.Services.SharedDto.UpdateDefinition;
 
 /// <summary>
-/// Klasa reprezentująca definicję aktualizacji wiadomości.
+/// Klasa reprezentująca pola aktualizowane w definicji części wiadomości.
 /// </summary>
 public class PartMessagesUpdateDefinitionDto
 {

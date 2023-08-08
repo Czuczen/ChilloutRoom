@@ -4,32 +4,56 @@ using CzuczenLand.ExtendingFunctionalities.Consts.Entities.SharedEntitiesFieldsN
 
 namespace CzuczenLand.ExtendingFunctionalities.Services.SharedDto.Update;
 
+/// <summary>
+/// Klasa reprezentująca pola aktualizowane w produkcie, dziedzicząca po ProductUpdateDto.
+/// </summary>
 public class ProductEnhancementsUpdateDto : ProductUpdateDto
 {
+    /// <summary>
+    /// Zwiększenie prędkości wzrostu.
+    /// </summary>
     [FieldIsRequired]
     [DisplayName(ProductEnhancmentFieldsHrNames.IncreaseGrowingSpeed)]
     public decimal IncreaseGrowingSpeed { get; set; }
-
+    
+    /// <summary>
+    /// Zwiększenie czasu niewrażliwości.
+    /// </summary>
     [FieldIsRequired]
     [DisplayName(ProductEnhancmentFieldsHrNames.IncreaseTimeOfInsensitivity)]
     public int IncreaseTimeOfInsensitivity { get; set; }
         
+    /// <summary>
+    /// Zwiększenie szansy na nasiona.
+    /// </summary>
     [FieldIsRequired]
     [DisplayName(ProductEnhancmentFieldsHrNames.IncreaseChanceForSeed)]
     public int IncreaseChanceForSeed { get; set; }
         
+    /// <summary>
+    /// Zwiększenie ilości suszu.
+    /// </summary>
     [FieldIsRequired]
     [DisplayName(ProductEnhancmentFieldsHrNames.IncreaseDriedFruitAmount)]
     public decimal IncreaseDriedFruitAmount { get; set; }
         
+    /// <summary>
+    /// Zwiększenie ilości nasion.
+    /// </summary>
     [FieldIsRequired]
     [DisplayName(ProductEnhancmentFieldsHrNames.IncreaseSeedAmount)]
     public int IncreaseSeedAmount { get; set; }
         
+    /// <summary>
+    /// Zwiększenie zdobywanego doświadczenia.
+    /// </summary>
     [FieldIsRequired]
     [DisplayName(ProductEnhancmentFieldsHrNames.IncreaseGainedExp)]
     public decimal IncreaseGainedExp { get; set; }
         
+    /// <summary>
+    /// Nazwa zestawu.
+    /// </summary>
     [DisplayName(ProductFieldsHrNames.SetName)]
     public string SetName { get; set; }
 }
