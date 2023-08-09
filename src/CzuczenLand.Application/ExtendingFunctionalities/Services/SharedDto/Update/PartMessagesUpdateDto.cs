@@ -6,7 +6,7 @@ using CzuczenLand.ExtendingFunctionalities.Consts.Entities.SharedEntitiesFieldsN
 namespace CzuczenLand.ExtendingFunctionalities.Services.SharedDto.Update;
 
 /// <summary>
-/// Klasa reprezentująca pola aktualizowane w części wiadomości.
+/// Klasa reprezentująca pola aktualizowane w części wiadomości lub w definicji zadania.
 /// </summary>
 public class PartMessagesUpdateDto : EntityDto<int>
 {

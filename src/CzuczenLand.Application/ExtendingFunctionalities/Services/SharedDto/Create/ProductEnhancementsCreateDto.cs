@@ -5,7 +5,7 @@ using CzuczenLand.ExtendingFunctionalities.Consts.Entities.SharedEntitiesFieldsN
 namespace CzuczenLand.ExtendingFunctionalities.Services.SharedDto.Create;
 
 /// <summary>
-/// Klasa reprezentująca dane transferowe (DTO) do tworzenia ulepszeń produktu, dziedzicząca po ProductCreateDto.
+/// Klasa reprezentująca dane transferowe (DTO) do tworzenia definicji ulepszeń produktu, dziedzicząca po ProductCreateDto.
 /// </summary>
 public class ProductEnhancementsCreateDto : ProductCreateDto
 {

@@ -5,7 +5,7 @@ using CzuczenLand.ExtendingFunctionalities.Consts.Entities.SharedEntitiesFieldsN
 namespace CzuczenLand.ExtendingFunctionalities.Services.SharedDto.Create;
 
 /// <summary>
-/// Klasa reprezentująca dane transferowe (DTO) do tworzenia części wiadomości.
+/// Klasa reprezentująca dane transferowe (DTO) do tworzenia części wiadomości lub definicji zadania.
 /// </summary>
 public class PartMessagesCreateDto
 {

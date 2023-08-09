@@ -7,7 +7,7 @@ using CzuczenLand.ExtendingModels.Interfaces;
 namespace CzuczenLand.ExtendingFunctionalities.Services.SharedDto.Create;
 
 /// <summary>
-/// Klasa reprezentująca dane transferowe (DTO) do tworzenia produktu.
+/// Klasa reprezentująca dane transferowe (DTO) do tworzenia definicji produktu.
 /// Implementuje interfejs IGeneratedEntity.
 /// </summary>
 public class ProductCreateDto : IGeneratedEntity

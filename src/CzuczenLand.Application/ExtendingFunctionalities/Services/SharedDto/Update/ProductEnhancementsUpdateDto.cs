@@ -5,7 +5,7 @@ using CzuczenLand.ExtendingFunctionalities.Consts.Entities.SharedEntitiesFieldsN
 namespace CzuczenLand.ExtendingFunctionalities.Services.SharedDto.Update;
 
 /// <summary>
-/// Klasa reprezentująca pola aktualizowane w produkcie, dziedzicząca po ProductUpdateDto.
+/// Klasa reprezentująca pola aktualizowane w definicji produktu, dziedzicząca po ProductUpdateDto.
 /// </summary>
 public class ProductEnhancementsUpdateDto : ProductUpdateDto
 {

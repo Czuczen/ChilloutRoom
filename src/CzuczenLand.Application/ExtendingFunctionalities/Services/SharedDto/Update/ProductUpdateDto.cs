@@ -6,7 +6,7 @@ using CzuczenLand.ExtendingFunctionalities.Consts.Entities.SharedEntitiesFieldsN
 namespace CzuczenLand.ExtendingFunctionalities.Services.SharedDto.Update;
 
 /// <summary>
-/// Klasa reprezentująca pola aktualizowane w produkcie.
+/// Klasa reprezentująca pola aktualizowane w definicji produktu.
 /// </summary>
 public class ProductUpdateDto : EntityDto<int>
 {
