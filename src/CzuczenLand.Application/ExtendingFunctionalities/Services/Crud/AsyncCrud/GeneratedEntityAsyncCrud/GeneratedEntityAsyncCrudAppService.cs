@@ -17,6 +17,14 @@ using CzuczenLand.ExtendingModels.Models.General;
 
 namespace CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.GeneratedEntityAsyncCrud;
 
+/// <summary>
+/// Abstrakcyjna klasa bazowa do obsługi operacji na encjach generowanych użytkownikom na podstawie definicji.
+/// </summary>
+/// <typeparam name="TEntity">Typ encji, który ma być obsługiwany.</typeparam>
+/// <typeparam name="TEntityDto">Typ DTO encji.</typeparam>
+/// <typeparam name="TGetAllInput">Typ danych wejściowych dla operacji pobierania rekordów.</typeparam>
+/// <typeparam name="TCreateInput">Typ danych wejściowych dla operacji tworzenia rekordu.</typeparam>
+/// <typeparam name="TUpdateInput">Typ danych wejściowych dla operacji aktualizacji rekordu.</typeparam>
 public abstract class GeneratedEntityAsyncCrudAppService<TEntity, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput> 
     : EntityAsyncCrudAppService<TEntity, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput>,
         IGeneratedEntityAsyncCrudAppService<TCreateInput, TUpdateInput>
@@ -25,12 +33,36 @@ public abstract class GeneratedEntityAsyncCrudAppService<TEntity, TEntityDto, TG
     where TUpdateInput : class, IEntityDto<int>
     where TCreateInput : class
 {
+    /// <summary>
+    /// Repozytorium typu generowanego.
+    /// </summary>
     protected readonly IRepository<GeneratedType> GeneratedTypeRepository;
+    
+    /// <summary>
+    /// Klasa odpowiadająca za tworzenie encji "Quest" dla użytkowników na podstawie stworzonej definicji.
+    /// </summary>
     private readonly ICreateDefinition<TCreateInput> _definitionCreator;
+    
+    /// <summary>
+    /// Klasa odpowiadająca za aktualizację encji "Quest" u użytkowników na podstawie aktualizowanej definicji.
+    /// </summary>
     private readonly IUpdateDefinition<TUpdateInput> _definitionUpdater;
+    
+    /// <summary>
+    /// Klasa odpowiadająca za usuwanie encji "Quest" u użytkowników na podstawie usuniętej definicji.
+    /// </summary>
     private readonly IDeleteDefinition<TEntity> _definitionDeleter;
 
     
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="repository">Repozytorium encji.</param>
+    /// <param name="responseBuilder">Klasa budująca odpowiedzi na zapytania.</param>
+    /// <param name="generatedTypeRepository">Repozytorium typu generowanego.</param>
+    /// <param name="definitionCreator">Klasa odpowiadająca za tworzenie encji "Quest" dla użytkowników na podstawie stworzonej definicji.</param>
+    /// <param name="definitionUpdater">Klasa odpowiadająca za aktualizację encji "Quest" u użytkowników na podstawie aktualizowanej definicji.</param>
+    /// <param name="definitionDeleter">Klasa odpowiadająca za usuwanie encji "Quest" u użytkowników na podstawie usuniętej definicji.</param>
     protected GeneratedEntityAsyncCrudAppService(
         IRepository<TEntity, int> repository,
         IRepository<GeneratedType> generatedTypeRepository,
@@ -47,6 +79,11 @@ public abstract class GeneratedEntityAsyncCrudAppService<TEntity, TEntityDto, TG
         _definitionDeleter = definitionDeleter;
     }
 
+    /// <summary>
+    /// Wykonuje operację tworzenia encji będącej definicją oraz na jej podstawie tworzy rekordy użytkownikom.
+    /// </summary>
+    /// <param name="input">Dane wejściowe dla operacji tworzenia.</param>
+    /// <returns>Odpowiedź z wynikiem akcji tworzenia encji.</returns>
     public override async Task<EntityAsyncCrudResponse> ActionCreate(InputWithConnections<TCreateInput> input)
     {
         var ret = await base.ActionCreate(input);
@@ -55,6 +92,11 @@ public abstract class GeneratedEntityAsyncCrudAppService<TEntity, TEntityDto, TG
         return ret;
     }
 
+    /// <summary>
+    /// Wykonuje operację aktualizacji encji będącej definicją oraz na jej podstawie aktualizuje rekordy użytkownikom.
+    /// </summary>
+    /// <param name="input">Dane wejściowe dla operacji aktualizacji.</param>
+    /// <returns>Odpowiedź z wynikiem akcji aktualizacji encji.</returns>
     public override async Task<EntityAsyncCrudResponse> ActionUpdate(InputWithConnections<TUpdateInput> input)
     {
         var ret = await base.ActionUpdate(input);
@@ -63,6 +105,11 @@ public abstract class GeneratedEntityAsyncCrudAppService<TEntity, TEntityDto, TG
         return ret;
     }
 
+    /// <summary>
+    /// Wykonuje operację aktualizacji wielu encji będących definicją oraz na ich podstawie aktualizuje rekordy użytkownikom.
+    /// </summary>
+    /// <param name="request">Dane wejściowe dla operacji aktualizacji wielu encji.</param>
+    /// <returns>Odpowiedź z wynikiem akcji aktualizacji wielu encji.</returns>
     public override async Task<EntityAsyncCrudResponse> ActionUpdateMany(UpdateManyRequest request)
     {
         var isUpdateVisible = request.Ids != null && request.Ids.Count > 0;
@@ -97,12 +144,22 @@ public abstract class GeneratedEntityAsyncCrudAppService<TEntity, TEntityDto, TG
         return await ResponseBuilder.Build(EntityAsyncCrudActions.ActionUpdateMany);
     }
 
+    /// <summary>
+    /// Wykonuje operację usuwania encji będącej definicją oraz na jej podstawie usuwa rekordy użytkownikom.
+    /// </summary>
+    /// <param name="objectId">Identyfikator encji do usunięcia.</param>
+    /// <returns>Odpowiedź z wynikiem akcji usuwania encji.</returns>
     public override async Task<EntityAsyncCrudResponse> ActionDelete(int objectId)
     {
         await _definitionDeleter.Delete(objectId);
         return await base.ActionDelete(objectId);
     }
 
+    /// <summary>
+    /// Wykonuje operację usuwania wielu encji będących definicją oraz na ich podstawie usuwa rekordy użytkownikom.
+    /// </summary>
+    /// <param name="ids">Lista identyfikatorów encji do usunięcia.</param>
+    /// <returns>Odpowiedź z wynikiem akcji usuwania wielu encji.</returns>
     public override async Task<EntityAsyncCrudResponse> ActionDeleteMany(List<int> ids)
     {
         await _definitionDeleter.Delete(ids);
