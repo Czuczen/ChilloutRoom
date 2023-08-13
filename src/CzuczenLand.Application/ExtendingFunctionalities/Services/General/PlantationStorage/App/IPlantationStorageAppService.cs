@@ -5,6 +5,10 @@ using CzuczenLand.ExtendingFunctionalities.Services.General.PlantationStorage.Dt
 
 namespace CzuczenLand.ExtendingFunctionalities.Services.General.PlantationStorage.App;
 
+/// <summary>
+/// Interfejs serwisu aplikacyjnego do obsługi operacji na magazynie plantacji.
+/// Rozszerza interfejsy IAsyncCrudAppService oraz IEntityAsyncCrudAppService.
+/// </summary>
 public interface IPlantationStorageAppService : 
     IAsyncCrudAppService<PlantationStorageDto, int, PagedResultRequestDto, PlantationStorageCreateDto, PlantationStorageUpdateDto>,
     IEntityAsyncCrudAppService<PlantationStorageCreateDto, PlantationStorageUpdateDto>
