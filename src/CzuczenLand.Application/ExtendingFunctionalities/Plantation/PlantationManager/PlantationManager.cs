@@ -44,43 +44,200 @@ using Newtonsoft.Json;
 
 namespace CzuczenLand.ExtendingFunctionalities.PlantationManager;
 
+/// <summary>
+/// Klasa zarządzająca plantacjami.
+/// </summary>
 public class PlantationManager : IPlantationManager
 {
+    /// <summary>
+    /// Repozytorium użytkowników.
+    /// </summary>
     private readonly IRepository<User, long> _userRepository;
+    
+    /// <summary>
+    /// Repozytorium suszu.
+    /// </summary>
     private readonly IRepository<DriedFruit> _driedFruitRepository;
+    
+    /// <summary>
+    /// Repozytorium lamp.
+    /// </summary>
     private readonly IRepository<Lamp> _lampRepository;
+    
+    /// <summary>
+    /// Repozytorium nawozów.
+    /// </summary>
     private readonly IRepository<Manure> _manureRepository;
+    
+    /// <summary>
+    /// Repozytorium donic.
+    /// </summary>
     private readonly IRepository<Pot> _potRepository;
+    
+    /// <summary>
+    /// Repozytorium nasion.
+    /// </summary>
     private readonly IRepository<Seed> _seedRepository;
+    
+    /// <summary>
+    /// Repozytorium gleb.
+    /// </summary>
     private readonly IRepository<Soil> _soilRepository;
+    
+    /// <summary>
+    /// Repozytorium wody.
+    /// </summary>
     private readonly IRepository<Water> _waterRepository;
+    
+    /// <summary>
+    /// Repozytorium roślin.
+    /// </summary>
     private readonly IRepository<Plant> _plantRepository;
+    
+    /// <summary>
+    /// Repozytorium dzielnic.
+    /// </summary>
     private readonly IRepository<District> _districtRepository;
+    
+    /// <summary>
+    /// Repozytorium zadań.
+    /// </summary>
     private readonly IRepository<Quest> _questRepository;
+    
+    /// <summary>
+    /// Repozytorium bonusów.
+    /// </summary>
     private readonly IRepository<Bonus> _bonusRepository;
+    
+    /// <summary>
+    /// Repozytorium magazynów gracza.
+    /// </summary>
     private readonly IRepository<PlayerStorage> _playerStorageRepository;
+    
+    /// <summary>
+    /// Repozytorium typów generowanych.
+    /// </summary>
     private readonly IRepository<GeneratedType> _generatedTypeRepository;
+    
+    /// <summary>
+    /// Repozytorium relacji zadań do nagród.
+    /// </summary>
     private readonly IRepository<DropQuest> _dropQuestRepository;
+    
+    /// <summary>
+    /// Repozytorium wymagań.
+    /// </summary>
     private readonly IRepository<Requirement> _requirementRepository;
+    
+    /// <summary>
+    /// Repozytorium magazynu plantacji.
+    /// </summary>
     private readonly IRepository<PlantationStorage> _plantationStorageRepository;
+    
+    /// <summary>
+    /// Repozytorium nagród.
+    /// </summary>
     private readonly IRepository<Drop> _dropRepository;
+    
+    /// <summary>
+    /// Repozytorium donów dzielnic.
+    /// </summary>
     private readonly IRepository<DistrictDon> _districtDonRepository;
+    
+    /// <summary>
+    /// Serwis podstawowy obsługujący logikę biznesową związaną z rośliną.
+    /// </summary>
     private readonly IPlantService _plantService;
+    
+    /// <summary>
+    /// Serwis podstawowy obsługujący logikę biznesową związaną z magazynem gracza.
+    /// </summary>
     private readonly IPlayerStorageService _playerStorageService;
+    
+    /// <summary>
+    /// Serwis podstawowy obsługujący logikę biznesową związaną z magazynem plantacji.
+    /// </summary>
     private readonly IPlantationStorageService _plantationStorageService;
+    
+    /// <summary>
+    /// Generator nowych graczy.
+    /// </summary>
     private readonly INewPlayerGenerator _newPlayerGenerator;
+    
+    /// <summary>
+    /// Serwis podstawowy obsługujący logikę biznesową związaną z zadaniami.
+    /// </summary>
     private readonly IQuestService _questService;
+    
+    /// <summary>
+    /// Serwis podstawowy obsługujący logikę ignorowania zmian dla encji.
+    /// </summary>
     private readonly IIgnoreChangeService _ignoreChangeService;
+    
+    /// <summary>
+    /// Repozytorium transakcji czarnego rynku.
+    /// </summary>
     private readonly IRepository<BlackMarketTransaction> _blackMarketTransactionRepository;
+    
+    /// <summary>
+    /// Repozytorium postępu wymagań zadania.
+    /// </summary>
     private readonly IRepository<QuestRequirementsProgress> _questRequirementsProgressRepository;
+    
+    /// <summary>
+    /// Kontekst huba dla zadań.
+    /// </summary>
     private readonly IHubContext _questHub;
+    
+    /// <summary>
+    /// Generator liczb losowych.
+    /// </summary>
     private readonly Random _random = new();
         
+    
+    /// <summary>
+    /// Właściwość pozwalająca na uzyskanie dostępu do sesji Abp, która przechowuje informacje dotyczące aktualnie zalogowanego użytkownika.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
+    /// </summary>
     public IAbpSession AbpSession { get; set; }
         
+    /// <summary>
+    /// Interfejs ILogger służy do rejestrowania komunikatów z aplikacji.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
+    /// </summary>
     public ILogger Logger { get; set; }
         
     
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="userRepository">Repozytorium użytkowników.</param>
+    /// <param name="driedFruitRepository">Repozytorium suszu.</param>
+    /// <param name="lampRepository">Repozytorium lamp.</param>
+    /// <param name="manureRepository">Repozytorium nawozów.</param>
+    /// <param name="potRepository">Repozytorium donic.</param>
+    /// <param name="seedRepository">Repozytorium nasion.</param>
+    /// <param name="soilRepository">Repozytorium gleb.</param>
+    /// <param name="waterRepository">Repozytorium wody.</param>
+    /// <param name="plantRepository">Repozytorium roślin.</param>
+    /// <param name="districtRepository">Repozytorium dzielnic.</param>
+    /// <param name="questRepository">Repozytorium zadań.</param>
+    /// <param name="bonusRepository">Repozytorium bonusów.</param>
+    /// <param name="playerStorageRepository">Repozytorium magazynów gracza.</param>
+    /// <param name="generatedTypeRepository">Repozytorium typów generowanych.</param>
+    /// <param name="dropQuestRepository">Repozytorium relacji zadań do nagród.</param>
+    /// <param name="requirementRepository">Repozytorium wymagań.</param>
+    /// <param name="plantationStorageRepository">Repozytorium magazynu plantacji.</param>
+    /// <param name="dropRepository">Repozytorium nagród.</param>
+    /// <param name="districtDonRepository">Repozytorium donów dzielnic.</param>
+    /// <param name="plantService">Serwis podstawowy obsługujący logikę biznesową związaną z rośliną.</param>
+    /// <param name="playerStorageService">Serwis podstawowy obsługujący logikę biznesową związaną z magazynem gracza.</param>
+    /// <param name="plantationStorageService">Serwis podstawowy obsługujący logikę biznesową związaną z magazynem plantacji.</param>
+    /// <param name="newPlayerGenerator">Generator nowych graczy.</param>
+    /// <param name="questService">Serwis podstawowy obsługujący logikę biznesową związaną z zadaniami.</param>
+    /// <param name="ignoreChangeService">Serwis podstawowy obsługujący logikę ignorowania zmian dla encji.</param>
+    /// <param name="blackMarketTransactionRepository">Repozytorium transakcji czarnego rynku.</param>
+    /// <param name="questRequirementsProgressRepository">Repozytorium postępu wymagań zadania.</param>
     public PlantationManager(
         IRepository<User, long> userRepository,
         IRepository<DriedFruit> driedFruitRepository,
@@ -143,6 +300,13 @@ public class PlantationManager : IPlantationManager
         _questHub = GlobalHost.ConnectionManager.GetHubContext<QuestHub>();
     }
         
+    /// <summary>
+    /// Pobiera informacje o plantacji dla określonego użytkownika.
+    /// </summary>
+    /// <param name="userId">Identyfikator użytkownika.</param>
+    /// <param name="districtId">Identyfikator dzielnicy (opcjonalnie).</param>
+    /// <param name="heWantPayForHollow">Czy gracz chce zapłacić za dziuple.</param>
+    /// <returns>Informacje o plantacji.</returns>
     public async Task<Plantation> GetPlantation(long userId, int? districtId, bool heWantPayForHollow)
     {
         var user = await _userRepository.GetAsync(userId);
@@ -167,6 +331,11 @@ public class PlantationManager : IPlantationManager
         return ret;
     }
 
+    /// <summary>
+    /// Pobiera nazwy opiekunów dzielnic.
+    /// </summary>
+    /// <param name="plantation">Informacje o plantacji.</param>
+    /// <returns>Słownik zawierający identyfikatory dzielnic z nazwami opiekunów.</returns>
     private async Task<Dictionary<int, string>> GetWardensNames(Plantation plantation)
     {
         var ret = new Dictionary<int, string>();
@@ -193,6 +362,11 @@ public class PlantationManager : IPlantationManager
         return ret;
     }
 
+    /// <summary>
+    /// Pobiera dane dotyczące dona dzielnicy.
+    /// </summary>
+    /// <param name="plantation">Informacje o plantacji.</param>
+    /// <returns>Dane dotyczące dona dzielnicy.</returns>
     private async Task<DonData> SetDonData(Plantation plantation)
     {
         var districtDon = await _districtDonRepository.FirstOrDefaultAsync(item => item.DistrictId == plantation.District.Id);
@@ -213,6 +387,10 @@ public class PlantationManager : IPlantationManager
         };
     }
 
+    /// <summary>
+    /// Ustawia produkty użytkownika dla danej plantacji.
+    /// </summary>
+    /// <param name="plantation">Informacje o plantacji.</param>
     private async Task SetUserProducts(Plantation plantation)
     {
         var plantationStorageId = plantation.PlantationStorage.Id;
@@ -227,6 +405,12 @@ public class PlantationManager : IPlantationManager
         plantation.UserBonuses = await _bonusRepository.GetAllListAsync(item => item.PlantationStorageId == plantationStorageId);
     }
     
+    /// <summary>
+    /// Tworzy obiekt czarnego rynku dla danego gracza.
+    /// </summary>
+    /// <param name="userId">Identyfikator użytkownika.</param>
+    /// <param name="objectMapper">Mapper obiektów.</param>
+    /// <returns>Obiekt reprezentujący czarny rynek.</returns>
     public async Task<BlackMarket> CreatePlayerBlackMarket(long userId, IObjectMapper objectMapper)
     {
         var plantationStorage = await _plantationStorageService.GetPlayerPlantationStorageForLastSelectedDistrictAsync(userId);
@@ -276,6 +460,13 @@ public class PlantationManager : IPlantationManager
         };
     }
         
+    /// <summary>
+    /// Pobiera dostępne produkty gracza dla danej encji.
+    /// </summary>
+    /// <param name="userId">Identyfikator użytkownika.</param>
+    /// <param name="entity">Nazwa encji.</param>
+    /// <param name="valueToSearch">Wartość do wyszukania (opcjonalnie).</param>
+    /// <returns>Lista dostępnych produktów gracza dla danej encji.</returns>
     public async Task<List<object>> GetAvailablePlayerProducts(long userId, string entity, string valueToSearch)
     {
         List<object> userProducts;
@@ -344,6 +535,13 @@ public class PlantationManager : IPlantationManager
         return userProducts;
     }
         
+    /// <summary>
+    /// Tworzy roślinę dla danego gracza.
+    /// </summary>
+    /// <param name="userId">Identyfikator użytkownika.</param>
+    /// <param name="userName">Nazwa użytkownika.</param>
+    /// <param name="plantData">Dane dotyczące tworzonej rośliny.</param>
+    /// <returns>Obiekt reprezentujący wynik tworzenia rośliny.</returns>
     public async Task<CreatePlant> CreatePlayerPlant(long userId, string userName, PlantData plantData)
     {
         var ret = new CreatePlant();
@@ -377,6 +575,11 @@ public class PlantationManager : IPlantationManager
         return ret;
     }
 
+    /// <summary>
+    /// Usuwa roślinę gracza na podstawie identyfikatora.
+    /// </summary>
+    /// <param name="id">Identyfikator rośliny do usunięcia.</param>
+    /// <returns>Lista powiadomień akcji usuwania rośliny.</returns>
     public async Task<List<string>> RemovePlayerPlant(int id)
     {
         var dropsNotification = new List<string>();
@@ -411,6 +614,11 @@ public class PlantationManager : IPlantationManager
         return dropsNotification;
     }
 
+    /// <summary>
+    /// Reprezentuje zebranie rośliny gracza na podstawie identyfikatora.
+    /// </summary>
+    /// <param name="id">Identyfikator rośliny do zebrania.</param>
+    /// <returns>Lista powiadomień akcji zbierania rośliny.</returns>
     public async Task<List<string>> CollectPlayerPlant(int id)
     {
         var userId = AbpSession.GetUserId();
@@ -466,6 +674,13 @@ public class PlantationManager : IPlantationManager
         return dropsNotification;
     }
 
+    /// <summary>
+    /// Przetwarza ukończone zadanie użytkownika.
+    /// </summary>
+    /// <param name="userId">Identyfikator użytkownika.</param>
+    /// <param name="questId">Identyfikator ukończonego zadania.</param>
+    /// <param name="objectMapper">Mapper obiektów.</param>
+    /// <returns>Model z danymi ukończonego zadania.</returns>
     public async Task<CompleteQuest> ProcessCompletedQuest(long userId, int questId, IObjectMapper objectMapper)
     {
         var completeQuest = new CompleteQuest();
@@ -508,6 +723,10 @@ public class PlantationManager : IPlantationManager
         return completeQuest;
     }
         
+    /// <summary>
+    /// Przetwarza wymagania z warunkiem typu dostarcz dla ukończonego zadania.
+    /// </summary>
+    /// <param name="completeQuest">Model z danymi ukończonego zadania.</param>
     private async Task ProcessConditionDeliverRequirement(CompleteQuest completeQuest)
     {
         var plantationStorage = completeQuest.PlantationStorage;
@@ -588,6 +807,10 @@ public class PlantationManager : IPlantationManager
         }
     }
 
+    /// <summary>
+    /// Przetwarza nagrody dla ukończonego zadania.
+    /// </summary>
+    /// <param name="completeQuest">Model z danymi ukończonego zadania.</param>
     private async Task ProcessReward(CompleteQuest completeQuest)
     {
         var increaseDropChanceFromQuests = (await _bonusRepository.GetAllListAsync(item => item.IncreaseDropChanceFromQuests > 0 &&
@@ -669,6 +892,10 @@ public class PlantationManager : IPlantationManager
         }
     }
 
+    /// <summary>
+    /// Przetwarza ukończone zadanie.
+    /// </summary>
+    /// <param name="completeQuest">Model z danymi ukończonego zadania.</param>
     private async Task ProcessQuest(CompleteQuest completeQuest)
     {
         var quest = completeQuest.Quest;
@@ -703,6 +930,11 @@ public class PlantationManager : IPlantationManager
         completeQuest.PlayerStorage.Honor += completeQuest.GainedHonor;
     }
 
+    /// <summary>
+    /// Tworzy model informacji o zadaniach.
+    /// </summary>
+    /// <param name="quest">Zadanie dla którego tworzony jest model informacji.</param>
+    /// <returns>Model informacji o zadaniach.</returns>
     public async Task<QuestInfoCreation> CreateQuestInfoCreationModel(Quest quest)
     {
         var generatedType = await _generatedTypeRepository.GetAsync(quest.GeneratedTypeId);
@@ -726,6 +958,11 @@ public class PlantationManager : IPlantationManager
         };
     }
 
+    /// <summary>
+    /// Filtruje dostępne zadania dla danej plantacji.
+    /// </summary>
+    /// <param name="plantation">Plantacja, dla której filtrowane są zadania.</param>
+    /// <returns>Obiekt zawierający dostępne zadania i ich dane z informacjami.</returns>
     private async Task<FilteredQuests> FilterQuests(Plantation plantation)
     {
         var ret = new FilteredQuests();

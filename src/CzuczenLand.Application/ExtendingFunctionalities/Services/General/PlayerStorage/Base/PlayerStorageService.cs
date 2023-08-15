@@ -5,7 +5,7 @@ using Abp.Domain.Repositories;
 namespace CzuczenLand.ExtendingFunctionalities.Services.General.PlayerStorage.Base;
 
 /// <summary>
-/// Serwis podstawowy obsługujący logikę biznesową związaną z magazynem gracza
+/// Serwis podstawowy obsługujący logikę biznesową związaną z magazynem gracza.
 /// </summary>
 public class PlayerStorageService : IPlayerStorageService
 {

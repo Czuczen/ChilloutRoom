@@ -12,8 +12,17 @@ using Newtonsoft.Json;
 
 namespace CzuczenLand.ExtendingFunctionalities.StateUpdater.Updaters.QuestsStateUpdater;
 
+/// <summary>
+/// Klasa pomocnicza dla aktualizacji stanu zadań u gracza.
+/// </summary>
 public static class QuestsStateUpdaterHelper
 {
+    /// <summary>
+    /// Sprawdza, czy wymaganie nie dotyczy aktualizowanej encji.
+    /// </summary>
+    /// <param name="req">Wymaganie do sprawdzenia.</param>
+    /// <param name="state">Stan analizy, w którym ma być sprawdzane wymaganie.</param>
+    /// <returns>Zwraca true, jeśli wymaganie nie dotyczy aktualizowanej encji; w przeciwnym razie false.</returns>
     private static bool NotCurrEntityReq(Requirement req, AnalysisState state)
     {
         var ret = true;
@@ -37,6 +46,14 @@ public static class QuestsStateUpdaterHelper
         return ret;
     }
 
+    /// <summary>
+    /// Sprawdza, czy wymaganie wymaga aktualizacji.
+    /// </summary>
+    /// <param name="req">Wymaganie do sprawdzenia.</param>
+    /// <param name="quest">Zadanie, do którego przynależy wymaganie.</param>
+    /// <param name="state">Stan analizy, w którym ma być sprawdzane wymaganie.</param>
+    /// <param name="outCheckValues">Wyjściowe wartości sprawdzenia do dalszego przetwarzania.</param>
+    /// <returns>Zwraca true, jeśli wymaganie wymaga aktualizacji; w przeciwnym razie false.</returns>
     public static bool ReqNeedUpdate(Requirement req, Quest quest, AnalysisState state, out CheckValues outCheckValues)
     {
         outCheckValues = null;
@@ -56,6 +73,14 @@ public static class QuestsStateUpdaterHelper
         return needUpdate;
     }
 
+    /// <summary>
+    /// Przetwarza aktualizację dla wartości typu int w zależności od warunku wymagania.
+    /// </summary>
+    /// <param name="state">Stan analizy.</param>
+    /// <param name="value">Wartość, która ma zostać zaktualizowana.</param>
+    /// <param name="questAnalysis">Analiza zadania, do którego ma być dodana aktualizacja.</param>
+    /// <param name="questWithRequirements">Zadanie wraz z wymaganiami.</param>
+    /// <param name="req">Wymaganie, które ma być zaktualizowane.</param>
     public static void ProcessIntUpdate(AnalysisState state, int value, QuestWithRequirements questAnalysis, QuestWithRequirements questWithRequirements, Requirement req)
     {
         switch (req.Condition)
@@ -82,6 +107,14 @@ public static class QuestsStateUpdaterHelper
         }
     }
 
+    /// <summary>
+    /// Przetwarza aktualizację dla wartości typu decimal w zależności od warunku wymagania.
+    /// </summary>
+    /// <param name="value">Wartość, która ma zostać zaktualizowana.</param>
+    /// <param name="questAnalysis">Analiza zadania, do którego ma być dodana aktualizacja.</param>
+    /// <param name="questWithRequirements">Zadanie wraz z wymaganiami.</param>
+    /// <param name="req">Wymaganie, które ma być zaktualizowane.</param>
+    /// <param name="state">Stan analizy.</param>
     public static void ProcessDecimalUpdate(decimal value, QuestWithRequirements questAnalysis,
         QuestWithRequirements questWithRequirements, Requirement req, AnalysisState state)
     {
@@ -111,6 +144,14 @@ public static class QuestsStateUpdaterHelper
         }
     }
         
+    /// <summary>
+    /// Przetwarza aktualizacje związane z roślinami na podstawie akcji.
+    /// </summary>
+    /// <param name="action">Akcja do przetworzenia.</param>
+    /// <param name="state">Stan analizy.</param>
+    /// <param name="entity">Roślina, dla której ma być dokonana aktualizacja.</param>
+    /// <param name="questWithRequirements">Zadanie wraz z wymaganiami.</param>
+    /// <param name="questAnalysis">Analiza zadania, do którego ma być dodana aktualizacja.</param>
     public static void ProcessPlantByAction(string action, AnalysisState state, Plant entity, QuestWithRequirements questWithRequirements, 
         QuestWithRequirements questAnalysis)
     {
@@ -132,6 +173,14 @@ public static class QuestsStateUpdaterHelper
         }
     }
 
+    /// <summary>
+    /// Przetwarza aktualizację dla usuniętej rośliny.
+    /// </summary>
+    /// <param name="state">Stan analizy.</param>
+    /// <param name="entity">Roślina, dla której ma być dokonana aktualizacja.</param>
+    /// <param name="questAnalysis">Analiza zadania, do którego ma być dodana aktualizacja.</param>
+    /// <param name="questWithRequirements">Zadanie wraz z wymaganiami.</param>
+    /// <param name="req">Wymaganie, które ma być zaktualizowane.</param>
     private static void ProcessDeletedPlantUpdate(AnalysisState state, Plant entity, QuestWithRequirements questAnalysis,
         QuestWithRequirements questWithRequirements, Requirement req)
     {
@@ -153,16 +202,17 @@ public static class QuestsStateUpdaterHelper
     }
 
     /// <summary>
+    /// Przetwarza aktualizację związaną z transakcją na czarnym rynku.
     /// Sprzedaż na czarnym rynku odbywa się, gdy rekord jest usuwany, a nie kiedy jest wystawiana transakcja. Kiedy transakcja jest wystawiana, zmiana w ilości produktu w polu "ownedAmount" jest ignorowana.
     /// Sprzedaż, zarówno zwykła jak i na czarnym rynku, jest zaliczana tylko wtedy, gdy rekord transakcji czarnego rynku zostaje usunięty. Wtedy do pola "ownedAmount" produktu dodawana jest odpowiednia ilość.
     /// Jeśli transakcja gracza jest sprzedana, ponieważ wartość "ownedAmount" produktu została zmieniona podczas wystawiania i zignorowana, to teraz zadania zarówno "sprzedaj na czarnym rynku", jak i zwykła sprzedaż są aktualizowane przez tę metodę, ponieważ reaguje ona na usunięcie rekordu transakcji.   
     /// Zwykłe kupowanie jest obsługiwane przez "UpdateProductOrStorageQuestsState", ponieważ nie ma tam opcji "ignoreChange" przy zmianie wartości. Kupowanie dodaje ilość do pola "ownedAmount" produktu i jest to wykrywane przez system.
     /// </summary>
-    /// <param name="entity"></param>
-    /// <param name="questWithRequirements"></param>
-    /// <param name="questAnalysis"></param>
-    /// <param name="state"></param>
-    /// <param name="req"></param>
+    /// <param name="entity">Transakcja na Czarnym Rynku.</param>
+    /// <param name="questWithRequirements">Zadanie wraz z wymaganiami.</param>
+    /// <param name="questAnalysis">Analiza zadania, do którego ma być dodana aktualizacja.</param>
+    /// <param name="state">Stan analizy.</param>
+    /// <param name="req">Wymaganie, które ma być zaktualizowane.</param>
     public static void ProcessBlackMarketUpdate(BlackMarketTransaction entity, QuestWithRequirements questWithRequirements, 
         QuestWithRequirements questAnalysis, AnalysisState state, Requirement req)
     {
@@ -183,6 +233,13 @@ public static class QuestsStateUpdaterHelper
         }
     }
 
+    /// <summary>
+    /// Sprawdza, czy zaszła istotna zmiana dla aktualizowanej encji.
+    /// </summary>
+    /// <param name="req">Wymaganie do sprawdzenia.</param>
+    /// <param name="state">Stan analizy, w którym ma być dokonywane sprawdzanie.</param>
+    /// <param name="checkValues">Wartości sprawdzania dla dalszej obróbki.</param>
+    /// <returns>Zwraca true, jeśli istnieje istotna różnica; w przeciwnym razie false.</returns>
     private static bool AnyImportantDifference(Requirement req, AnalysisState state, out CheckValues checkValues)
     {
         var ret = false;
@@ -243,6 +300,11 @@ public static class QuestsStateUpdaterHelper
         return ret;
     }
 
+    /// <summary>
+    /// Wysyła aktualizacje zadań do klienta poprzez huba.
+    /// </summary>
+    /// <param name="analysis">Lista analiz zadań do aktualizacji.</param>
+    /// <param name="state">Stan analizy.</param>
     public static void SendUpdateQuests(List<QuestWithRequirements> analysis, AnalysisState state)
     {
         if (!analysis.Any()) return;
@@ -251,6 +313,12 @@ public static class QuestsStateUpdaterHelper
         state.QuestHub.Clients.User(state.UserId.ToString()).updateQuests(data);
     }
 
+    /// <summary>
+    /// Generuje model aktualizacji zadań.
+    /// </summary>
+    /// <param name="updatedQuests">Zaktualizowane analizy zadań.</param>
+    /// <param name="allQuestsWithAllRequirements">Lista wszystkich zadań wraz z wymaganiami.</param>
+    /// <returns>Lista modeli do aktualizacji zadań.</returns>
     private static List<UpdateQuest> GenerateUpdateModel(List<QuestWithRequirements> updatedQuests, List<QuestWithRequirements> allQuestsWithAllRequirements)
     {
         var updatingList = new List<UpdateQuest>();
@@ -285,12 +353,26 @@ public static class QuestsStateUpdaterHelper
         return updatingList;
     }
 
+    /// <summary>
+    /// Dodaje analizę zadania do listy analiz, jeśli analiza istnieje.
+    /// </summary>
+    /// <param name="analysis">Lista analiz zadań do uaktualnienia.</param>
+    /// <param name="questAnalysis">Analiza zadania do dodania.</param>
     public static void AddQuestAnalysisIfNeeded(List<QuestWithRequirements> analysis, QuestWithRequirements questAnalysis)
     {
         if (questAnalysis.Quest == null) return;
         analysis.Add(questAnalysis);
     }
 
+    /// <summary>
+    /// Aktualizuje wymaganie zadania w analizie.
+    /// </summary>
+    /// <param name="state">Stan analizy.</param>
+    /// <param name="questAnalysis">Analiza zadania do aktualizacji.</param>
+    /// <param name="questWithRequirements">Zadanie wraz z wymaganiami.</param>
+    /// <param name="req">Wymaganie do aktualizacji.</param>
+    /// <param name="value">Wartość, o którą ma być zaktualizowane wymaganie.</param>
+    /// <param name="analysisType">Typ analizy.</param>
     private static void UpdateQuestReq(AnalysisState state, QuestWithRequirements questAnalysis, QuestWithRequirements questWithRequirements, Requirement req, 
         decimal value, EnumUtils.AnalysisTypes analysisType)
     {

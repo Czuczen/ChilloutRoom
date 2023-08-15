@@ -10,8 +10,21 @@ using CzuczenLand.ExtendingModels.Models.General;
 
 namespace CzuczenLand.ExtendingFunctionalities.StateUpdater.Updaters.PlantationStateUpdater;
 
+/// <summary>
+/// Pomocnicza klasa do aktualizacji stanu plantacji.
+/// </summary>
 public static class PlantationStateUpdaterHelper
 {
+    /// <summary>
+    /// Przetwarza aktualizację stanu zasobów plantacji.
+    /// </summary>
+    /// <param name="displayParser">Parser wyświetlania.</param>
+    /// <param name="plantationStorage">Magazyn plantacji.</param>
+    /// <param name="parsedLevel">Sparsowany poziom.</param>
+    /// <param name="parsedGainedExperience">Sparsowane zdobyte doświadczenie.</param>
+    /// <param name="parsedGold">Sparsowane złoto.</param>
+    /// <param name="receivedLevels">Otrzymane poziomy.</param>
+    /// <returns>Aktualizowany stan zasobów plantacji.</returns>
     public static PlantationStorageUpdate ProcessPlantationStorageUpdate(IParser displayParser,
         PlantationStorage plantationStorage, string parsedLevel, string parsedGainedExperience, 
         string parsedGold, int receivedLevels)
@@ -64,6 +77,11 @@ public static class PlantationStateUpdaterHelper
         };
     }
 
+    /// <summary>
+    /// Generuje listę nazw nowych przedmiotów dla zdobytych poziomów.
+    /// </summary>
+    /// <param name="currLvlItems">Obiekt zawierający przedmioty dla zdobytych poziomów.</param>
+    /// <returns>Lista nazw nowych przedmiotów.</returns>
     private static List<string> GenerateNamesForNewLvlItems(CurrLvlItems currLvlItems)
     {
         var ret = new List<string>();
@@ -91,6 +109,10 @@ public static class PlantationStateUpdaterHelper
         return ret;
     }
     
+    /// <summary>
+    /// Wysyła użytkownikowi informacje o nowych przedmiotach.
+    /// </summary>
+    /// <param name="state">Stan analizy zawierający informacje o nowym poziomie.</param>
     public static void SendItemsForNewLvl(AnalysisState state)
     {
         var receivedLevels = state.ReceivedLevels;

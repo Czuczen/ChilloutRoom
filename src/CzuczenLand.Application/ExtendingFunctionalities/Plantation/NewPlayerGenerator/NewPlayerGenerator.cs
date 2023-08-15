@@ -21,26 +21,106 @@ using Newtonsoft.Json;
 
 namespace CzuczenLand.ExtendingFunctionalities.NewPlayerGenerator;
 
+/// <summary>
+/// Klasa odpowiedzialna za generowanie danych dla nowego gracza lub zwracanie istniejących.
+/// </summary>
 public class NewPlayerGenerator : INewPlayerGenerator
 {
+    /// <summary>
+    /// Repozytorium dla suszu.
+    /// </summary>
     private readonly IRepository<DriedFruit> _driedFruitRepository;
+    
+    /// <summary>
+    /// Repozytorium dla lamp.
+    /// </summary>
     private readonly IRepository<Lamp> _lampRepository;
+    
+    /// <summary>
+    /// Repozytorium dla nawozów.
+    /// </summary>
     private readonly IRepository<Manure> _manureRepository;
+    
+    /// <summary>
+    /// Repozytorium dla gleb.
+    /// </summary>
     private readonly IRepository<Soil> _soilRepository;
+    
+    /// <summary>
+    /// Repozytorium dla wód.
+    /// </summary>
     private readonly IRepository<Water> _waterRepository;
+    
+    /// <summary>
+    /// Repozytorium dla bonusów.
+    /// </summary>
     private readonly IRepository<Bonus> _bonusRepository;
+    
+    /// <summary>
+    /// Repozytorium dla doniczek.
+    /// </summary>
     private readonly IRepository<Pot> _potRepository;
+    
+    /// <summary>
+    /// Repozytorium dla nasion.
+    /// </summary>
     private readonly IRepository<Seed> _seedRepository;
+    
+    /// <summary>
+    /// Repozytorium dla dzielnic.
+    /// </summary>
     private readonly IRepository<District> _districtRepository;
+    
+    /// <summary>
+    /// Repozytorium dla typów generowanych.
+    /// </summary>
     private readonly IRepository<GeneratedType> _generatedTypeRepository;
+    
+    /// <summary>
+    /// Repozytorium dla magazynu plantacji.
+    /// </summary>
     private readonly IRepository<PlantationStorage> _plantationStorageRepository;
+    
+    /// <summary>
+    /// Repozytorium dla zadań.
+    /// </summary>
     private readonly IRepository<Quest> _questRepository;
+    
+    /// <summary>
+    /// Serwis podstawowy obsługujący logikę biznesową związaną z zadaniami.
+    /// </summary>
     private readonly IQuestService _questService;
+    
+    /// <summary>
+    /// Sprawdza uprawnienia użytkowników.
+    /// </summary>
     private readonly IPermissionChecker _permissionChecker;
 
+    
+    /// <summary>
+    /// Interfejs ILogger służy do rejestrowania komunikatów z aplikacji.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
+    /// </summary>
     public ILogger Logger { get; set; }
         
     
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="driedFruitRepository">Repozytorium dla suszu.</param>
+    /// <param name="lampRepository">Repozytorium dla lamp.</param>
+    /// <param name="manureRepository">Repozytorium dla nawozów.</param>
+    /// <param name="soilRepository">Repozytorium dla gleb.</param>
+    /// <param name="waterRepository">Repozytorium dla wód.</param>
+    /// <param name="bonusRepository">Repozytorium dla bonusów.</param>
+    /// <param name="potRepository">Repozytorium dla doniczek.</param>
+    /// <param name="seedRepository">Repozytorium dla nasion.</param>
+    /// <param name="districtRepository">Repozytorium dla dzielnic.</param>
+    /// <param name="generatedTypeRepository">Repozytorium dla typów generowanych.</param>
+    /// <param name="plantationStorageRepository">Repozytorium dla magazynu plantacji.</param>
+    /// <param name="questRepository">Repozytorium dla zadań.</param>
+    /// <param name="questService">Serwis podstawowy obsługujący logikę biznesową związaną z zadaniami.</param>
+    /// <param name="permissionChecker">Sprawdza uprawnienia użytkowników.</param>
     public NewPlayerGenerator(
         IRepository<DriedFruit> driedFruitRepository,
         IRepository<Lamp> lampRepository,
@@ -75,6 +155,13 @@ public class NewPlayerGenerator : INewPlayerGenerator
         _permissionChecker = permissionChecker;
     }
 
+    /// <summary>
+    /// Inicjuje lub pobiera dane gracza dla wybranej dzielnicy i przypisuje je do obiektu plantacji.
+    /// </summary>
+    /// <param name="heWantPayForHollow">Czy gracz chce płacić za dziuple.</param>
+    /// <param name="playerStorage">Dane przechowujące informacje o graczu (magazyn gracza).</param>
+    /// <param name="user">Użytkownik wchodzący na dzielnicę.</param>
+    /// <returns>Obiekt reprezentujący plantację z zasobami gracza.</returns>
     public async Task<Plantation> GetOrInitPlayerResources(bool heWantPayForHollow, PlayerStorage playerStorage, User user)
     {
         var ret = new Plantation();
@@ -122,6 +209,14 @@ public class NewPlayerGenerator : INewPlayerGenerator
         return ret;
     }
 
+    /// <summary>
+    /// Pobiera lub inicjuje dziuple. Sprawdza poziom gracza i dostępność dzielnicy.
+    /// </summary>
+    /// <param name="plantation">Obiekt reprezentujący plantację.</param>
+    /// <param name="heWantPayForHollow">Czy gracz chce płacić za dziuple.</param>
+    /// <param name="isDistrictWarden">Czy gracz jest opiekunem dzielnicy.</param>
+    /// <param name="districts">Lista dostępnych dzielnic dla gracza.</param>
+    /// <param name="allDistricts">Lista wszystkich dzielnic.</param>
     private async Task GetOrInitForSelectedDistrict(Plantation plantation, bool heWantPayForHollow, bool isDistrictWarden, List<District> districts, List<District> allDistricts)
     {
         plantation.SelectedDistrictId = plantation.PlayerStorage.LastSelectedDistrictId;
@@ -161,6 +256,12 @@ public class NewPlayerGenerator : INewPlayerGenerator
         }
     }
         
+    /// <summary>
+    /// Tworzy i ustawia dziuple, jeśli to możliwe. Sprawdza dostępność dzielnicy.
+    /// </summary>
+    /// <param name="heWantPayForHollow">Czy gracz chce płacić za dziuple.</param>
+    /// <param name="isDistrictWarden">Czy gracz jest opiekunem dzielnicy.</param>
+    /// <param name="plantation">Obiekt reprezentujący plantację gracza.</param>
     private async Task CreateAndSetHollowIfPossible(bool heWantPayForHollow, bool isDistrictWarden, Plantation plantation)
     {
         var clockNow = Clock.Now;
@@ -209,6 +310,10 @@ public class NewPlayerGenerator : INewPlayerGenerator
         }
     }
 
+    /// <summary>
+    /// Tworzy dziuple.
+    /// </summary>
+    /// <param name="plantation">Obiekt reprezentujący plantację gracza.</param>
     private async Task CreateHollow(Plantation plantation)
     {
         plantation.PlayerStorage.Gold -= plantation.District.HollowPrice;
@@ -220,6 +325,11 @@ public class NewPlayerGenerator : INewPlayerGenerator
             throw new AbpException("Tworzenie magazynu plantacji nie powiodło się");
     }
         
+    /// <summary>
+    /// Inicjuje magazyn plantacji dla nowego gracza w danej dzielnicy.
+    /// </summary>
+    /// <param name="plantation">Obiekt reprezentujący plantację gracza.</param>
+    /// <returns>Obiekt reprezentujący magazyn plantacji dla nowego gracza.</returns>
     private async Task<PlantationStorage> InitNewPlayerPlantationStorageForDistrict(Plantation plantation)
     {
         var plantationStorageToCreate = new PlantationStorage
@@ -247,7 +357,11 @@ public class NewPlayerGenerator : INewPlayerGenerator
 
         return plantationStorage;
     }
-        
+    
+    /// <summary>
+    /// Inicjuje nowe obiekty dla plantacji nowego gracza na podstawie definicji.
+    /// </summary>
+    /// <param name="plantation">Obiekt reprezentujący plantację gracza.</param>
     private async Task InitNewPlayerEntitiesDefinitions(Plantation plantation)
     {
         var districtTypes = await _generatedTypeRepository.GetAllListAsync(currItem => currItem.DistrictId == plantation.District.Id);
@@ -294,6 +408,16 @@ public class NewPlayerGenerator : INewPlayerGenerator
         await _questService.SetStartValuesAsync(playerQuestsDefinitions);
     }
 
+    /// <summary>
+    /// Generuje i inicjuje rekordy dla nowego magazynu plantacji gracza (dziupla/plantacja) na podstawie definicji.
+    /// </summary>
+    /// <typeparam name="TEntity">Typ encji do generowania rekordu gracza.</typeparam>
+    /// <param name="definitions">Lista definicji do przetworzenia.</param>
+    /// <param name="entityEnum">Enum reprezentujący typ encji.</param>
+    /// <param name="plantation">Obiekt reprezentujący plantację gracza.</param>
+    /// <param name="repo">Repozytorium encji do generowania.</param>
+    /// <param name="needDefinitions">Czy metoda ma zwracać utworzone rekordy.</param>
+    /// <returns>Lista nowo utworzonych obiektów.</returns>
     private static async Task<List<object>> GenerateAllDefinitionsForNewPlayerPlantationStorage<TEntity>(object definitions, 
         EnumUtils.Entities? entityEnum, Plantation plantation, IRepository<TEntity, int> repo, bool needDefinitions = false)
         where TEntity : class, IEntity<int>
@@ -320,6 +444,12 @@ public class NewPlayerGenerator : INewPlayerGenerator
         return ret;
     }
 
+    /// <summary>
+    /// Ustawia listę dostępnych dzielnic do wyboru w Select2. Oznacza dzielnice w których gracz posiada już dziuple.
+    /// </summary>
+    /// <param name="districts">Lista dostępnych dzielnic dla gracza.</param>
+    /// <param name="plantation">Obiekt reprezentujący plantację gracza.</param>
+    /// <param name="allDistricts">Lista wszystkich dostępnych dzielnic.</param>
     private async Task SetS2DistrictsList(List<District> districts, Plantation plantation, List<District> allDistricts)
     {
         var playerDistricts = new List<District>();

@@ -30,37 +30,168 @@ using ILogger = Castle.Core.Logging.ILogger;
 
 namespace CzuczenLand.ExtendingFunctionalities.StateUpdater.EntityAnalysisStateBuilder;
 
+/// <summary>
+/// Klasa budująca stan analizy encji.
+/// </summary>
 public class EntityAnalysisStateBuilder : IEntityAnalysisStateBuilder
 {
+    /// <summary>
+    /// Repozytorium wymagań.
+    /// </summary>
     private readonly IRepository<Requirement> _requirementRepository;
+    
+    /// <summary>
+    /// Repozytorium magazynu plantacji.
+    /// </summary>
     private readonly IRepository<PlantationStorage> _plantationStorageRepository;
+    
+    /// <summary>
+    /// Serwis obsługujący zmiany encji.
+    /// </summary>
     private readonly IEntityChangeService _entityChangeService;
+    
+    /// <summary>
+    /// Repozytorium suszu.
+    /// </summary>
     private readonly IRepository<DriedFruit> _driedFruitRepository;
+    
+    /// <summary>
+    /// Repozytorium lamp.
+    /// </summary>
     private readonly IRepository<Lamp> _lampRepository;
+    
+    /// <summary>
+    /// Repozytorium nawozów.
+    /// </summary>
     private readonly IRepository<Manure> _manureRepository;
+    
+    /// <summary>
+    /// Repozytorium donic.
+    /// </summary>
     private readonly IRepository<Pot> _potRepository;
+    
+    /// <summary>
+    /// Repozytorium nasion.
+    /// </summary>
     private readonly IRepository<Seed> _seedRepository;
+    
+    /// <summary>
+    /// Repozytorium gleb.
+    /// </summary>
     private readonly IRepository<Soil> _soilRepository;
+    
+    /// <summary>
+    /// Repozytorium wód.
+    /// </summary>
     private readonly IRepository<Water> _waterRepository;
+    
+    /// <summary>
+    /// Repozytorium dzielnic.
+    /// </summary>
     private readonly IRepository<District> _districtRepository;
+    
+    /// <summary>
+    /// Repozytorium bonusów.
+    /// </summary>
     private readonly IRepository<Bonus> _bonusRepository;
+    
+    /// <summary>
+    /// Repozytorium postępu wymagań zadań.
+    /// </summary>
     private readonly IRepository<QuestRequirementsProgress> _questRequirementsProgressRepository;
+    
+    /// <summary>
+    /// Repozytorium użytkowników.
+    /// </summary>
     private readonly IRepository<User, long> _userRepository;
+    
+    /// <summary>
+    /// Serwis podstawowy obsługujący logikę biznesową związaną z zadaniami.
+    /// </summary>
     private readonly IQuestService _questService;
+    
+    /// <summary>
+    /// Serwis podstawowy obsługujący logikę ignorowania zmian dla encji.
+    /// </summary>
     private readonly IIgnoreChangeService _ignoreChangeService;
+    
+    /// <summary>
+    /// Repozytorium magazynu gracza.
+    /// </summary>
     private readonly IRepository<PlayerStorage> _playerStorageRepository;
+    
+    /// <summary>
+    /// Menadżer klientów online hubów signalr.
+    /// </summary>
     private readonly IOnlineClientManager _onlineClientManager;
+    
+    /// <summary>
+    /// Mapper obiektów.
+    /// </summary>
     private readonly IObjectMapper _objectMapper;
+    
+    /// <summary>
+    /// Interfejs sprawdzający uprawnienia użytkowników.
+    /// </summary>
     private readonly IPermissionChecker _permissionChecker;
+    
+    /// <summary>
+    /// Repozytorium zadań.
+    /// </summary>
     private readonly IRepository<Quest> _questRepository;
+    
+    /// <summary>
+    /// Kontekst huba dla informacji.
+    /// </summary>
     private readonly IHubContext _infoHub;
+    
+    /// <summary>
+    /// Kontekst huba dla bonusów.
+    /// </summary>
     private readonly IHubContext _bonusHub;
+    
+    /// <summary>
+    /// Kontekst huba dla czarnego rynku.
+    /// </summary>
     private readonly IHubContext _blackMarketHub;
+    
+    /// <summary>
+    /// Kontekst huba dla zadań.
+    /// </summary>
     private readonly IHubContext _questHub;
 
+    
+    /// <summary>
+    /// Interfejs ILogger służy do rejestrowania komunikatów z aplikacji.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
+    /// </summary>
     public ILogger Logger { get; set; }
         
 
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="questRepository">Repozytorium zadań.</param>
+    /// <param name="requirementRepository">Repozytorium wymagań.</param>
+    /// <param name="plantationStorageRepository">Repozytorium magazynu plantacji.</param>
+    /// <param name="entityChangeService">Serwis obsługujący zmiany encji..</param>
+    /// <param name="driedFruitRepository">Repozytorium suszu.</param>
+    /// <param name="lampRepository">Repozytorium lamp.</param>
+    /// <param name="manureRepository">Repozytorium nawozów.</param>
+    /// <param name="potRepository">Repozytorium donic.</param>
+    /// <param name="seedRepository">Repozytorium nasion.</param>
+    /// <param name="soilRepository">Repozytorium gleb.</param>
+    /// <param name="waterRepository">Repozytorium wód.</param>
+    /// <param name="districtRepository">Repozytorium dzielnic.</param>
+    /// <param name="bonusRepository">Repozytorium bonusów.</param>
+    /// <param name="questRequirementsProgressRepository">Repozytorium postępu wymagań zadań.</param>
+    /// <param name="userRepository">Repozytorium użytkowników.</param>
+    /// <param name="questService">Serwis podstawowy obsługujący logikę biznesową związaną z zadaniami.</param>
+    /// <param name="ignoreChangeService">Serwis podstawowy obsługujący logikę ignorowania zmian dla encji.</param>
+    /// <param name="playerStorageRepository">Repozytorium magazynu gracza.</param>
+    /// <param name="onlineClientManager">Menadżer klientów online hubów signalr.</param>
+    /// <param name="objectMapper">Mapper obiektów.</param>
+    /// <param name="permissionChecker">Interfejs sprawdzający uprawnienia użytkowników.</param>
     public EntityAnalysisStateBuilder(
         IRepository<Quest> questRepository,
         IRepository<Requirement> requirementRepository,
@@ -113,7 +244,15 @@ public class EntityAnalysisStateBuilder : IEntityAnalysisStateBuilder
         _questHub = GlobalHost.ConnectionManager.GetHubContext<QuestHub>();
         _bonusHub = GlobalHost.ConnectionManager.GetHubContext<BonusHub>();
     }
-        
+    
+    /// <summary>
+    /// Buduje stan analizy dla określonego typu działania na encji.
+    /// </summary>
+    /// <param name="type">Typ budowania analizy.</param>
+    /// <param name="entity">Encja, na której ma zostać wykonana analiza.</param>
+    /// <param name="action">Działanie wykonywane na encji.</param>
+    /// <param name="page">Strona transakcji czarnego rynku (dotyczy tylko typu BlackMarket).</param>
+    /// <returns>Stan analizy dla określonego typu działania na encji.</returns>
     [UnitOfWork]
     public virtual AnalysisState Build(EnumUtils.AnalysisBuildTypes type, object entity, string action, EnumUtils.BlackMarketPages? page)
     {
@@ -134,6 +273,14 @@ public class EntityAnalysisStateBuilder : IEntityAnalysisStateBuilder
         }
     }
         
+    /// <summary>
+    /// Tworzy stan analizy dla operacji dotyczącej aktualizowanej encji będącej produktem.
+    /// </summary>
+    /// <typeparam name="TEntity">Typ aktualizowanej encji.</typeparam>
+    /// <param name="state">Bieżący stan analizy.</param>
+    /// <param name="entity">Aktualizowana encja.</param>
+    /// <param name="action">Wykonywane działanie.</param>
+    /// <returns>Stan analizy dla aktualizowanej encji.</returns>
     private AnalysisState GetProductAnalysisState<TEntity>(AnalysisState state, TEntity entity, string action) 
         where TEntity : class, IPlantationGeneratedEntity
     {
@@ -173,6 +320,13 @@ public class EntityAnalysisStateBuilder : IEntityAnalysisStateBuilder
         return state;
     }
         
+    /// <summary>
+    /// Tworzy stan analizy dla operacji dotyczącej aktualizowanej encji będącej magazynem.
+    /// </summary>
+    /// <typeparam name="TEntity">Typ encji magazynu.</typeparam>
+    /// <param name="state">Bieżący stan analizy.</param>
+    /// <param name="entity">Encja magazynu.</param>
+    /// <returns>Stan analizy dla operacji na magazynie.</returns>
     private AnalysisState GetStorageAnalysisState<TEntity>(AnalysisState state, TEntity entity)
         where TEntity : PartStorage
     {
@@ -223,6 +377,14 @@ public class EntityAnalysisStateBuilder : IEntityAnalysisStateBuilder
         return state;
     }
 
+    /// <summary>
+    /// Tworzy stan analizy dla operacji dotyczącej aktualizowanej encji będącej transakcją czarnego rynku.
+    /// </summary>
+    /// <param name="state">Bieżący stan analizy.</param>
+    /// <param name="entity">Encja transakcji na czarnym rynku.</param>
+    /// <param name="page">Strona transakcji czarnego rynku (jeśli dotyczy).</param>
+    /// <param name="action">Wykonywane działanie.</param>
+    /// <returns>Stan analizy dla operacji na transakcji czarnego rynku.</returns>
     private AnalysisState GetBlackMarketAnalysisState(AnalysisState state, BlackMarketTransaction entity, EnumUtils.BlackMarketPages? page, string action)
     {
         if (page == EnumUtils.BlackMarketPages.Buyer && entity.BuyerId != null)
@@ -268,6 +430,11 @@ public class EntityAnalysisStateBuilder : IEntityAnalysisStateBuilder
         return state;
     }
 
+    /// <summary>
+    /// Ustawia stan analizy dla magazynu plantacji.
+    /// </summary>
+    /// <param name="state">Bieżący stan analizy.</param>
+    /// <param name="plantationStorage">Encja magazynu plantacji.</param>
     private void SetPlantationStorageAnalysisState(AnalysisState state, PlantationStorage plantationStorage)
     {
         state.PlantationStorage = plantationStorage;
@@ -280,6 +447,11 @@ public class EntityAnalysisStateBuilder : IEntityAnalysisStateBuilder
         state.QuestsWithRequirements = EntityAnalysisStateBuilderHelper.GetQuestsWithRequirements(state);
     }
         
+    /// <summary>
+    /// Pobiera przedmioty otrzymane na określonym poziomie magazynu plantacji.
+    /// </summary>
+    /// <param name="state">Bieżący stan analizy.</param>
+    /// <returns>Lista przedmiotów otrzymanych na określonym poziomie magazynu plantacji.</returns>
     private CurrLvlItems GetReceivedLvlItems(AnalysisState state)
     {
         var ret = new CurrLvlItems();

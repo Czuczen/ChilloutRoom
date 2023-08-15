@@ -5,8 +5,15 @@ using CzuczenLand.ExtendingModels.Models.General;
 
 namespace CzuczenLand.ExtendingFunctionalities.StateUpdater.Updaters.QuestsStateUpdater;
 
+/// <summary>
+/// Aktualizuje stan zadań u gracza.
+/// </summary>
 public static class QuestsStateUpdater
 {
+    /// <summary>
+    /// Aktualizuje stan zadań dotyczących produktów lub magazynów.
+    /// </summary>
+    /// <param name="state">Stan analizy.</param>
     public static void UpdateProductOrStorageQuestsState(this AnalysisState state)
     {
         if (!state.InitStatus || state.LastEntityPropertyChanges == null) return;
@@ -33,6 +40,10 @@ public static class QuestsStateUpdater
             QuestsStateUpdaterHelper.SendUpdateQuests(analysis, state);
     }
 
+    /// <summary>
+    /// Aktualizuje stan zadań związanych z roślinami.
+    /// </summary>
+    /// <param name="state">Stan analizy.</param>
     public static void UpdatePlantQuestsState(this AnalysisState state)
     {
         if (!state.InitStatus) return;
@@ -51,6 +62,10 @@ public static class QuestsStateUpdater
             QuestsStateUpdaterHelper.SendUpdateQuests(analysis, state);
     }
 
+    /// <summary>
+    /// Aktualizuje stan zadań związanych z czarnym rynkiem.
+    /// </summary>
+    /// <param name="state">Stan analizy.</param>
     public static void UpdateBlackMarketQuestsState(this AnalysisState state)
     {
         var entity = state.BlackMarketEntity;
