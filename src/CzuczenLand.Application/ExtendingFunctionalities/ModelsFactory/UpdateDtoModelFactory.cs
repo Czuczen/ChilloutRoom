@@ -20,8 +20,16 @@ using CzuczenLand.ExtendingFunctionalities.Services.Products.Water.Dto;
 
 namespace CzuczenLand.ExtendingFunctionalities.ModelsFactory;
 
+/// <summary>
+/// Fabryka do tworzenia obiektów DTO dla operacji aktualizacji.
+/// </summary>
 public static class UpdateDtoModelFactory
 {
+    /// <summary>
+    /// Zwraca nowy obiekt DTO na podstawie nazwy encji dla operacji aktualizacji.
+    /// </summary>
+    /// <param name="entityUpdateDtoName">Nazwa encji DTO do aktualizacji.</param>
+    /// <returns>Nowy obiekt DTO dla operacji aktualizacji.</returns>
     public static object GetUpdateDtoNewObjectByEntityUpdateDtoName(string entityUpdateDtoName)
     {
         switch (entityUpdateDtoName)
@@ -63,6 +71,11 @@ public static class UpdateDtoModelFactory
         }
     }
         
+    /// <summary>
+    /// Zwraca typ encji DTO aktualizacji.
+    /// </summary>
+    /// <param name="entityDbName">Nazwa encji bazodanowej.</param>
+    /// <returns>Typ encji DTO dla operacji aktualizacji.</returns>
     public static Type GetUpdateDtoEntityTypeByEntityDbName(string entityDbName)
     {
         switch (entityDbName)

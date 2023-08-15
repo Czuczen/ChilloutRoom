@@ -22,12 +22,29 @@ using Newtonsoft.Json;
 
 namespace CzuczenLand.ExtendingFunctionalities.DistrictCloner;
 
+/// <summary>
+/// Pomocnicza klasa do klonowania dzielnic.
+/// </summary>
 public static class DistrictClonerHelper
 {
+    /// <summary>
+    /// Pole przechowujące nazwę pola nazwy opiekuna.
+    /// </summary>
     public const string WardenNameField = "WardenName";
+    
+    /// <summary>
+    /// Pole przechowujące nazwę pola hasła opiekuna.
+    /// </summary>
     public const string WardenPasswordField = "WardenPassword";
         
     
+    /// <summary>
+    /// Pobiera kontekst SqlCommand.
+    /// </summary>
+    /// <param name="entity">Obiekt encji.</param>
+    /// <param name="tableName">Nazwa tabeli.</param>
+    /// <param name="entityProperties">Lista właściwości encji.</param>
+    /// <returns>Kontekst SqlCommand.</returns>
     private static SqlCommandContext GetSqlCommandContext(object entity, string tableName, List<PropertyInfo> entityProperties)
     {
         var ret = new SqlCommandContext
@@ -64,6 +81,14 @@ public static class DistrictClonerHelper
         return ret;
     }
 
+    /// <summary>
+    /// Asynchroniczna metoda klonująca obiekty do bazy danych.
+    /// </summary>
+    /// <param name="ctx">Kontekst bazy danych.</param>
+    /// <param name="objects">Lista obiektów do sklonowania.</param>
+    /// <param name="entityNameOldIdNewIdList">Lista krotek zawierających nazwę encji, stare i nowe ID.</param>
+    /// <param name="entitiesMaxIdNumbers">Słownik przechowujący maksymalne ID dla różnych encji.</param>
+    /// <returns>Lista nowych ID sklonowanych obiektów.</returns>
     public static async Task<List<int>> CloneObjects(AbpDbContext ctx, List<object> objects, 
         List<Tuple<string, int, int>> entityNameOldIdNewIdList, Dictionary<string, int> entitiesMaxIdNumbers)
     {
@@ -90,6 +115,12 @@ public static class DistrictClonerHelper
         return ret;
     }
 
+    /// <summary>
+    /// Ustawia identyfikatory relacji w obiekcie.
+    /// </summary>
+    /// <param name="obj">Obiekt, któremu ustawiane są identyfikatory relacji.</param>
+    /// <param name="objType">Typ obiektu.</param>
+    /// <param name="entityNameOldIdNewIdList">Lista krotek zawierających nazwę encji, stare i nowe ID.</param>
     private static void SetRelationIds(object obj, Type objType, List<Tuple<string, int, int>> entityNameOldIdNewIdList)
     {
         switch (objType.Name)
@@ -159,11 +190,25 @@ public static class DistrictClonerHelper
         }
     }
 
+    /// <summary>
+    /// Pobiera nowy identyfikator relacji.
+    /// </summary>
+    /// <param name="entityNameOldIdNewIdList">Lista krotek zawierających nazwę encji, stare i nowe ID.</param>
+    /// <param name="entityName">Nazwa encji.</param>
+    /// <param name="oldId">Stare ID.</param>
+    /// <returns>Nowy ID relacji.</returns>
     private static int GetRelationId(List<Tuple<string, int, int>> entityNameOldIdNewIdList, string entityName, int oldId)
     {
         return entityNameOldIdNewIdList.Single(item => item.Item1 == entityName && item.Item2 == oldId).Item3;
     }
         
+    /// <summary>
+    /// Ustawia nowe ID dla obiektu.
+    /// </summary>
+    /// <param name="obj">Obiekt, któremu ustawiane jest nowe ID.</param>
+    /// <param name="entityName">Nazwa encji obiektu.</param>
+    /// <param name="entityNameOldIdNewIdList">Lista krotek zawierających nazwę encji, stare i nowe ID.</param>
+    /// <param name="entitiesMaxIdNumbers">Słownik przechowujący maksymalne ID dla różnych encji.</param>
     private static void SetId(object obj, string entityName, List<Tuple<string, int, int>> entityNameOldIdNewIdList,  
         Dictionary<string, int> entitiesMaxIdNumbers)
     {
@@ -182,6 +227,11 @@ public static class DistrictClonerHelper
         entityNameOldIdNewIdList.Add(entityNameToOldIdAndNewId);
     }
 
+    /// <summary>
+    /// Zwraca nazwę tabeli bazodanowej na podstawie nazwy encji.
+    /// </summary>
+    /// <param name="entityDbName">Nazwa encji.</param>
+    /// <returns>Nazwa tabeli bazodanowej.</returns>
     private static string GetTableNameByEntityDbName(string entityDbName)
     {
         const string startFulName = "System.Data.Entity.DbSet`1[[CzuczenLand.ExtendingModels.Models.";
@@ -196,6 +246,12 @@ public static class DistrictClonerHelper
         }).Name;
     }
 
+    /// <summary>
+    /// Pobiera pliki z internetu (dysku google).
+    /// </summary>
+    /// <param name="definitionsPath">Ścieżka do miejsca docelowego zapisu plików.</param>
+    /// <param name="filesIds">Lista identyfikatorów plików na dysku google.</param>
+    /// <returns>Słownik zawierający identyfikatory i nazwy pobranych plików.</returns>
     public static Dictionary<string, string> DownloadFilesAndGetIdsAndNames(string definitionsPath, List<string> filesIds)
     {
         var ret = new Dictionary<string, string>();
@@ -219,6 +275,12 @@ public static class DistrictClonerHelper
         return ret;
     }
 
+    /// <summary>
+    /// Pobiera pliki w formacie XLS i zwraca dane w postaci słownika, gdzie kluczem jest nazwa encji.
+    /// </summary>
+    /// <param name="definitionsPath">Ścieżka do katalogu z plikami XLS.</param>
+    /// <param name="filesIdsAndNames">Słownik zawierający identyfikatory i nazwy plików (opcjonalnie).</param>
+    /// <returns>Słownik zawierający nazwy encji i odpowiadające im listy słowników reprezentujących obiekty.</returns>
     public static Dictionary<string, List<Dictionary<string, object>>> GetXlsDocumentsAsEntityDictListObjects(
         string definitionsPath, Dictionary<string, string> filesIdsAndNames = null)
     {
@@ -253,6 +315,12 @@ public static class DistrictClonerHelper
         return ret;
     }
 
+    /// <summary>
+    /// Deserializuje obiekty dla danej nazwy encji z przekazanego ciągu znaków JSON.
+    /// </summary>
+    /// <param name="entityName">Nazwa encji.</param>
+    /// <param name="serializedObjects">Serializowane obiekty w formacie JSON.</param>
+    /// <returns>Lista deserializowanych obiektów.</returns>
     public static List<object> GetObjects(string entityName, string serializedObjects)
     {
         List<object> ret;
@@ -310,6 +378,11 @@ public static class DistrictClonerHelper
         return ret;
     }
 
+    /// <summary>
+    /// Porządkuje słownik obiektów encji wg ustalonej kolejności nazw encji.
+    /// </summary>
+    /// <param name="entityNameToObjects">Słownik przyporządkowujący nazwy encji do listy słowników reprezentujących obiekty.</param>
+    /// <returns>Uporządkowany słownik obiektów encji.</returns>
     public static Dictionary<string, List<Dictionary<string, object>>> ArrangeInOrder(Dictionary<string, List<Dictionary<string, object>>> entityNameToObjects)
     {
         var ret = new Dictionary<string, List<Dictionary<string, object>>>();
@@ -362,6 +435,15 @@ public static class DistrictClonerHelper
         return ret;
     }
 
+    /// <summary>
+    /// Generuje nowe obiekty i dokonuje ich klonowania, zwracając identyfikatory sklonowanych obiektów.
+    /// </summary>
+    /// <param name="districtContext">Kontekst dzielnicy.</param>
+    /// <param name="ctx">Kontekst bazy danych.</param>
+    /// <param name="entityNameOldIdNewIdList">Lista krotek zawierających nazwę encji, stare ID i nowe ID.</param>
+    /// <param name="entitiesMaxIdNumbers">Słownik maksymalnych numerów ID dla encji.</param>
+    /// <param name="wardenId">ID nowego opiekuna.</param>
+    /// <returns>Obiekt zawierający identyfikatory sklonowanych obiektów.</returns>
     public static async Task<ClonedObjectsIds> GenerateNewObjectsAndClone(DistrictContext districtContext, AbpDbContext ctx,
         List<Tuple<string, int, int>> entityNameOldIdNewIdList, Dictionary<string, int> entitiesMaxIdNumbers, long wardenId)
     {
@@ -408,6 +490,11 @@ public static class DistrictClonerHelper
         return ret;
     }
 
+    /// <summary>
+    /// Konwertuje słownik utworzonych obiektów na obiekt kontekstu dzielnicy.
+    /// </summary>
+    /// <param name="createdObjects">Słownik utworzonych obiektów.</param>
+    /// <returns>Kontekst dzielnicy zawierający utworzone obiekty.</returns>
     public static DistrictContext GetAsDistrictContext(Dictionary<string, List<object>> createdObjects)
     {
         return new DistrictContext
