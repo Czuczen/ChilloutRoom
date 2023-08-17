@@ -129,4 +129,4 @@ Shouldly
 ## Dodatkowe informacje
 
 W aplikacji wykorzystano bazę danych MSSQL, której struktura została przedstawiona [tutaj](https://drive.google.com/file/d/1x4gN9onQD901x2pOWjNzMSTfUaJJHAln/view?usp=sharing).  
-W ramach projektu zostało wykorzystane narzędzie do generowania dokumentacji kodu, Doxygen - [dokumentacja](www.linkdostrony.pl).  
+W ramach projektu zostało wykorzystane narzędzie do generowania dokumentacji kodu, Doxygen - [dokumentacja](https://czuczen.github.io/ChilloutRoomDokumentacja).  
