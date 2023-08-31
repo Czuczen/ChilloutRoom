@@ -15,8 +15,14 @@ using CzuczenLand.ExtendingModels.Models.General;
 
 namespace CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.SelectListLoader;
 
+/// <summary>
+/// Klasa pomocnicza zawierająca mapowania nazw opcji na ich czytelne nazwy oraz metody generujące opcje pól typu SelectList w różnych kontekstach.
+/// </summary>
 public static class SelectListLoaderHelper
 {
+    /// <summary>
+    /// Mapowanie nazw bazodanowych generowanych encji na ich odpowiedniki czytelne dla użytkownika.
+    /// </summary>
     private static readonly Dictionary<string, string> GeneratedEntitiesNamesDbToHr = new()
     {
         {EntitiesDbNames.Seed, EntitiesHrNames.Seed},
@@ -29,6 +35,9 @@ public static class SelectListLoaderHelper
         {EntitiesDbNames.Quest, EntitiesHrNames.Quest},
     };
 
+    /// <summary>
+    /// Mapowanie nazw bazodanowych porównań wymagań na ich odpowiedniki czytelne dla użytkownika.
+    /// </summary>
     public static readonly Dictionary<string, string> RequirementComparersNamesDbToHr = new()
     {
         {DbComparers.OwnedAmount, HrComparers.OwnedAmount},
@@ -51,6 +60,9 @@ public static class SelectListLoaderHelper
         {DbComparers.BuyOnBlackMarket, HrComparers.BuyOnBlackMarket},
     };
         
+    /// <summary>
+    /// Mapowanie nazw bazodanowych encji niestandardowych na ich odpowiedniki czytelne dla użytkownika.
+    /// </summary>
     public static readonly Dictionary<string, string> CustomEntityNamesDbToHr = new()
     {
         {DbCustomEntityNames.PlantationStorage, HrCustomEntityNames.PlantationStorage},
@@ -60,6 +72,9 @@ public static class SelectListLoaderHelper
         {DbCustomEntityNames.Seed, HrCustomEntityNames.Seed},
     };
 
+    /// <summary>
+    /// Mapowanie nazw bazodanowych typów zadań na ich odpowiedniki czytelne dla użytkownika.
+    /// </summary>
     public static readonly Dictionary<string, string> QuestTypesNamesDbToHr = new()
     {
         {DbQuestTypesNames.Daily, HrQuestTypesNames.Daily},
@@ -69,6 +84,9 @@ public static class SelectListLoaderHelper
         {DbQuestTypesNames.Others, HrQuestTypesNames.Others}
     };
 
+    /// <summary>
+    /// Mapowanie nazw bazodanowych warunków wymagań na ich odpowiedniki czytelne dla użytkownika.
+    /// </summary>
     public static readonly Dictionary<string, string> RequirementConditionsNamesDbToHr = new()
     {
         {DbRequirementConditionsNames.Increase, HrRequirementConditionsNames.Increase},
@@ -77,6 +95,9 @@ public static class SelectListLoaderHelper
         {DbRequirementConditionsNames.Deliver, HrRequirementConditionsNames.Deliver},
     };
         
+    /// <summary>
+    /// Mapowanie nazw bazodanowych encji na ich odpowiedniki czytelne dla użytkownika.
+    /// </summary>
     public static readonly Dictionary<string, string> EntitiesNamesDbToHr = new()
     {
         {EntitiesDbNames.DriedFruit, EntitiesHrNames.DriedFruit},
@@ -98,6 +119,11 @@ public static class SelectListLoaderHelper
         {EntitiesDbNames.GeneratedType, EntitiesHrNames.GeneratedType},
     };
     
+    /// <summary>
+    /// Pobiera enum EnumUtils.Entities dla danej nazwy encji.
+    /// </summary>
+    /// <param name="entity">Nazwa encji.</param>
+    /// <returns>Wartość EnumUtils.Entities odpowiadająca nazwie encji.</returns>
     public static EnumUtils.Entities GetEntityEnum(string entity)
     {
         switch (entity)
@@ -145,6 +171,11 @@ public static class SelectListLoaderHelper
         }
     }
     
+    /// <summary>
+    /// Generuje listę opcji wyboru w postaci pól wyboru (checkbox).
+    /// </summary>
+    /// <param name="value">Wartość pola wyboru.</param>
+    /// <returns>Lista pól wyboru jako SelectListItem.</returns>
     public static List<SelectListItem> GetCheckBoxAsSelectOptions(string value)
     {
         var ret = new List<SelectListItem>();
@@ -181,6 +212,13 @@ public static class SelectListLoaderHelper
         return ret;
     }
         
+    /// <summary>
+    /// Generuje opcje wyboru użytkowników.
+    /// </summary>
+    /// <param name="users">Lista użytkowników.</param>
+    /// <param name="properties">Lista właściwości.</param>
+    /// <param name="values">Lista wartości.</param>
+    /// <returns>Lista pól typu SelectList dla użytkowników.</returns>
     public static List<SelectListItem> GetUsersAsSelectOptions(List<User> users, List<PropertyInfo> properties, List<object> values)
     {
         var fieldIndex = properties.FindIndex(item => item.Name == RelationFieldsNames.UserId);
@@ -193,6 +231,12 @@ public static class SelectListLoaderHelper
             .ToList();
     }
 
+    /// <summary>
+    /// Generuje opcje wyboru typów generowanych.
+    /// </summary>
+    /// <param name="availableGeneratedTypes">Lista dostępnych typów generowanych.</param>
+    /// <param name="fieldValue">Id typu generowanego.</param>
+    /// <returns>Lista pól typu SelectList dla typów wygenerowanych.</returns>
     public static List<SelectListItem> GetGeneratedTypesAsSelectOptions(List<GeneratedType> availableGeneratedTypes, int? fieldValue)
     {
         return availableGeneratedTypes.Select(generatedType => new SelectListItem
@@ -203,6 +247,12 @@ public static class SelectListLoaderHelper
         }).ToList();
     }
 
+    /// <summary>
+    /// Generuje opcje wyboru nazw encji generowanych.
+    /// </summary>
+    /// <param name="properties">Lista właściwości.</param>
+    /// <param name="values">Lista wartości.</param>
+    /// <returns>Lista pól typu SelectList dla nazw encji generowanych.</returns>
     public static List<SelectListItem> GetGeneratedEntitiesAsSelectOptions(List <PropertyInfo> properties, List<object> values)
     {
         var fieldIndex = properties.FindIndex(item => item.Name == RelationFieldsNames.EntityName);
@@ -213,7 +263,13 @@ public static class SelectListLoaderHelper
             Selected = values?.Count > 0 && entityName.Key == values[fieldIndex]?.ToString()
         }).ToList();
     }
-        
+     
+    /// <summary>
+    /// Generuje opcje wyboru typów zadań.
+    /// </summary>
+    /// <param name="properties">Lista właściwości.</param>
+    /// <param name="values">Lista wartości.</param>
+    /// <returns>Lista pól typu SelectList dla typów zadań.</returns>
     public static List<SelectListItem> GetQuestTypesAsSelectOptions(List <PropertyInfo> properties, List<object> values)
     {
         var fieldIndex = properties.FindIndex(item => item.Name == RelationFieldsNames.QuestType);
@@ -225,6 +281,12 @@ public static class SelectListLoaderHelper
         }).ToList();
     }
         
+    /// <summary>
+    /// Generuje opcje wyboru warunków wymagań.
+    /// </summary>
+    /// <param name="properties">Lista właściwości.</param>
+    /// <param name="values">Lista wartości.</param>
+    /// <returns>Lista pól typu SelectList dla warunków wymagań.</returns>
     public static List<SelectListItem> GetRequirementConditionsAsSelectOptions(List <PropertyInfo> properties, List<object> values)
     {
         var fieldIndex = properties.FindIndex(item => item.Name == RelationFieldsNames.Condition);
@@ -236,6 +298,12 @@ public static class SelectListLoaderHelper
         }).ToList();
     }
         
+    /// <summary>
+    /// Generuje opcje wyboru porównań wymagań.
+    /// </summary>
+    /// <param name="properties">Lista właściwości.</param>
+    /// <param name="values">Lista wartości.</param>
+    /// <returns>Lista pól typu SelectList dla porównań wymagań.</returns>
     public static List<SelectListItem> GetRequirementComparersAsSelectOptions(List <PropertyInfo> properties, List<object> values)
     {
         var fieldIndex = properties.FindIndex(item => item.Name == RelationFieldsNames.Comparer);
@@ -247,6 +315,12 @@ public static class SelectListLoaderHelper
         }).ToList();
     }
         
+    /// <summary>
+    /// Generuje opcje wyboru niestandardowych encji.
+    /// </summary>
+    /// <param name="properties">Lista właściwości.</param>
+    /// <param name="values">Lista wartości.</param>
+    /// <returns>Lista pól typu SelectList dla niestandardowych encji.</returns>
     public static List<SelectListItem> GetCustomEntitiesAsSelectOptions(List <PropertyInfo> properties, List<object> values)
     {
         var fieldIndex = properties.FindIndex(item => item.Name == RelationFieldsNames.CustomEntityName);

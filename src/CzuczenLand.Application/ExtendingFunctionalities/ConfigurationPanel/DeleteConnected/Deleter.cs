@@ -19,30 +19,136 @@ using Newtonsoft.Json;
 
 namespace CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.DeleteConnected;
 
+/// <summary>
+/// Klasa odpowiedzialna za usuwanie połączonych encji.
+/// </summary>
 public class Deleter : IDeleter
 {
+    /// <summary>
+    /// Repozytorium dla encji Bonus.
+    /// </summary>
     private readonly IRepository<Bonus> _bonusRepository;
-    private readonly IRepository<DriedFruit> _driedFruitRepository;
-    private readonly IRepository<Lamp> _lampRepository;
-    private readonly IRepository<Manure> _manureRepository;
-    private readonly IRepository<Pot> _potRepository;
-    private readonly IRepository<Seed> _seedRepository;
-    private readonly IRepository<Soil> _soilRepository;
-    private readonly IRepository<Water> _waterRepository;
-    private readonly IRepository<Drop> _dropRepository;
-    private readonly IRepository<PlantationStorage> _plantationStorageRepository;
-    private readonly IRepository<PlayerStorage> _playerStorageRepository;
-    private readonly IRepository<Quest> _questRepository;
-    private readonly IRepository<BlackMarketTransaction> _blackMarketTransactionRepository;
-    private readonly IRepository<Requirement> _requirementRepository;
-    private readonly IRepository<QuestRequirementsProgress> _questRequirementsProgressRepository;
-    private readonly IRepository<GeneratedType> _generatedTypeRepository;
-    private readonly IRepository<DropQuest> _dropQuestRepository;
-    private readonly IRepository<DistrictDon> _districtDonRepository;
-    private readonly IRepository<District> _districtRepository;
-    private readonly IPlantService _plantService;
-
     
+    /// <summary>
+    /// Repozytorium dla encji DriedFruit.
+    /// </summary>
+    private readonly IRepository<DriedFruit> _driedFruitRepository;
+    
+    /// <summary>
+    /// Repozytorium dla encji Lamp.
+    /// </summary>
+    private readonly IRepository<Lamp> _lampRepository;
+    
+    /// <summary>
+    /// Repozytorium dla encji Manure.
+    /// </summary>
+    private readonly IRepository<Manure> _manureRepository;
+    
+    /// <summary>
+    /// Repozytorium dla encji Pot.
+    /// </summary>
+    private readonly IRepository<Pot> _potRepository;
+    
+    /// <summary>
+    /// Repozytorium dla encji Seed.
+    /// </summary>
+    private readonly IRepository<Seed> _seedRepository;
+    
+    /// <summary>
+    /// Repozytorium dla encji Soil.
+    /// </summary>
+    private readonly IRepository<Soil> _soilRepository;
+    
+    /// <summary>
+    /// Repozytorium dla encji Water.
+    /// </summary>
+    private readonly IRepository<Water> _waterRepository;
+    
+    /// <summary>
+    /// Repozytorium dla encji Drop.
+    /// </summary>
+    private readonly IRepository<Drop> _dropRepository;
+    
+    /// <summary>
+    /// Repozytorium dla encji PlantationStorage.
+    /// </summary>
+    private readonly IRepository<PlantationStorage> _plantationStorageRepository;
+    
+    /// <summary>
+    /// Repozytorium dla encji PlayerStorage.
+    /// </summary>
+    private readonly IRepository<PlayerStorage> _playerStorageRepository;
+    
+    /// <summary>
+    /// Repozytorium dla encji Quest.
+    /// </summary>
+    private readonly IRepository<Quest> _questRepository;
+    
+    /// <summary>
+    /// Repozytorium dla encji BlackMarketTransaction.
+    /// </summary>
+    private readonly IRepository<BlackMarketTransaction> _blackMarketTransactionRepository;
+    
+    /// <summary>
+    /// Repozytorium dla encji Requirement.
+    /// </summary>
+    private readonly IRepository<Requirement> _requirementRepository;
+    
+    /// <summary>
+    /// Repozytorium dla encji QuestRequirementsProgress.
+    /// </summary>
+    private readonly IRepository<QuestRequirementsProgress> _questRequirementsProgressRepository;
+    
+    /// <summary>
+    /// Repozytorium dla encji GeneratedType.
+    /// </summary>
+    private readonly IRepository<GeneratedType> _generatedTypeRepository;
+    
+    /// <summary>
+    /// Repozytorium dla encji DropQuest.
+    /// </summary>
+    private readonly IRepository<DropQuest> _dropQuestRepository;
+    
+    /// <summary>
+    /// Repozytorium dla encji DistrictDon.
+    /// </summary>
+    private readonly IRepository<DistrictDon> _districtDonRepository;
+    
+    /// <summary>
+    /// Repozytorium dla encji District.
+    /// </summary>
+    private readonly IRepository<District> _districtRepository;
+    
+    /// <summary>
+    /// Usługa obsługująca operacje związane z roślinami.
+    /// </summary>
+    private readonly IPlantService _plantService;
+    
+    
+
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="bonusRepository">Repozytorium dla encji Bonus.</param>
+    /// <param name="driedFruitRepository">Repozytorium dla encji DriedFruit.</param>
+    /// <param name="lampRepository">Repozytorium dla encji Lamp.</param>
+    /// <param name="manureRepository">Repozytorium dla encji Manure.</param>
+    /// <param name="potRepository">Repozytorium dla encji Pot.</param>
+    /// <param name="seedRepository">Repozytorium dla encji Seed.</param>
+    /// <param name="soilRepository">Repozytorium dla encji Soil.</param>
+    /// <param name="waterRepository">Repozytorium dla encji Water.</param>
+    /// <param name="dropRepository">Repozytorium dla encji Drop.</param>
+    /// <param name="plantationStorageRepository">Repozytorium dla encji PlantationStorage.</param>
+    /// <param name="playerStorageRepository">Repozytorium dla encji PlayerStorage.</param>
+    /// <param name="questRepository">Repozytorium dla encji Quest.</param>
+    /// <param name="blackMarketTransactionRepository">Repozytorium dla encji BlackMarketTransaction.</param>
+    /// <param name="requirementRepository">Repozytorium dla encji Requirement.</param>
+    /// <param name="questRequirementsProgressRepository">Repozytorium dla encji QuestRequirementsProgress.</param>
+    /// <param name="generatedTypeRepository">Repozytorium dla encji GeneratedType.</param>
+    /// <param name="dropQuestRepository">Repozytorium dla encji DropQuest.</param>
+    /// <param name="districtDonRepository">Repozytorium dla encji DistrictDon.</param>
+    /// <param name="districtRepository">Repozytorium dla encji District.</param>
+    /// <param name="plantService">Usługa obsługująca operacje związane z roślinami.</param>
     public Deleter(
         IRepository<Bonus> bonusRepository,
         IRepository<DriedFruit> driedFruitRepository, 
@@ -88,6 +194,10 @@ public class Deleter : IDeleter
         _plantService = plantService;
     }
         
+    /// <summary>
+    /// Usuwa powiązane encje związane z daną dzielnicą.
+    /// </summary>
+    /// <param name="entity">Rekord dzielnicy, dla której usuwane są powiązane encje.</param>
     public async Task DeleteConnected(District entity)
     {
         await _generatedTypeRepository.DeleteAsync(item => item.DistrictId == entity.Id);
@@ -98,16 +208,28 @@ public class Deleter : IDeleter
         await _districtDonRepository.DeleteAsync(item => item.DistrictId == entity.Id);
     }
         
+    /// <summary>
+    /// Usuwa powiązane encje związane z danym użytkownikiem.
+    /// </summary>
+    /// <param name="entity">Rekord użytkownika, dla którego usuwane są powiązane encje.</param>
     public async Task DeleteConnected(User entity)
     {
         await _playerStorageRepository.DeleteAsync(item => item.UserId == entity.Id);
     }
         
+    /// <summary>
+    /// Usuwa powiązane encje związane z danym magazynem gracza.
+    /// </summary>
+    /// <param name="entity">Rekord magazynu gracza, dla którego usuwane są powiązane encje.</param>
     public async Task DeleteConnected(PlayerStorage entity)
     {
         await _plantationStorageRepository.DeleteAsync(item => item.UserId == entity.UserId);
     }
         
+    /// <summary>
+    /// Usuwa powiązane encje związane z danym magazynem plantacji.
+    /// </summary>
+    /// <param name="entity">Rekord magazynu plantacji, dla którego usuwane są powiązane encje.</param>
     public async Task DeleteConnected(PlantationStorage entity)
     {
         var objectId = entity.Id;
@@ -149,6 +271,10 @@ public class Deleter : IDeleter
         }
     }
 
+    /// <summary>
+    /// Usuwa powiązane encje związane z danym typem generowanym.
+    /// </summary>
+    /// <param name="entity">Rekord typu generowanego, dla którego usuwane są powiązane encje.</param>
     [UnitOfWork] // Value cannot be null. Parameter name: unitOfWork. Custom repository factory potrzebuje UnitOfWork
     public virtual async Task DeleteConnected(GeneratedType entity)
     {
@@ -156,12 +282,20 @@ public class Deleter : IDeleter
         await DeleteOthersConnectedEntitiesToGeneratedType(entity);
     }
 
+    /// <summary>
+    /// Usuwa powiązane encje związane z danym zadaniem.
+    /// </summary>
+    /// <param name="entity">Rekord zadania, dla którego usuwane są powiązane encje.</param>
     public async Task DeleteConnected(Quest entity)
     {
         await _dropQuestRepository.DeleteAsync(item => item.QuestId == entity.Id);
         await _questRequirementsProgressRepository.DeleteAsync(item => item.QuestId == entity.Id);   
     }
         
+    /// <summary>
+    /// Usuwa powiązane encje związane z daną nagrodą.
+    /// </summary>
+    /// <param name="entity">Rekord nagrody, dla której usuwane są powiązane encje.</param>
     [UnitOfWork]
     public virtual async Task DeleteConnected(Drop entity)
     {
@@ -182,6 +316,10 @@ public class Deleter : IDeleter
         await _dropQuestRepository.DeleteAsync(item => item.DropId == entity.Id);
     }
 
+    /// <summary>
+    /// Usuwa powiązane encje związane z danym wymaganiem.
+    /// </summary>
+    /// <param name="entity">Rekord wymagania, dla którego usuwane są powiązane encje.</param>
     [UnitOfWork] // Value cannot be null. Parameter name: unitOfWork. Custom repository factory potrzebuje UnitOfWork
     public virtual async Task DeleteConnected(Requirement entity)
     {
@@ -223,6 +361,10 @@ public class Deleter : IDeleter
         }
     }
     
+    /// <summary>
+    /// Usuwa powiązane encje związane z danym typem generowanym.
+    /// </summary>
+    /// <param name="generatedType">Typ generowany, dla którego usuwane są powiązane encje.</param>
     private async Task DeleteConnectedEntityToGeneratedType(GeneratedType generatedType)
     {
         var currRepo = CustomRepositoryFactory.GetRepository(generatedType.EntityName);
@@ -234,7 +376,11 @@ public class Deleter : IDeleter
         await DeleteDefinitionHelper.DeleteAllDefinitionsAsync(new List<int> {generatedTypeDefinition.Id}, currRepo, generatedType.EntityName, _plantService);
         await currRepo.DeleteAsync(generatedTypeDefinition.Id);
     }
-        
+       
+    /// <summary>
+    /// Usuwa inne powiązane encje związane z danym typem generowanym.
+    /// </summary>
+    /// <param name="generatedType">Typ wygenerowany, dla którego usuwane są powiązane encje.</param>
     private async Task DeleteOthersConnectedEntitiesToGeneratedType(GeneratedType generatedType)
     {
         if (generatedType.EntityName == EntitiesDbNames.Seed)

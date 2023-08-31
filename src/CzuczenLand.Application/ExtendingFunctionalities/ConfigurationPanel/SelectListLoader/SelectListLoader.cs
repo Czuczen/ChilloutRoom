@@ -22,20 +22,65 @@ using CzuczenLand.ExtendingModels.Models.Products;
 
 namespace CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.SelectListLoader;
 
+/// <summary>
+/// Klasa odpowiedzialna za ładowanie danych do pola listy wyboru formularza (SelectList) w panelu konfiguracji.
+/// </summary>
 public class SelectListLoader : ISelectListLoader
 {
+    /// <summary>
+    /// Repozytorium suszu.
+    /// </summary>
     private readonly IRepository<DriedFruit> _driedFruitRepository;
+    
+    /// <summary>
+    /// Repozytorium dzielnic.
+    /// </summary>
     private readonly IRepository<District> _districtRepository;
+    
+    /// <summary>
+    /// Repozytorium typów generowanych.
+    /// </summary>
     private readonly IRepository<GeneratedType> _generatedTypeRepository;
+    
+    /// <summary>
+    /// Repozytorium użytkowników.
+    /// </summary>
     private readonly IRepository<User, long> _userRepository;
+    
+    /// <summary>
+    /// Kontroluje tworzenie niestandardowych repozytoriów.
+    /// </summary>
     private readonly ICustomRepositoryLoader _customRepositoryLoader;
+    
+    /// <summary>
+    /// Obiekt do sprawdzania uprawnień.
+    /// </summary>
     private readonly IPermissionChecker _permissionChecker;
+    
+    
 
+    /// <summary>
+    /// Właściwość pozwalająca na uzyskanie dostępu do sesji Abp, która przechowuje informacje dotyczące aktualnie zalogowanego użytkownika.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
+    /// </summary>
     public IAbpSession AbpSession { get; set; }
         
+    /// <summary>
+    /// Interfejs ILogger służy do rejestrowania komunikatów z aplikacji.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
+    /// </summary>
     public ILogger Logger { get; set; }
         
     
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="driedFruitRepository">Repozytorium suszu.</param>
+    /// <param name="districtRepository">Repozytorium dzielnic.</param>
+    /// <param name="generatedTypeRepository">Repozytorium typów generowanych.</param>
+    /// <param name="userRepository">Repozytorium użytkowników.</param>
+    /// <param name="customRepositoryLoader">Kontroluje tworzenie niestandardowych repozytoriów.</param>
+    /// <param name="permissionChecker">Obiekt do sprawdzania uprawnień.</param>
     public SelectListLoader(
         IRepository<DriedFruit> driedFruitRepository,
         IRepository<District> districtRepository,
@@ -55,6 +100,15 @@ public class SelectListLoader : ISelectListLoader
         _permissionChecker = permissionChecker;
     }
 
+    /// <summary>
+    /// Pobiera opcje dla pól typu SelectList.
+    /// </summary>
+    /// <param name="properties">Lista właściwości.</param>
+    /// <param name="values">Lista wartości obiektu.</param>
+    /// <param name="entity">Nazwa encji.</param>
+    /// <param name="isEdit">Czy edycja.</param>
+    /// <param name="isAdmin">Czy administrator.</param>
+    /// <returns>Słownik opcji pól typu SelectList.</returns>
     public async Task<Dictionary<string, object>> GetSelectFieldsOptions(List<PropertyInfo> properties, List<object> values, string entity, bool isEdit, bool isAdmin)
     {
         var ret = new Dictionary<string, object>();
@@ -134,6 +188,12 @@ public class SelectListLoader : ISelectListLoader
         return ret;
     }
 
+    /// <summary>
+    /// Pobiera dostępne typy generowane dla danej encji.
+    /// </summary>
+    /// <param name="entity">Nazwa encji obiektu.</param>
+    /// <param name="updatingObjGeneratedTypeid">Id typu generowanego aktualizowanego obiektu.</param>
+    /// <returns>Lista dostępnych typów generowanych.</returns>
     private async Task<List<GeneratedType>> GetAvailableGeneratedTypes(string entity, int? updatingObjGeneratedTypeid)
     {
         var ret = new List<GeneratedType>();
@@ -169,6 +229,15 @@ public class SelectListLoader : ISelectListLoader
         return ret;
     }
 
+    /// <summary>
+    /// Pobiera dostępnych użytkowników dla pola typu SelectList.
+    /// </summary>
+    /// <param name="entity">Nazwa encji.</param>
+    /// <param name="isEdit">Czy edycja.</param>
+    /// <param name="properties">Lista właściwości.</param>
+    /// <param name="values">Lista wartości obiektu.</param>
+    /// <param name="currUserIsAdmin">Czy bieżący użytkownik jest administratorem.</param>
+    /// <returns>Lista dostępnych użytkowników.</returns>
     private async Task<List<User>> GetAvailableUsersForSelectOptions(string entity, bool isEdit, List<PropertyInfo> properties, List<object> values, bool currUserIsAdmin)
     {
         var ret = new List<User>();
@@ -211,6 +280,11 @@ public class SelectListLoader : ISelectListLoader
         return ret;
     }
 
+    /// <summary>
+    /// Pobiera przefiltrowane typy generowane dla danej encji.
+    /// </summary>
+    /// <param name="entity">Nazwa encji.</param>
+    /// <returns>Lista przefiltrowanych typów generowanych.</returns>
     private async Task<List<GeneratedType>> GetFilteredGeneratedTypes(string entity)
     {
         var ret = new List<GeneratedType>();
