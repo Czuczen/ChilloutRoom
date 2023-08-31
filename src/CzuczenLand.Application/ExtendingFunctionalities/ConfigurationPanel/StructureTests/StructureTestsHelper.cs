@@ -9,8 +9,20 @@ using CzuczenLand.ExtendingModels.Models.General;
 
 namespace CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.StructureTests;
 
+/// <summary>
+/// Klasa pomocnicza dla testów struktury definicji opiekunów dzielnic.
+/// </summary>
 public static class StructureTestsHelper
 {
+    /// <summary>
+    /// Sprawdza istnienie produktów użytkownika.
+    /// </summary>
+    /// <param name="structureTest">Test struktury do którego dodawane są wyniki testu.</param>
+    /// <param name="objects">Lista obiektów INamedEntity reprezentujących produkty użytkownika.</param>
+    /// <param name="userName">Nazwa użytkownika.</param>
+    /// <param name="district">Dzielnica.</param>
+    /// <param name="generatedType">Typ generowanego obiektu.</param>
+    /// <param name="definitionExist">Flaga określająca czy istnieje definicja dla typu.</param>
     public static void CheckUserProductsExistence(StructureTest structureTest, List<INamedEntity> objects, string userName, District district, GeneratedType generatedType, bool definitionExist)
     {
         var minorTest = new MinorTest();
@@ -42,6 +54,11 @@ public static class StructureTestsHelper
         structureTest.MinorTests.Add(minorTest);
     }
 
+    /// <summary>
+    /// Ustawia wynik błędu w teście struktury.
+    /// </summary>
+    /// <param name="structureTest">Test struktury do którego dodawane są wyniki błędu.</param>
+    /// <param name="ex">Wyjątek.</param>
     public static void SetErrorInTest(StructureTest structureTest, Exception ex)
     {
         var minorTest = new MinorTest
@@ -53,6 +70,13 @@ public static class StructureTestsHelper
         structureTest.MinorTests.Add(minorTest);
     }
 
+    /// <summary>
+    /// Sprawdza istnienie powiązanego obiektu z rośliną.
+    /// </summary>
+    /// <typeparam name="T">Typ encji połączonej z rośliną.</typeparam>
+    /// <param name="structureTest">Test struktury do którego dodawane są wyniki testu.</param>
+    /// <param name="connectedObj">Obiekt połączony z rośliną.</param>
+    /// <param name="plant">Roślina.</param>
     public static void CheckPlantConnectedEntity<T>(StructureTest structureTest, INamedEntity connectedObj, Plant plant)
     {
         var minorTest = new MinorTest();
@@ -82,7 +106,12 @@ public static class StructureTestsHelper
 
         structureTest.MinorTests.Add(minorTest);
     }
-
+    
+    /// <summary>
+    /// Pobiera kolor statusu testu struktury.
+    /// </summary>
+    /// <param name="status">Status testu struktury.</param>
+    /// <returns>Kolor w formacie szesnastkowym lub eng.</returns>
     public static string GetStatusColor(EnumUtils.StructureTestsStatuses status)
     {
         var ret= status == EnumUtils.StructureTestsStatuses.Ok ? "limegreen" :
@@ -91,6 +120,11 @@ public static class StructureTestsHelper
         return ret;
     }
 
+    /// <summary>
+    /// Pobiera tekstowy opis statusu testu struktury.
+    /// </summary>
+    /// <param name="status">Status testu struktury.</param>
+    /// <returns>Opis statusu.</returns>
     public static string GetStatusText(EnumUtils.StructureTestsStatuses status)
     {
         var ret = status == EnumUtils.StructureTestsStatuses.Ok ? "Ok" :
@@ -99,6 +133,12 @@ public static class StructureTestsHelper
         return ret;
     }
         
+    /// <summary>
+    /// Sprawdza istnienie typu generowanego na produkcie.
+    /// </summary>
+    /// <param name="structureTest">Test struktury do którego dodawane są wyniki testu.</param>
+    /// <param name="objects">Lista obiektów IPlantationGeneratedEntity reprezentujących produkty.</param>
+    /// <param name="generatedTypes">Lista typów generowanych.</param>
     public static void TypeOnProductExist(StructureTest structureTest, List<IPlantationGeneratedEntity> objects, List<GeneratedType> generatedTypes)
     {
         if (objects != null)

@@ -2,9 +2,18 @@
 
 namespace CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.StructureTests.Dto;
 
+/// <summary>
+/// Klasa reprezentująca podtest struktury.
+/// </summary>
 public class MinorTest
 {
+    /// <summary>
+    /// Status podtestu struktury.
+    /// </summary>
     public EnumUtils.StructureTestsStatuses Status { get; set; }
-        
+       
+    /// <summary>
+    /// Opis testu.
+    /// </summary>
     public string Description { get; set; }
 }
