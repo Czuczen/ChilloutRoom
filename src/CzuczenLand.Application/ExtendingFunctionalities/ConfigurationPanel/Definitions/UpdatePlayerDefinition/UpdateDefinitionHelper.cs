@@ -6,14 +6,19 @@ using Newtonsoft.Json;
 
 namespace CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.UpdatePlayerDefinition;
 
+/// <summary>
+/// Klasa pomocnicza dla aktualizacji rekordów graczy generowanych na podstawie definicji.
+/// </summary>
 public static class UpdateDefinitionHelper
 {
     /// <summary>
+    /// Aktualizuje obiekt na podstawie pól do zaktualizowania.
     /// Jednostka pracy zapisze zmiany robione przez currProp?.SetValue
     /// </summary>
-    /// <param name="fieldsToUpdate"></param>
-    /// <param name="destinationObject"></param>
-    /// <returns></returns>
+    /// <typeparam name="TUpdate">Typ obiektu do aktualizacji.</typeparam>
+    /// <param name="fieldsToUpdate">Pola do zaktualizowania.</param>
+    /// <param name="destinationObject">Obiekt docelowy do aktualizacji.</param>
+    /// <returns>Zaktualizowany obiekt docelowy.</returns>
     public static object UpdateObject<TUpdate>(object fieldsToUpdate, object destinationObject)
     {
         if (fieldsToUpdate == null || destinationObject == null) 
