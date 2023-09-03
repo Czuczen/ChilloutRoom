@@ -17,21 +17,67 @@ using Microsoft.AspNet.SignalR;
 
 namespace CzuczenLand.ExtendingFunctionalities.BackgroundWorkers.Quests.Reset;
 
+/// <summary>
+/// Klasa wykonująca pracę w cyklach związaną z resetowaniem zadań.
+/// </summary>
 public class ResetQuestsWorker : PeriodicBackgroundWorkerBase, ISingletonDependency
 {
+    /// <summary>
+    /// Repozytorium dzielnic.
+    /// </summary>
     private readonly IRepository<District> _districtRepository;
+    
+    /// <summary>
+    /// Repozytorium zadań.
+    /// </summary>
     private readonly IRepository<Quest, int> _questRepository;
+    
+    /// <summary>
+    /// Repozytorium magazynów plantacji.
+    /// </summary>
     private readonly IRepository<PlantationStorage, int> _plantationStorageRepository;
+    
+    /// <summary>
+    /// Repozytorium postępu wymagań zadań.
+    /// </summary>
     private readonly IRepository<QuestRequirementsProgress> _questRequirementsProgressRepository;
+    
+    /// <summary>
+    /// Serwis podstawowy obsługujący logikę biznesową związaną z zadaniami.
+    /// </summary>
     private readonly IQuestService _questService;
+    
+    /// <summary>
+    /// Kontekst Huba zadań.
+    /// </summary>
     private IHubContext _questHub;
+    
+    /// <summary>
+    /// Okres czasu (w milisekundach) między cyklami pracy.
+    /// </summary>
     private const int PeriodTime = 60000; // 1min
 
+    
+    /// <summary>
+    /// Aktualna data i godzina.
+    /// </summary>
     private DateTime CurrDateTime { get; set; }
     
+    /// <summary>
+    /// Data pierwszego dnia tygodnia.
+    /// </summary>
     private DateTime DateOfFirstDayWeek { get; set; }
     
-
+    
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="districtRepository">Repozytorium dzielnic.</param>
+    /// <param name="questRepository">Repozytorium zadań.</param>
+    /// <param name="plantationStorageRepository">Repozytorium magazynów plantacji.</param>
+    /// <param name="questRequirementsProgressRepository">Repozytorium postępu wymagań zadań.</param>
+    /// <param name="questService">Serwis zadań.</param>
+    /// <param name="timer">Timer do określania czasu cyklu pracy.</param>
     public ResetQuestsWorker(
         IRepository<District> districtRepository,
         IRepository<Quest, int> questRepository,
@@ -51,8 +97,9 @@ public class ResetQuestsWorker : PeriodicBackgroundWorkerBase, ISingletonDepende
         DateOfFirstDayWeek = DateTimeUtils.GetDateOfFirstDayWeek(Clock.Now);
         Timer.Period = PeriodTime;
     }
-        
+    
     /// <summary>
+    /// Metoda wykonywana w każdym cyklu pracy pracownika.
     /// Nie wychodziło równo co sekundę. Dlatego robimy korektę.
     /// Czasami jeszcze łapie poślizg 15 milisekund ale jak dla mnie jest to już wystarczające.
     /// ASP.NET Boilerplate sam normalizuje godziny. Clock - https://aspnetboilerplate.com/Pages/Documents/Timing
@@ -70,6 +117,7 @@ public class ResetQuestsWorker : PeriodicBackgroundWorkerBase, ISingletonDepende
     }
 
     /// <summary>
+    /// Resetuje ukończone zadania dzienne i tygodniowe.
     /// Musi mieć jednostkę pracy. Musi być virtual. Może być protected lub public. Inaczej nie aktualizuje zmian.
     /// Osobno po to, żeby Stopwatch zrobił prawidłowy pomiar bo na koniec metody jednostka pracy wykonuje swoje operacje 
     /// </summary>

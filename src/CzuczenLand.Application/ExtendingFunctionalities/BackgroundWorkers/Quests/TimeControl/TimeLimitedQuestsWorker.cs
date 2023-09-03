@@ -17,31 +17,99 @@ using Microsoft.AspNet.SignalR;
 
 namespace CzuczenLand.ExtendingFunctionalities.BackgroundWorkers.Quests.TimeControl;
 
+/// <summary>
+/// Klasa wykonująca pracę w cyklach związaną z ograniczonymi czasowo zadaniami.
+/// </summary>
 public class TimeLimitedQuestsWorker : PeriodicBackgroundWorkerBase, ISingletonDependency
 {
+    /// <summary>
+    /// Repozytorium dzielnic.
+    /// </summary>
     private readonly IRepository<District> _districtRepository;
+    
+    /// <summary>
+    /// Repozytorium typów generowanych.
+    /// </summary>
     private readonly IRepository<GeneratedType> _generatedTypeRepository;
+    
+    /// <summary>
+    /// Repozytorium zadań.
+    /// </summary>
     private readonly IRepository<Quest, int> _questRepository;
+    
+    /// <summary>
+    /// Repozytorium magazynów plantacji.
+    /// </summary>
     private readonly IRepository<PlantationStorage, int> _plantationStorageRepository;
+    
+    /// <summary>
+    /// Repozytorium magazynów graczy.
+    /// </summary>
     private readonly IRepository<PlayerStorage, int> _playerStorageRepository;
+    
+    /// <summary>
+    /// Repozytorium postępu wymagań zadań.
+    /// </summary>
     private readonly IRepository<QuestRequirementsProgress> _questRequirementsProgressRepository;
+    
+    /// <summary>
+    /// Serwis podstawowy obsługujący logikę biznesową związaną z zadaniami.
+    /// </summary>
     private readonly IQuestService _questService;
+    
+    /// <summary>
+    /// Kontekst Huba zadań.
+    /// </summary>
     private IHubContext _questHub;
+    
+    /// <summary>
+    /// Okres czasu (w milisekundach) między cyklami pracy.
+    /// </summary>
     private const int PeriodTime = 1000; // 1s
 
+    
+    /// <summary>
+    /// Lista wszystkich postępów wymagań zadań.
+    /// </summary>
     private List<QuestRequirementsProgress> AllQuestsRequirementsProgress { get; set; }
     
+    /// <summary>
+    /// Lista wszystkich magazynów plantacji.
+    /// </summary>
     private List<PlantationStorage> AllPlantationStorages { get; set; }
     
+    /// <summary>
+    /// Lista wszystkich magazynów graczy.
+    /// </summary>
     private List<PlayerStorage> AllPlayerStorages { get; set; }
     
+    /// <summary>
+    /// Lista wszystkich zadań.
+    /// </summary>
     private List<Quest> AllQuests { get; set; }
     
+    /// <summary>
+    /// Lista wszystkich dzielnic.
+    /// </summary>
     private List<District> AllDistricts { get; set; }
     
+    /// <summary>
+    /// Lista wszystkich typów generowanych.
+    /// </summary>
     private List<GeneratedType> AllGeneratedTypes { get; set; }
 
 
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="districtRepository">Repozytorium dzielnic.</param>
+    /// <param name="generatedTypeRepository">Repozytorium typów generowanych.</param>
+    /// <param name="questRepository">Repozytorium zadań.</param>
+    /// <param name="plantationStorageRepository">Repozytorium magazynów plantacji.</param>
+    /// <param name="playerStorageRepository">Repozytorium magazynów graczy.</param>
+    /// <param name="questRequirementsProgressRepository">Repozytorium postępu wymagań zadań.</param>
+    /// <param name="questService">Serwis zadań.</param>
+    /// <param name="timer">AbpTimer do określania czasu cyklu pracy.</param>
     public TimeLimitedQuestsWorker(
         IRepository<District> districtRepository,
         IRepository<GeneratedType> generatedTypeRepository,
@@ -65,6 +133,7 @@ public class TimeLimitedQuestsWorker : PeriodicBackgroundWorkerBase, ISingletonD
     }
         
     /// <summary>
+    /// Metoda wykonywana w każdym cyklu pracy pracownika.
     /// Nie wychodziło równo co sekundę. Dlatego robimy korektę.
     /// Czasami jeszcze łapie poślizg 15 milisekund ale jak dla mnie jest to już wystarczające.
     /// </summary>
@@ -75,10 +144,11 @@ public class TimeLimitedQuestsWorker : PeriodicBackgroundWorkerBase, ISingletonD
         watch.Stop();
         Timer.Period = WorkersHelper.CalculatePeriodTime(PeriodTime, watch);
     }
-
+    
     /// <summary>
+    /// Metoda do przetwarzania ograniczonych czasowo zadań.
     /// Musi mieć jednostkę pracy. Musi być virtual. Może być protected lub public. Inaczej nie aktualizuje zmian.
-    /// Osobno po to, żeby Stopwatch zrobił prawidłowy pomiar bo na koniec metody jednostka pracy wykonuje swoje operacje 
+    /// Osobno po to, żeby Stopwatch zrobił prawidłowy pomiar bo na koniec metody jednostka pracy wykonuje swoje operacje
     /// </summary>
     [UnitOfWork]
     protected virtual void ExecuteWork()
@@ -97,6 +167,9 @@ public class TimeLimitedQuestsWorker : PeriodicBackgroundWorkerBase, ISingletonD
         SetCyclicTime(); // musi być ostatnie
     }
 
+    /// <summary>
+    /// Metoda ustawiająca czas trwania zadań z ograniczonym czasem.
+    /// </summary>
     private void SetDuration()
     {
         var questsWithDuration = AllQuests.Where(item =>
@@ -155,7 +228,8 @@ public class TimeLimitedQuestsWorker : PeriodicBackgroundWorkerBase, ISingletonD
     }
 
     /// <summary>
-    /// Zadanie cykliczne które ma ustawiony czas startu później niż końca nie będzie przedłużane. Takiego zadania nie da się też rozpocząć. 
+    /// Metoda ustawiająca czas cykliczności zadań typu wydarzenie.
+    /// Zadanie cykliczne które ma ustawiony czas startu później niż końca nie będzie przedłużane. Takiego zadania nie da się też rozpocząć.
     /// </summary>
     private void SetCyclicTime()
     {
@@ -186,7 +260,10 @@ public class TimeLimitedQuestsWorker : PeriodicBackgroundWorkerBase, ISingletonD
             }
         }
     }
-
+    
+    /// <summary>
+    /// Metoda wysyłająca graczowi dostępne zadania typu wydarzenie.
+    /// </summary>
     private void SetAvailableEventQuests()
     {
         var currDateTime = Clock.Now;
@@ -229,6 +306,9 @@ public class TimeLimitedQuestsWorker : PeriodicBackgroundWorkerBase, ISingletonD
         }
     }
 
+    /// <summary>
+    /// Metoda usuwająca graczowi niedostępne zadania typu wydarzenie.
+    /// </summary>
     private void RemoveNotAvailableEventQuests()
     {
         var currDateTime = Clock.Now;

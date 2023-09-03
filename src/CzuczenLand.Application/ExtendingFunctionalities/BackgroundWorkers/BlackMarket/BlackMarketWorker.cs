@@ -17,28 +17,88 @@ using CzuczenLand.ExtendingModels.Models.ManyToManyRelations;
 
 namespace CzuczenLand.ExtendingFunctionalities.BackgroundWorkers.BlackMarket;
 
+/// <summary>
+/// Klasa wykonująca pracę w cyklach związaną z transakcjami czarnego rynku.
+/// </summary>
 public class BlackMarketWorker : PeriodicBackgroundWorkerBase, ISingletonDependency
 {
+    /// <summary>
+    /// Repozytorium transakcji na czarnym rynku.
+    /// </summary>
     private readonly IRepository<BlackMarketTransaction> _blackMarketTransactionRepository;
+    
+    /// <summary>
+    /// Repozytorium magazynów plantacji.
+    /// </summary>
     private readonly IRepository<PlantationStorage> _plantationStorageRepository;
+    
+    /// <summary>
+    /// Repozytorium typów generowanych.
+    /// </summary>
     private readonly IRepository<GeneratedType> _generatedTypeRepository;
+    
+    /// <summary>
+    /// Repozytorium dzielnic.
+    /// </summary>
     private readonly IRepository<District> _districtRepository;
+    
+    /// <summary>
+    /// Repozytorium donów dzielnic.
+    /// </summary>
     private readonly IRepository<DistrictDon> _districtDonRepository;
+    
+    /// <summary>
+    /// Interfejs do ładowania niestandardowych repozytoriów.
+    /// </summary>
     private readonly ICustomRepositoryLoader _customRepositoryLoader;
+    
+    /// <summary>
+    /// Generator liczb losowych.
+    /// </summary>
     private readonly Random _random = new();
+    
+    /// <summary>
+    /// Okres czasu (w milisekundach) między cyklami pracy.
+    /// </summary>
     private const int PeriodTime = 5000; // 5s
+    
 
+    /// <summary>
+    /// Lista wszystkich transakcji na czarnym rynku.
+    /// </summary>
     private List<BlackMarketTransaction> AllBlackMarketTransactions { get; set; }
     
+    /// <summary>
+    /// Lista wszystkich typów generowanych.
+    /// </summary>
     private List<GeneratedType> AllGeneratedTypes { get; set; }
     
+    /// <summary>
+    /// Lista wszystkich magazynów plantacji.
+    /// </summary>
     private List<PlantationStorage> AllPlantationStorages { get; set; }
     
+    /// <summary>
+    /// Lista wszystkich dzielnic.
+    /// </summary>
     private List<District> AllDistricts { get; set; }
     
+    /// <summary>
+    /// Lista wszystkich donów dzielnic.
+    /// </summary>
     private List<DistrictDon> AllDistrictDons { get; set; }
         
 
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="blackMarketTransactionRepository">Repozytorium transakcji na czarnym rynku.</param>
+    /// <param name="plantationStorageRepository">Repozytorium magazynów plantacji.</param>
+    /// <param name="generatedTypeRepository">Repozytorium typów generowanych.</param>
+    /// <param name="districtRepository">Repozytorium dzielnic.</param>
+    /// <param name="districtDonRepository">Repozytorium donów dzielnic.</param>
+    /// <param name="customRepositoryLoader">Interfejs do ładowania niestandardowych repozytoriów.</param>
+    /// <param name="timer">AbpTimer do określania czasu cyklu pracy.</param>
     public BlackMarketWorker(
         IRepository<BlackMarketTransaction> blackMarketTransactionRepository,
         IRepository<PlantationStorage> plantationStorageRepository,
@@ -60,6 +120,7 @@ public class BlackMarketWorker : PeriodicBackgroundWorkerBase, ISingletonDepende
     }
         
     /// <summary>
+    /// Metoda wykonywana w każdym cyklu pracy pracownika.
     /// Nie wychodziło równo co sekundę. Dlatego robimy korektę.
     /// Czasami jeszcze łapie poślizg 15 milisekund ale jak dla mnie jest to już wystarczające.
     /// </summary>
@@ -72,6 +133,7 @@ public class BlackMarketWorker : PeriodicBackgroundWorkerBase, ISingletonDepende
     }
 
     /// <summary>
+    /// Przygotowuje dane potrzebne do wystawiania i skupowania transakcji na czarnym rynku.
     /// Musi mieć jednostkę pracy. Musi być virtual. Może być protected lub public. Inaczej nie aktualizuje zmian.
     /// Osobno po to, żeby Stopwatch zrobił prawidłowy pomiar bo na koniec metody jednostka pracy wykonuje swoje operacje
     /// CustomRepositoryFactory potrzebuje jednostkę pracy
@@ -89,6 +151,9 @@ public class BlackMarketWorker : PeriodicBackgroundWorkerBase, ISingletonDepende
         Issue();
     }
 
+    /// <summary>
+    /// Skupuje transakcje na czarnym rynku.
+    /// </summary>
     private void Buy()
     {
         var bought = new List<BlackMarketTransaction>();
@@ -164,6 +229,9 @@ public class BlackMarketWorker : PeriodicBackgroundWorkerBase, ISingletonDepende
         }
     }
 
+    /// <summary>
+    /// Wystawia transakcje na czarnym rynku.
+    /// </summary>
     private void Issue()
     {
         var toIssued = new List<IBlackMarketWorkerProduct>();

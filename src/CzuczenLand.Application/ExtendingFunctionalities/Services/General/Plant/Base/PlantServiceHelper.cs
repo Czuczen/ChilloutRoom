@@ -214,7 +214,7 @@ public static class PlantServiceHelper
     }
 
     /// <summary>
-    /// Przetwarza proces wzrostu i więdnięcia rośliny,.
+    /// Przetwarza proces wzrostu i więdnięcia rośliny.
     /// </summary>
     /// <param name="plant">Roślina do przetworzenia.</param>
     /// <param name="wiltSpeed">Prędkość więdnięcia rośliny.</param>
