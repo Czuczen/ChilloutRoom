@@ -14,9 +14,15 @@ using CzuczenLand.Users.Dto;
 
 namespace CzuczenLand;
 
+/// <summary>
+/// Klasa modułu dla projektu CzuczenLand.Application.
+/// </summary>
 [DependsOn(typeof(CzuczenLandCoreModule), typeof(AbpAutoMapperModule))]
 public class CzuczenLandApplicationModule : AbpModule
 {
+    /// <summary>
+    /// Inicjalizacja modułu.
+    /// </summary>
     public override void Initialize()
     {
         IocManager.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());

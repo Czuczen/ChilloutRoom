@@ -87,14 +87,14 @@ public class BlackMarketHub : Hub, ITransientDependency
     /// <summary>
     /// Konstruktor, który ustawia wstrzykiwane zależności.
     /// </summary>
-    /// <param name="blackMarketTransactionRepository"></param>
-    /// <param name="plantationStorageRepository"></param>
-    /// <param name="playerStorageRepository"></param>
-    /// <param name="generatedTypeRepository"></param>
-    /// <param name="districtRepository"></param>
-    /// <param name="districtDonRepository"></param>
-    /// <param name="plantationStorageService"></param>
-    /// <param name="ignoreChangeService"></param>
+    /// <param name="blackMarketTransactionRepository">Repozytorium przechowujące transakcje czarnego rynku w bazie danych.</param>
+    /// <param name="plantationStorageRepository">Repozytorium przechowujące magazyny plantacji w bazie danych.</param>
+    /// <param name="playerStorageRepository">Repozytorium przechowujące magazyny gracza w bazie danych.</param>
+    /// <param name="generatedTypeRepository">Repozytorium przechowujące typy generowane w bazie danych.</param>
+    /// <param name="districtRepository">Repozytorium przechowujące dzielnice w bazie danych.</param>
+    /// <param name="districtDonRepository">Repozytorium przechowujące don'ów dzielnic w bazie danych.</param>
+    /// <param name="plantationStorageService">Serwis do zarządzania magazynami plantacji.</param>
+    /// <param name="ignoreChangeService">Serwis do zarządzania ignorowaniem zmian.</param>
     public BlackMarketHub(
         IRepository<BlackMarketTransaction> blackMarketTransactionRepository,
         IRepository<PlantationStorage> plantationStorageRepository,

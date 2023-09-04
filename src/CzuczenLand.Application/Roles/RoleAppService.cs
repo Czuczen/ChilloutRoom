@@ -16,15 +16,47 @@ using Microsoft.AspNet.Identity;
 
 namespace CzuczenLand.Roles;
 
+/// <summary>
+/// Serwis aplikacyjny do obsługi ról.
+/// </summary>
 [AbpAuthorize(PermissionNames.Pages_Roles)]
 public class RoleAppService : AsyncCrudAppService<Role, RoleDto, int, PagedResultRequestDto, CreateRoleDto, RoleDto>, IRoleAppService
 {
+    /// <summary>
+    /// Menadżer ról.
+    /// </summary>
     private readonly RoleManager _roleManager;
+    
+    /// <summary>
+    /// Menadżer użytkowników.
+    /// </summary>
     private readonly UserManager _userManager;
+    
+    /// <summary>
+    /// Repozytorium użytkowników.
+    /// </summary>
     private readonly IRepository<User, long> _userRepository;
+    
+    /// <summary>
+    /// Repozytorium przypisania ról do użytkowników.
+    /// </summary>
     private readonly IRepository<UserRole, long> _userRoleRepository;
+    
+    /// <summary>
+    /// Repozytorium ról.
+    /// </summary>
     private readonly IRepository<Role> _roleRepository;
 
+    
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="repository">Repozytorium ról.</param>
+    /// <param name="roleManager">Menadżer ról.</param>
+    /// <param name="userManager">Menadżer użytkowników.</param>
+    /// <param name="userRepository">Repozytorium użytkowników.</param>
+    /// <param name="userRoleRepository">Repozytorium przypisania ról do użytkowników.</param>
+    /// <param name="roleRepository">Repozytorium ról.</param>
     public RoleAppService(
         IRepository<Role> repository,
         RoleManager roleManager,
@@ -41,6 +73,11 @@ public class RoleAppService : AsyncCrudAppService<Role, RoleDto, int, PagedResul
         _roleRepository = roleRepository;
     }
 
+    /// <summary>
+    /// Tworzy nową rolę.
+    /// </summary>
+    /// <param name="input">Dane do utworzenia roli.</param>
+    /// <returns>Stworzona rola jako DTO.</returns>
     public override async Task<RoleDto> CreateAsync(CreateRoleDto input)
     {
         CheckCreatePermission();
@@ -61,6 +98,11 @@ public class RoleAppService : AsyncCrudAppService<Role, RoleDto, int, PagedResul
         return MapToEntityDto(role);
     }
 
+    /// <summary>
+    /// Aktualizuje istniejącą rolę.
+    /// </summary>
+    /// <param name="input">Dane do aktualizacji roli.</param>
+    /// <returns>Zaktualizowana rola jako DTO.</returns>
     public override async Task<RoleDto> UpdateAsync(RoleDto input)
     {
         CheckUpdatePermission();
@@ -81,6 +123,10 @@ public class RoleAppService : AsyncCrudAppService<Role, RoleDto, int, PagedResul
         return MapToEntityDto(role);
     }
 
+    /// <summary>
+    /// Usuwa rolę z systemu.
+    /// </summary>
+    /// <param name="input">Identyfikator roli do usunięcia.</param>
     public override async Task DeleteAsync(EntityDto<int> input)
     {
         CheckDeletePermission();
@@ -101,6 +147,11 @@ public class RoleAppService : AsyncCrudAppService<Role, RoleDto, int, PagedResul
         CheckErrors(await _roleManager.DeleteAsync(role));
     }
 
+    /// <summary>
+    /// Pobiera listę identyfikatorów użytkowników należących do danej roli.
+    /// </summary>
+    /// <param name="roleName">Nazwa roli.</param>
+    /// <returns>Lista identyfikatorów użytkowników.</returns>
     private Task<List<long>> GetUsersInRoleAsync(string roleName)
     {
         var users = (from user in _userRepository.GetAll()
@@ -112,6 +163,10 @@ public class RoleAppService : AsyncCrudAppService<Role, RoleDto, int, PagedResul
         return Task.FromResult(users);
     }
 
+    /// <summary>
+    /// Pobiera wszystkie uprawnienia.
+    /// </summary>
+    /// <returns>Lista wszystkich uprawnień jako DTO.</returns>
     public Task<ListResultDto<PermissionDto>> GetAllPermissions()
     {
         var permissions = PermissionManager.GetAllPermissions();
@@ -121,22 +176,42 @@ public class RoleAppService : AsyncCrudAppService<Role, RoleDto, int, PagedResul
         ));
     }
 
+    /// <summary>
+    /// Tworzy zapytanie do bazy danych z uwzględnieniem filtrowania.
+    /// </summary>
+    /// <param name="input">Parametry zapytania.</param>
+    /// <returns>Zapytanie do bazy danych z uwzględnieniem filtrowania.</returns>
     protected override IQueryable<Role> CreateFilteredQuery(PagedResultRequestDto input)
     {
         return Repository.GetAllIncluding(x => x.Permissions);
     }
 
+    /// <summary>
+    /// Pobiera rolę z uwzględnieniem jej uprawnień.
+    /// </summary>
+    /// <param name="id">Identyfikator roli.</param>
+    /// <returns>Rola wraz z uprawnieniami.</returns>
     protected override Task<Role> GetEntityByIdAsync(int id)
     {
         var role = Repository.GetAllIncluding(x => x.Permissions).FirstOrDefault(x => x.Id == id);
         return Task.FromResult(role);
     }
 
+    /// <summary>
+    /// Sortuje wyniki zapytania.
+    /// </summary>
+    /// <param name="query">Zapytanie do posortowania.</param>
+    /// <param name="input">Parametry zapytania.</param>
+    /// <returns>Posortowane zapytanie.</returns>
     protected override IQueryable<Role> ApplySorting(IQueryable<Role> query, PagedResultRequestDto input)
     {
         return query.OrderBy(r => r.DisplayName);
     }
 
+    /// <summary>
+    /// Sprawdza błędy wynikające z operacji Identity.
+    /// </summary>
+    /// <param name="identityResult">Rezultat operacji Identity.</param>
     protected virtual void CheckErrors(IdentityResult identityResult)
     {
         identityResult.CheckErrors(LocalizationManager);

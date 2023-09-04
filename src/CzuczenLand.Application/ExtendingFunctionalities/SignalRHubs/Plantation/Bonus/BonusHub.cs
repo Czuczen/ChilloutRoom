@@ -53,9 +53,9 @@ public class BonusHub : Hub, ITransientDependency
     /// <summary>
     /// Konstruktor, który ustawia wstrzykiwane zależności.
     /// </summary>
-    /// <param name="bonusRepository"></param>
-    /// <param name="plantationStorageRepository"></param>
-    /// <param name="ignoreChangeService"></param>
+    /// <param name="bonusRepository">Repozytorium przechowujące bonusy w bazie danych.</param>
+    /// <param name="plantationStorageRepository">Repozytorium przechowujące magazyny plantacji w bazie danych.</param>
+    /// <param name="ignoreChangeService">Serwis do zarządzania ignorowaniem zmian.</param>
     public BonusHub(
         IRepository<ExtendingModels.Models.Products.Bonus> bonusRepository,
         IRepository<PlantationStorage> plantationStorageRepository,

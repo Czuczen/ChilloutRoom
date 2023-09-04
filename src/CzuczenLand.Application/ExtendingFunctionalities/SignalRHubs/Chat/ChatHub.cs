@@ -28,8 +28,9 @@ public class ChatHub : Hub, ITransientDependency
     /// </summary>
     public ILogger Logger { get; set; }
 
+    
     /// <summary>
-    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// Konstruktor, który ustawia wstrzykiwane właściwości.
     /// </summary>
     public ChatHub()
     {

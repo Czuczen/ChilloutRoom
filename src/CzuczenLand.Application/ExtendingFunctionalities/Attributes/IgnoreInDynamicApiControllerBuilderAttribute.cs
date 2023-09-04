@@ -3,8 +3,7 @@
 namespace CzuczenLand.ExtendingFunctionalities.Attributes;
 
 /// <summary>
-/// Akcje ignorowane w DynamicApiControllerBuilder
-/// Akcja z tym atrybutem nie będzie tworzona
+/// Atrybut oznaczający, że element ma być pominięty w budowaniu dynamicznego kontrolera API.
 /// </summary>
 public class IgnoreInDynamicApiControllerBuilderAttribute : Attribute
 {

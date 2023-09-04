@@ -59,10 +59,10 @@ public class CustomersHub : Hub, ITransientDependency
     /// <summary>
     /// Konstruktor, który ustawia wstrzykiwane zależności.
     /// </summary>
-    /// <param name="generatedTypeRepository"></param>
-    /// <param name="driedFruitRepository"></param>
-    /// <param name="districtRepository"></param>
-    /// <param name="plantationStorageService"></param>
+    /// <param name="generatedTypeRepository">Repozytorium przechowujące typ generowany w bazie danych.</param>
+    /// <param name="driedFruitRepository">Repozytorium przechowujące susz w bazie danych.</param>
+    /// <param name="districtRepository">Repozytorium przechowujące dzielnice w bazie danych.</param>
+    /// <param name="plantationStorageService">Serwis do zarządzania magazynami plantacji.</param>
     public CustomersHub(
         IRepository<GeneratedType> generatedTypeRepository,
         IRepository<DriedFruit> driedFruitRepository,
