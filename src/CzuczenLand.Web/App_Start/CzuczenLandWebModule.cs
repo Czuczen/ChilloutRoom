@@ -38,7 +38,7 @@ public class CzuczenLandWebModule : AbpModule
         //Enable database based localization
         Configuration.Modules.Zero().LanguageManagement.EnableDbLocalization();
         Configuration.EntityHistory.IsEnabledForAnonymousUsers = true; // workery aktualizują np. gold plantacji
-        Configuration.Modules.AbpWebCommon().SendAllExceptionsToClients = true;
+        Configuration.Modules.AbpWebCommon().SendAllExceptionsToClients = false;
 
         //Configure navigation/menu
         Configuration.Navigation.Providers.Add<CzuczenLandNavigationProvider>();
