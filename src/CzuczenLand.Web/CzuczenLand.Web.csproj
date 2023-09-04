@@ -2159,6 +2159,7 @@
     <Content Include="Views\Account\_TenantChange.js" />
     <Content Include="Views\Account\_TenantChangeModal.js" />
     <Content Include="Views\ConfigurationPanel\EditOrCreate\_FormSelectors.cshtml" />
+    <Content Include="Views\ConfigurationPanel\_DistrictCloner.cshtml" />
     <Content Include="Views\District\_districtsClone.cshtml" />
     <Content Include="Views\District\_districtsClone.css" />
     <Content Include="Views\ConfigurationPanel\EditOrCreate\_EditOrCreateModal.cshtml" />

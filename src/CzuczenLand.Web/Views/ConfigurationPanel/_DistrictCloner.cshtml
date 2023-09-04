@@ -1,0 +1,61 @@
+﻿<div class="modal-dialog">
+    <div class="modal-content border-radius-10px-imp w-auto">
+        <div class="m-10 p-10">
+                    
+            <div class="m-10 p-10 text-center district-cloner-border">
+                <div>
+                    <span class="fa-2x">Klonuj z folderu aplikacji</span>
+                </div>
+                <button id="cloneDistrictFromAppFolder" type="button" class="districtClone btn btn-primary waves-effect p-10 m-10">
+                    Klonuj
+                </button>
+            </div>
+                    
+            <div class="m-10 p-10 text-center district-cloner-border">
+                <div class="text-center">
+                    <span class="fa-2x">Klonuj do folderu aplikacji</span>
+                </div>
+                <label class="m-r-5">Id dzielnicy</label>
+                <input id="districtId" value="" type="number">
+                        
+                <button id="cloneExistingDistrictToAppFolder" type="button" class="districtClone btn btn-primary waves-effect p-10 m-10">
+                    Klonuj
+                </button>
+            </div>
+                    
+            <div class="m-10 p-10 text-center district-cloner-border">
+                <div class="text-center">
+                    <span class="fa-2x">Klonuj z plików xls na dysku google</span>
+                </div>
+                <label class="m-r-5">Id plików (po przecinku)</label>
+                <input id="filesIds" value="" type="text">
+       
+                <button id="cloneDistrictFromXlsFiles" type="button" class="districtClone btn btn-primary waves-effect p-10 m-10">
+                    Klonuj
+                </button>
+            </div>
+                    
+            <div class="m-10 p-10 text-center district-cloner-border">
+                <div class="text-center">
+                    <span class="fa-2x">Klonuj z istniejącej dzielnicy</span>
+                </div>
+                <div class="m-t-5">
+                    <label class="m-r-5">Id dzielnicy</label>
+                    <input id="existingDistrictId" value="" type="number">
+                </div>
+                <div class="m-t-5">
+                    <label class="m-r-5">Ilość klonów</label>
+                    <input id="howMany" value="1" type="number">
+                </div>
+                        
+                <button id="cloneDistrictByAnotherExistingDistrict" type="button" class="districtClone btn btn-primary waves-effect p-10 m-10">
+                    Klonuj
+                </button>
+            </div>
+                    
+            <div class="text-center ">
+                <button id="closeDistrictClonerModalBtn" type="button" class="btn bg-c-chocolate-imp width-100 btn-default waves-effect" data-dismiss="modal">Zamknij</button>
+            </div>
+        </div>
+    </div>
+</div>
