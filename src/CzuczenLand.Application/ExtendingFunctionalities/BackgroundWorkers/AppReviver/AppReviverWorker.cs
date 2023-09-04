@@ -7,11 +7,21 @@ using Abp.Threading.Timers;
 
 namespace CzuczenLand.ExtendingFunctionalities.BackgroundWorkers.AppReviver;
 
+/// <summary>
+/// Klasa wykonująca pracę w cyklach związaną z utrzymaniem ciągłości pracy aplikacji.
+/// </summary>
 public class AppReviverWorker : PeriodicBackgroundWorkerBase, ISingletonDependency
 {
+    /// <summary>
+    /// Okres czasu (w milisekundach) między cyklami pracy.
+    /// </summary>
     private const int PeriodTime = 60000; // 1min
     
     
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="timer">AbpTimer do określania czasu cyklu pracy.</param>
     public AppReviverWorker(AbpTimer timer) : base(timer)
     {
         Timer.Period = PeriodTime;

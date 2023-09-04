@@ -14,8 +14,17 @@ using CzuczenLand.ExtendingModels.Models.Shared;
 
 namespace CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.StructureTests;
 
+/// <summary>
+/// Klasa pomocnicza do przetwarzania zależności pól dla testów struktury.
+/// </summary>
 public static class FieldDependenciesTestsHelper
 {
+    /// <summary>
+    /// Przetwarza zależność ilości posiadanych w testach wymagań.
+    /// </summary>
+    /// <param name="req">Wymaganie, dla którego sprawdzane są zależności.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
+    /// <param name="generatedTypes">Lista dostępnych typów generowanych.</param>
     public static void ProcessRequirementOwnedAmountComparer(Requirement req, StructureTest structureTest, List<GeneratedType> generatedTypes)
     {
         var generatedTypeTest = new MinorTest();
@@ -116,6 +125,11 @@ public static class FieldDependenciesTestsHelper
         structureTest.MinorTests.Add(generatedTypeTest);
     }
     
+    /// <summary>
+    /// Przetwarza zależność poziomu w testach wymagań.
+    /// </summary>
+    /// <param name="req">Wymaganie, dla którego sprawdzane są zależności.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessRequirementLevelComparer(Requirement req, StructureTest structureTest)
     {
         var generatedTypeTest = new MinorTest();
@@ -184,6 +198,11 @@ public static class FieldDependenciesTestsHelper
         structureTest.MinorTests.Add(generatedTypeTest);
     }
 
+    /// <summary>
+    /// Przetwarza zależność zdobytego doświadczenia w testach wymagań.
+    /// </summary>
+    /// <param name="req">Wymaganie, dla którego sprawdzane są zależności.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessRequirementGainedExperienceComparer(Requirement req, StructureTest structureTest)
     {
         var generatedTypeTest = new MinorTest();
@@ -238,6 +257,11 @@ public static class FieldDependenciesTestsHelper
         structureTest.MinorTests.Add(generatedTypeTest);
     }
 
+    /// <summary>
+    /// Przetwarza zależność złota w testach wymagań.
+    /// </summary>
+    /// <param name="req">Wymaganie, dla którego sprawdzane są zależności.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessRequirementGoldComparer(Requirement req, StructureTest structureTest)
     {
         var generatedTypeTest = new MinorTest();
@@ -292,6 +316,11 @@ public static class FieldDependenciesTestsHelper
         structureTest.MinorTests.Add(generatedTypeTest);
     }
 
+    /// <summary>
+    /// Przetwarza zależność prestiżu w testach wymagań.
+    /// </summary>
+    /// <param name="req">Wymaganie, dla którego sprawdzane są zależności.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessRequirementPrestigeComparer(Requirement req, StructureTest structureTest)
     {
         var generatedTypeTest = new MinorTest();
@@ -360,6 +389,12 @@ public static class FieldDependenciesTestsHelper
         structureTest.MinorTests.Add(generatedTypeTest);
     }
 
+    /// <summary>
+    /// Przetwarza zależność ukończonej ilości w testach wymagań.
+    /// </summary>
+    /// <param name="req">Wymaganie, dla którego sprawdzane są zależności.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
+    /// <param name="generatedTypes">Lista generowanych typów.</param>
     public static void ProcessRequirementCompletedAmountComparer(Requirement req, StructureTest structureTest, List<GeneratedType> generatedTypes)
     {
         var generatedTypeTest = new MinorTest();
@@ -450,6 +485,12 @@ public static class FieldDependenciesTestsHelper
         structureTest.MinorTests.Add(generatedTypeTest);
     }
 
+    /// <summary>
+    /// Przetwarza zależność użycia w testach wymagań.
+    /// </summary>
+    /// <param name="req">Wymaganie, dla którego sprawdzane są zależności.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
+    /// <param name="generatedTypes">Lista generowanych typów.</param>
     public static void ProcessRequirementUsagesComparer(Requirement req, StructureTest structureTest, List<GeneratedType> generatedTypes)
     {
         var generatedTypeTest = new MinorTest();
@@ -540,6 +581,12 @@ public static class FieldDependenciesTestsHelper
         structureTest.MinorTests.Add(generatedTypeTest);
     }
 
+    /// <summary>
+    /// Przetwarza zależność zbierania rośliny w testach wymagań.
+    /// </summary>
+    /// <param name="req">Wymaganie, dla którego sprawdzane są zależności.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
+    /// <param name="generatedTypes">Lista generowanych typów.</param>
     public static void ProcessRequirementCollectPlantComparer(Requirement req, StructureTest structureTest, List<GeneratedType> generatedTypes)
     {
         var generatedTypeTest = new MinorTest();
@@ -638,6 +685,12 @@ public static class FieldDependenciesTestsHelper
         structureTest.MinorTests.Add(generatedTypeTest);
     }
 
+    /// <summary>
+    /// Przetwarza zależność usuwania rośliny w testach wymagań.
+    /// </summary>
+    /// <param name="req">Wymaganie, dla którego sprawdzane są zależności.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
+    /// <param name="generatedTypes">Lista generowanych typów.</param>
     public static void ProcessRequirementRemovePlantComparer(Requirement req, StructureTest structureTest, List<GeneratedType> generatedTypes)
     {
         var generatedTypeTest = new MinorTest();
@@ -736,11 +789,23 @@ public static class FieldDependenciesTestsHelper
         structureTest.MinorTests.Add(generatedTypeTest);
     }
 
+    /// <summary>
+    /// Przetwarza zależność tworzenia rośliny w testach wymagań.
+    /// </summary>
+    /// <param name="req">Wymaganie, dla którego sprawdzane są zależności.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
+    /// <param name="generatedTypes">Lista generowanych typów.</param>
     public static void ProcessRequirementCreatePlantComparer(Requirement req, StructureTest structureTest, List<GeneratedType> generatedTypes)
     {
         ProcessRequirementCollectPlantComparer(req, structureTest, generatedTypes);
     }
 
+    /// <summary>
+    /// Przetwarza zależność sprzedaży na czarnym rynku w testach wymagań.
+    /// </summary>
+    /// <param name="req">Wymaganie, dla którego sprawdzane są zależności.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
+    /// <param name="generatedTypes">Lista generowanych typów.</param>
     public static void ProcessRequirementSellOnBlackMarketComparer(Requirement req, StructureTest structureTest, List<GeneratedType> generatedTypes)
     {
         var generatedTypeTest = new MinorTest();
@@ -839,6 +904,12 @@ public static class FieldDependenciesTestsHelper
         structureTest.MinorTests.Add(generatedTypeTest);
     }
 
+    /// <summary>
+    /// Przetwarza zależność zakupu na czarnym rynku w testach wymagań.
+    /// </summary>
+    /// <param name="req">Wymaganie, dla którego sprawdzane są zależności.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
+    /// <param name="generatedTypes">Lista generowanych typów.</param>
     public static void ProcessRequirementBuyOnBlackMarketComparer(Requirement req, StructureTest structureTest, List<GeneratedType> generatedTypes)
     {
         var generatedTypeTest = new MinorTest();
@@ -937,6 +1008,11 @@ public static class FieldDependenciesTestsHelper
         structureTest.MinorTests.Add(generatedTypeTest);
     }
 
+    /// <summary>
+    /// Przetwarza zależność żetonu zadania w testach wymagań.
+    /// </summary>
+    /// <param name="req">Wymaganie, dla którego sprawdzane są zależności.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessRequirementQuestTokenComparer(Requirement req, StructureTest structureTest)
     {
         var generatedTypeTest = new MinorTest();
@@ -1005,26 +1081,51 @@ public static class FieldDependenciesTestsHelper
         structureTest.MinorTests.Add(generatedTypeTest);
     }
 
+    /// <summary>
+    /// Przetwarza zależność żetonu dealera w testach wymagań.
+    /// </summary>
+    /// <param name="req">Wymaganie, dla którego sprawdzane są zależności.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessRequirementDealerTokenComparer(Requirement req, StructureTest structureTest)
     {
         ProcessRequirementQuestTokenComparer(req, structureTest);
     }
 
+    /// <summary>
+    /// Przetwarza zależność żetonu czarnego rynku w testach wymagań.
+    /// </summary>
+    /// <param name="req">Wymaganie, dla którego sprawdzane są zależności.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessRequirementBlackMarketTokenComparer(Requirement req, StructureTest structureTest)
     {
         ProcessRequirementQuestTokenComparer(req, structureTest);
     }
 
+    /// <summary>
+    /// Przetwarza zależność żetonu Dona w testach wymagań.
+    /// </summary>
+    /// <param name="req">Wymaganie, dla którego sprawdzane są zależności.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessRequirementDonTokenComparer(Requirement req, StructureTest structureTest)
     {
         ProcessRequirementQuestTokenComparer(req, structureTest);
     }
 
+    /// <summary>
+    /// Przetwarza zależność żetonu odblokowania w testach wymagań.
+    /// </summary>
+    /// <param name="req">Wymaganie, dla którego sprawdzane są zależności.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessRequirementUnlockTokenComparer(Requirement req, StructureTest structureTest)
     {
         ProcessRequirementQuestTokenComparer(req, structureTest);
     }
 
+    /// <summary>
+    /// Przetwarza zależność honoru w testach wymagań.
+    /// </summary>
+    /// <param name="req">Wymaganie, dla którego sprawdzane są zależności.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessRequirementHonorComparer(Requirement req, StructureTest structureTest)
     {
         var generatedTypeTest = new MinorTest();
@@ -1093,6 +1194,13 @@ public static class FieldDependenciesTestsHelper
         structureTest.MinorTests.Add(generatedTypeTest);
     }
 
+    /// <summary>
+    /// Przetwarza zależności pól nagrody w testach struktury.
+    /// </summary>
+    /// <param name="fieldsHeaveValues">Słownik określający, czy pola mają wartości.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
+    /// <param name="drop">Nagroda, dla której sprawdzane są zależności.</param>
+    /// <param name="generatedTypes">Lista dostępnych typów generowanych.</param>
     public static void ProcessDropFieldDependencies(Dictionary<string, bool> fieldsHeaveValues, StructureTest structureTest, Drop drop, List<GeneratedType> generatedTypes)
     {
         if (!fieldsHeaveValues.Any(item => item.Value))
@@ -1404,6 +1512,12 @@ public static class FieldDependenciesTestsHelper
         }
     }
 
+    /// <summary>
+    /// Przetwarza zależności pola ilości posiadanych produktów w testach struktury.
+    /// </summary>
+    /// <param name="product">Produkt, dla którego sprawdzane są zależności.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
+    /// <param name="generatedTypes">Lista dostępnych typów generowanych.</param>
     public static void ProcessProductOwnedAmountFieldDependencies(Product product, StructureTest structureTest, List<GeneratedType> generatedTypes)
     {
         var minorTest1 = new MinorTest();
@@ -1439,6 +1553,11 @@ public static class FieldDependenciesTestsHelper
         structureTest.MinorTests.Add(minorTest1);
     }
 
+    /// <summary>
+    /// Przetwarza zależności pól cen produktu w testach struktury.
+    /// </summary>
+    /// <param name="product">Produkt, dla którego sprawdzane są zależności cen.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessProductPricesForShopItemFieldDependencies(Product product, StructureTest structureTest)
     {
         var minorTest = new MinorTest();
@@ -1499,6 +1618,11 @@ public static class FieldDependenciesTestsHelper
         structureTest.MinorTests.Add(minorTest);
     }
 
+    /// <summary>
+    /// Przetwarza zależności pól cen produktu czarnego rynku w testach struktury.
+    /// </summary>
+    /// <param name="product">Produkt, dla którego sprawdzane są zależności cen.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessProductPricesForBlackMarketFieldDependencies(Product product, StructureTest structureTest)
     {
         var minorTest = new MinorTest();
@@ -1567,6 +1691,11 @@ public static class FieldDependenciesTestsHelper
         structureTest.MinorTests.Add(minorTest);
     }
 
+    /// <summary>
+    /// Przetwarza zależności pól dla suszu w testach struktury.
+    /// </summary>
+    /// <param name="driedFruit">Susz, dla którego sprawdzane są zależności pól.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessDriedFruitFieldDependencies(DriedFruit driedFruit, StructureTest structureTest)
     {
         var minorTest1 = new MinorTest();
@@ -1625,6 +1754,11 @@ public static class FieldDependenciesTestsHelper
         structureTest.MinorTests.Add(minorTest2);
     }
 
+    /// <summary>
+    /// Przetwarza zależności pól dla bonusu w testach struktury.
+    /// </summary>
+    /// <param name="bonus">Bonus, dla którego sprawdzane są zależności pól.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessBonusFieldDependencies(Bonus bonus, StructureTest structureTest)
     {
         var minorTest1 = new MinorTest();
@@ -1733,6 +1867,11 @@ public static class FieldDependenciesTestsHelper
         structureTest.MinorTests.Add(minorTest4);
     }
 
+    /// <summary>
+    /// Przetwarza zależności pól dla zadania w testach struktury.
+    /// </summary>
+    /// <param name="quest">Zadanie, dla którego sprawdzane są zależności pól.</param>
+    /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessQuestFieldDependencies(Quest quest, StructureTest structureTest)
     {
         var levelRequirementTest = new MinorTest();

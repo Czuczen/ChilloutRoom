@@ -16,17 +16,55 @@ using Microsoft.AspNet.SignalR;
 
 namespace CzuczenLand.ExtendingFunctionalities.BackgroundWorkers.CustomerZone;
 
+/// <summary>
+/// Klasa wykonująca pracę w cyklach związaną z wystawianiem ofert w strefie klienta.
+/// </summary>
 public class CustomerZoneWorker : PeriodicBackgroundWorkerBase, ISingletonDependency
 {
+    /// <summary>
+    /// Repozytorium dla suszów.
+    /// </summary>
     private readonly IRepository<DriedFruit> _driedFruitRepository;
+    
+    /// <summary>
+    /// Repozytorium dla roślin.
+    /// </summary>
     private readonly IRepository<ExtendingModels.Models.General.Plant> _plantRepository;
+    
+    /// <summary>
+    /// Repozytorium dla typów generowanych.
+    /// </summary>
     private readonly IRepository<GeneratedType> _generatedTypeRepository;
+    
+    /// <summary>
+    /// Repozytorium dla dzielnic.
+    /// </summary>
     private readonly IRepository<District> _districtRepository;
+    
+    /// <summary>
+    /// Kontekst Huba strefy klienta.
+    /// </summary>
     private IHubContext _customersHub;
+    
+    /// <summary>
+    /// Generator liczb losowych.
+    /// </summary>
     private readonly Random _random = new();
+    
+    /// <summary>
+    /// Okres czasu (w milisekundach) między cyklami pracy.
+    /// </summary>
     private const int PeriodTime = 20000; // 20s 
         
 
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="timer">AbpTimer do określania czasu cyklu pracy.</param>
+    /// <param name="driedFruitRepository">Repozytorium dla suszów.</param>
+    /// <param name="plantRepository">Repozytorium dla roślin.</param>
+    /// <param name="generatedTypeRepository">Repozytorium dla typów generowanych.</param>
+    /// <param name="districtRepository">Repozytorium dla dzielnic.</param>
     public CustomerZoneWorker(
         AbpTimer timer,
         IRepository<DriedFruit> driedFruitRepository,
@@ -44,6 +82,7 @@ public class CustomerZoneWorker : PeriodicBackgroundWorkerBase, ISingletonDepend
     }
 
     /// <summary>
+    /// Metoda wykonywana w każdym cyklu pracy pracownika.
     /// Nie wychodziło równo co sekundę. Dlatego robimy korektę.
     /// Czasami jeszcze łapie poślizg 15 milisekund ale jak dla mnie jest to już wystarczające.
     /// </summary>
@@ -56,6 +95,7 @@ public class CustomerZoneWorker : PeriodicBackgroundWorkerBase, ISingletonDepend
     }
 
     /// <summary>
+    /// Tworzy oferty klientów dla strefy klienta i wysyła je do graczy.
     /// Musi mieć jednostkę pracy. Musi być virtual. Może być protected lub public. Inaczej nie aktualizuje zmian.
     /// Osobno po to, żeby Stopwatch zrobił prawidłowy pomiar bo na koniec metody jednostka pracy wykonuje swoje operacje 
     /// </summary>

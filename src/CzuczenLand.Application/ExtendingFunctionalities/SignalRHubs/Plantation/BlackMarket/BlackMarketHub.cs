@@ -22,23 +22,79 @@ using Microsoft.AspNet.SignalR;
 
 namespace CzuczenLand.ExtendingFunctionalities.SignalRHubs.Plantation.BlackMarket;
 
+/// <summary>
+/// Hub SignalR obsługujący czarny rynek.
+/// [AbpAuthorize] dawało wyjątek - Abp.Authorization.AbpAuthorizationException: Current user did not login to the application!
+/// Nic nie psuł ale jednak wyskakiwał. W każdym hub'ie wyskakiwał. Użycie [AbpMvcAuthorize] rozwiązało problem.
+/// </summary>
 [AbpMvcAuthorize]
 public class BlackMarketHub : Hub, ITransientDependency
 {
+    /// <summary>
+    /// Repozytorium przechowujące transakcje czarnego rynku w bazie danych.
+    /// </summary>
     private readonly IRepository<BlackMarketTransaction> _blackMarketTransactionRepository;
+    
+    /// <summary>
+    /// Repozytorium przechowujące magazyny plantacji w bazie danych.
+    /// </summary>
     private readonly IRepository<PlantationStorage> _plantationStorageRepository;
+    
+    /// <summary>
+    /// Repozytorium przechowujące magazyny gracza w bazie danych.
+    /// </summary>
     private readonly IRepository<PlayerStorage> _playerStorageRepository;
+    
+    /// <summary>
+    /// Repozytorium przechowujące typy generowane w bazie danych.
+    /// </summary>
     private readonly IRepository<GeneratedType> _generatedTypeRepository;
+    
+    /// <summary>
+    /// Repozytorium przechowujące dzielnice w bazie danych.
+    /// </summary>
     private readonly IRepository<District> _districtRepository;
+    
+    /// <summary>
+    /// Repozytorium przechowujące don'ów dzielnic w bazie danych.
+    /// </summary>
     private readonly IRepository<DistrictDon> _districtDonRepository;
+    
+    /// <summary>
+    /// Serwis do zarządzania magazynami plantacji.
+    /// </summary>
     private readonly IPlantationStorageService _plantationStorageService;
+    
+    /// <summary>
+    /// Serwis do zarządzania ignorowaniem zmian.
+    /// </summary>
     private readonly IgnoreChangeService _ignoreChangeService;
 
+    
+    /// <summary>
+    /// Właściwość pozwalająca na uzyskanie dostępu do sesji Abp, która przechowuje informacje dotyczące aktualnie zalogowanego użytkownika.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
+    /// </summary>
     public IAbpSession AbpSession { get; set; }
         
+    /// <summary>
+    /// Interfejs ILogger służy do rejestrowania komunikatów z aplikacji.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
+    /// </summary>
     public ILogger Logger { get; set; }
         
         
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="blackMarketTransactionRepository">Repozytorium przechowujące transakcje czarnego rynku w bazie danych.</param>
+    /// <param name="plantationStorageRepository">Repozytorium przechowujące magazyny plantacji w bazie danych.</param>
+    /// <param name="playerStorageRepository">Repozytorium przechowujące magazyny gracza w bazie danych.</param>
+    /// <param name="generatedTypeRepository">Repozytorium przechowujące typy generowane w bazie danych.</param>
+    /// <param name="districtRepository">Repozytorium przechowujące dzielnice w bazie danych.</param>
+    /// <param name="districtDonRepository">Repozytorium przechowujące don'ów dzielnic w bazie danych.</param>
+    /// <param name="plantationStorageService">Serwis do zarządzania magazynami plantacji.</param>
+    /// <param name="ignoreChangeService">Serwis do zarządzania ignorowaniem zmian.</param>
     public BlackMarketHub(
         IRepository<BlackMarketTransaction> blackMarketTransactionRepository,
         IRepository<PlantationStorage> plantationStorageRepository,
@@ -61,7 +117,12 @@ public class BlackMarketHub : Hub, ITransientDependency
         AbpSession = NullAbpSession.Instance;
         Logger = NullLogger.Instance;
     }
-        
+
+    /// <summary>
+    /// Metoda służąca do zakupu przedmiotu na czarnym rynku.
+    /// </summary>
+    /// <param name="transactionId">Identyfikator transakcji.</param>
+    /// <param name="useDonToken">Flaga określająca, czy należy użyć żetonu Don'a.</param>
     [UnitOfWork]
     public virtual async Task Buy(int transactionId, bool useDonToken)
     {
@@ -140,6 +201,11 @@ public class BlackMarketHub : Hub, ITransientDependency
         }
     }
 
+    /// <summary>
+    /// Metoda służąca do wystawiania przedmiotu na czarnym rynku.
+    /// </summary>
+    /// <param name="issueTransaction">Obiekt zawierający informacje o wystawianej transakcji na czarnym rynku.</param>
+    /// <param name="useBlackMarketToken">Flaga określająca, czy należy użyć żetonu czarnego rynku.</param>
     [UnitOfWork]
     public virtual async Task Issue(IssueTransaction issueTransaction, bool useBlackMarketToken)
     {
@@ -233,6 +299,10 @@ public class BlackMarketHub : Hub, ITransientDependency
         }
     }
         
+    /// <summary>
+    /// Metoda służąca do anulowania wystawionej transakcji na czarnym rynku.
+    /// </summary>
+    /// <param name="transactionId">Identyfikator transakcji do anulowania.</param>
     [UnitOfWork]
     public virtual async Task Cancel(int transactionId)
     {
@@ -262,6 +332,15 @@ public class BlackMarketHub : Hub, ITransientDependency
         }
     }
 
+    /// <summary>
+    /// Metoda pomocnicza do obsługi operacji wystawienia transakcji na czarnym rynku.
+    /// </summary>
+    /// <param name="issuedItem">Wystawiany przedmiot.</param>
+    /// <param name="issueTransaction">Obiekt zawierający informacje o wystawianej transakcji na czarnym rynku.</param>
+    /// <param name="userId">Identyfikator użytkownika.</param>
+    /// <param name="playerName">Nazwa gracza.</param>
+    /// <param name="districtId">Identyfikator dzielnicy.</param>
+    /// <returns>Status transakcji na czarnym rynku po wystawieniu przedmiotu.</returns>
     private async Task<BlackMarketTransactionStatus> IssueTransaction(Product issuedItem, IssueTransaction issueTransaction, long userId, string playerName, int districtId)
     {
         issuedItem.OwnedAmount -= issueTransaction.Quantity;

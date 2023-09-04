@@ -5,8 +5,17 @@ using CzuczenLand.ExtendingFunctionalities.Utils;
 
 namespace CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Parser.Strategies.Display;
 
+/// <summary>
+/// Klasa odpowiedzialna za przetwarzanie wartości wyświetlanych użytkownikowi.
+/// </summary>
 public class DisplayStrategy : IParserStrategy
 {
+    /// <summary>
+    /// Przetwarza wartość właściwości na podstawie jej typu.
+    /// </summary>
+    /// <param name="prop">Właściwość do przetworzenia.</param>
+    /// <param name="value">Wartość do przetworzenia.</param>
+    /// <returns>Przetworzona wartość edytowana.</returns>
     public object ParseValue(PropertyInfo prop, object value)
     {
         if (prop != null && value == null && prop.PropertyType != typeof(string) && Nullable.GetUnderlyingType(prop.PropertyType) == null)
@@ -17,7 +26,13 @@ public class DisplayStrategy : IParserStrategy
 
         return ParseValue(ParserHelper.GetPropType(prop), value);
     }
-
+    
+    /// <summary>
+    /// Przetwarza wartość na podstawie określonego typu właściwości.
+    /// </summary>
+    /// <param name="propType">Typ właściwości.</param>
+    /// <param name="value">Wartość do przetworzenia.</param>
+    /// <returns>Przetworzona wartość edytowana.</returns>
     public object ParseValue(EnumUtils.PropTypes? propType, object value)
     {
         if (propType != null && (value == null || value.ToString() == "")) return "";

@@ -9,12 +9,30 @@ using Newtonsoft.Json;
 
 namespace CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.CreatePlayerDefinition.SupportedTypes;
 
+/// <summary>
+/// Klasa do tworzenia obiektów typu Quest.
+/// </summary>
 public class CreateQuest : CreateDefinition<Quest, QuestCreateDto>, ICreateDefinition<QuestCreateDto>
 {
+    /// <summary>
+    /// Repozytorium magazynów graczy.
+    /// </summary>
     private readonly IRepository<PlayerStorage> _playerStorageRepository;
+    
+    /// <summary>
+    /// Menedżer jednostki pracy.
+    /// </summary>
     private readonly IUnitOfWorkManager _unitOfWorkManager;
 
     
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="repository">Repozytorium zadań.</param>
+    /// <param name="generatedTypeRepository">Repozytorium typów generowanych.</param>
+    /// <param name="plantationStorageRepository">Repozytorium magazynów plantacji.</param>
+    /// <param name="playerStorageRepository">Repozytorium magazynów graczy.</param>
+    /// <param name="unitOfWorkManager">Menedżer jednostki pracy.</param>
     public CreateQuest(
         IRepository<Quest> repository, 
         IRepository<GeneratedType> generatedTypeRepository, 
@@ -28,6 +46,10 @@ public class CreateQuest : CreateDefinition<Quest, QuestCreateDto>, ICreateDefin
         _unitOfWorkManager = unitOfWorkManager;
     }
         
+    /// <summary>
+    /// Tworzy rekordy graczy na podstawie utworzonej definicji zadania.
+    /// </summary>
+    /// <param name="entity">DTO utworzonej definicji zadania.</param>
     public override async Task Create(QuestCreateDto entity)
     {
         var districtPlantationStorages = await GetPlantationStoragesByGeneratedType(entity);

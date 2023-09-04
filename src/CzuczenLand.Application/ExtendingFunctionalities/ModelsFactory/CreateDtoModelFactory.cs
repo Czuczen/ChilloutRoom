@@ -20,8 +20,16 @@ using CzuczenLand.ExtendingFunctionalities.Services.Products.Water.Dto;
 
 namespace CzuczenLand.ExtendingFunctionalities.ModelsFactory;
 
+/// <summary>
+/// Fabryka do tworzenia obiektów DTO dla operacji tworzenia.
+/// </summary>
 public static class CreateDtoModelFactory
 {
+    /// <summary>
+    /// Zwraca nowy obiekt DTO na podstawie nazwy encji dla operacji tworzenia.
+    /// </summary>
+    /// <param name="entityCreateDtoName">Nazwa encji DTO do stworzenia.</param>
+    /// <returns>Nowy obiekt DTO dla operacji tworzenia.</returns>
     public static object GetCreateDtoNewObjectByEntityCreateDtoName(string entityCreateDtoName)
     {
         switch (entityCreateDtoName)
@@ -63,6 +71,11 @@ public static class CreateDtoModelFactory
         }
     }
         
+    /// <summary>
+    /// Zwraca typ encji DTO tworzenia.
+    /// </summary>
+    /// <param name="entityCreateDtoName">Nazwa encji DTO do stworzenia.</param>
+    /// <returns>Typ encji DTO dla operacji tworzenia.</returns>
     public static Type GetCreateDtoEntityTypeByEntityCreateDtoName(string entityCreateDtoName)
     {
         switch (entityCreateDtoName)

@@ -17,15 +17,47 @@ using Microsoft.AspNet.Identity;
 
 namespace CzuczenLand.MultiTenancy;
 
+/// <summary>
+/// Serwis aplikacyjny dla operacji na dzierżawcach.
+/// </summary>
 [AbpAuthorize(PermissionNames.Pages_Tenants)]
 public class TenantAppService : AsyncCrudAppService<Tenant, TenantDto, int, PagedResultRequestDto, CreateTenantDto, TenantDto>, ITenantAppService
 {
+    /// <summary>
+    /// Manager dzierżawców.
+    /// </summary>
     private readonly TenantManager _tenantManager;
+    
+    /// <summary>
+    /// Manager edycji.
+    /// </summary>
     private readonly EditionManager _editionManager;
+    
+    /// <summary>
+    /// Manager ról.
+    /// </summary>
     private readonly RoleManager _roleManager;
+    
+    /// <summary>
+    /// Manager użytkowników.
+    /// </summary>
     private readonly UserManager _userManager;
+    
+    /// <summary>
+    /// Migrator bazy danych ABP Zero.
+    /// </summary>
     private readonly IAbpZeroDbMigrator _abpZeroDbMigrator;
+    
 
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="repository">Repozytorium dzierżawców.</param>
+    /// <param name="tenantManager">Manager dzierżawców.</param>
+    /// <param name="editionManager">Manager edycji.</param>
+    /// <param name="userManager">Manager użytkowników.</param>
+    /// <param name="roleManager">Manager ról.</param>
+    /// <param name="abpZeroDbMigrator">Migrator bazy danych ABP Zero.</param>
     public TenantAppService(
         IRepository<Tenant, int> repository,
 
@@ -43,7 +75,12 @@ public class TenantAppService : AsyncCrudAppService<Tenant, TenantDto, int, Page
         _abpZeroDbMigrator = abpZeroDbMigrator;
         _userManager = userManager;
     }
-
+    
+    /// <summary>
+    /// Tworzy nowego dzierżawcę.
+    /// </summary>
+    /// <param name="input">Dane wejściowe dla nowego dzierżawcy.</param>
+    /// <returns>Dto dzierżawcy.</returns>
     public override async Task<TenantDto> CreateAsync(CreateTenantDto input)
     {
         CheckCreatePermission();
@@ -91,6 +128,11 @@ public class TenantAppService : AsyncCrudAppService<Tenant, TenantDto, int, Page
         return MapToEntityDto(tenant);
     }
 
+    /// <summary>
+    /// Mapuje dane wejściowe na encję dzierżawcy.
+    /// </summary>
+    /// <param name="updateInput">Dane wejściowe do aktualizacji dzierżawcy.</param>
+    /// <param name="entity">Encja dzierżawcy.</param>
     protected override void MapToEntity(TenantDto updateInput, Tenant entity)
     {
         //Manually mapped since TenantDto contains non-editable properties too.
@@ -99,6 +141,10 @@ public class TenantAppService : AsyncCrudAppService<Tenant, TenantDto, int, Page
         entity.IsActive = updateInput.IsActive;
     }
 
+    /// <summary>
+    /// Usuwa dzierżawcę.
+    /// </summary>
+    /// <param name="input">Identyfikator dzierżawcy do usunięcia.</param>
     public override async Task DeleteAsync(EntityDto<int> input)
     {
         CheckDeletePermission();
@@ -107,6 +153,10 @@ public class TenantAppService : AsyncCrudAppService<Tenant, TenantDto, int, Page
         await _tenantManager.DeleteAsync(tenant);
     }
 
+    /// <summary>
+    /// Sprawdza błędy w wyniku operacji IdentityResult i obsługuje je.
+    /// </summary>
+    /// <param name="identityResult">Wynik operacji IdentityResult.</param>
     private void CheckErrors(IdentityResult identityResult)
     {
         identityResult.CheckErrors(LocalizationManager);

@@ -5,8 +5,16 @@ using CzuczenLand.ExtendingFunctionalities.Consts.ViewParser;
 
 namespace CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.ViewParser;
 
+/// <summary>
+/// Klasa pomocnicza dostarczająca metody wspomagające operacje przetwarzania wartości obiektów, które będą wyświetlone użytkownikowi.
+/// </summary>
 public static class ViewParserHelper
 {
+    /// <summary>
+    /// Pobiera nazwę encji pola relacyjnego.
+    /// </summary>
+    /// <param name="prop">Informacje o właściwości pola relacyjnego.</param>
+    /// <returns>Nazwa encji pola relacyjnego lub null, jeśli nie znaleziono.</returns>
     public static string GetRelationFieldEntityName(PropertyInfo prop)
     {
         var customAttrData = prop?.CustomAttributes?.SingleOrDefault(currAttr =>
@@ -20,6 +28,11 @@ public static class ViewParserHelper
         return ret;
     }
 
+    /// <summary>
+    /// Pobiera listę pól relacyjnych z listy właściwości encji.
+    /// </summary>
+    /// <param name="properties">Lista informacji o właściwościach obiektu.</param>
+    /// <returns>Lista pól relacyjnych.</returns>
     public static List<PropertyInfo> GetRelationFields(List<PropertyInfo> properties)
     {
         return properties.Where(currProp =>

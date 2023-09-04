@@ -4,8 +4,16 @@ using CzuczenLand.ExtendingFunctionalities.Utils;
 
 namespace CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Parser;
 
+/// <summary>
+/// Klasa pomocnicza zawierająca metody do wspomagania przetwarzania właściwości.
+/// </summary>
 public static class ParserHelper
 {
+    /// <summary>
+    /// Pobiera typ właściwości i przyporządkowuje go do odpowiedniego typu wyliczeniowego (enum).
+    /// </summary>
+    /// <param name="prop">Właściwość, dla której ma zostać pobrany typ.</param>
+    /// <returns>Typ wyliczeniowy (enum) opisujący typ właściwości lub null, jeśli nie można określić typu.</returns>
     public static EnumUtils.PropTypes? GetPropType(PropertyInfo prop)
     {
         EnumUtils.PropTypes? ret = null;

@@ -2,10 +2,19 @@
 
 namespace CzuczenLand.Configuration.Ui;
 
+/// <summary>
+/// Klasa zawierająca informacje o dostępnych motywach interfejsu użytkownika.
+/// </summary>
 public static class UiThemes
 {
+    /// <summary>
+    /// Lista z informacjami o wszystkich motywach.
+    /// </summary>
     public static List<UiThemeInfo> All { get; }
-
+    
+    /// <summary>
+    /// Konstruktor statyczny klasy UiThemes inicjalizujący listę motywów.
+    /// </summary>
     static UiThemes()
     {
         All = new List<UiThemeInfo>

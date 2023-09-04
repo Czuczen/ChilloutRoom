@@ -9,12 +9,33 @@ using CzuczenLand.ExtendingModels.Models.Shared;
 
 namespace CzuczenLand.ExtendingFunctionalities.SignalRHubs.Plantation.Storage;
 
+/// <summary>
+/// Klasa pomocnicza dla hub'a magazynu/zasobów
+/// </summary>
 public static class StorageHubHelper
 {
+    /// <summary>
+    /// Stała przechowująca nazwę akcji "sprzedaj".
+    /// </summary>
     public const string SellActionName = "sell";
-    public const string BuyActionName = "buy";
-        
     
+    /// <summary>
+    /// Stała przechowująca nazwę akcji "kup".
+    /// </summary>
+    public const string BuyActionName = "buy";
+    
+    
+    /// <summary>
+    /// Metoda przetwarzająca wymianę waluty.
+    /// W zależności od podanej nazwy waluty oraz akcji (kupna/sprzedaży) oraz ilości dokonuje wymiany waluty.
+    /// </summary>
+    /// <param name="district">Dzielnica, w której dokonywana jest transakcja.</param>
+    /// <param name="playerPlantationStorage">Magazyn plantacji gracza.</param>
+    /// <param name="playerStorage">Magazyn przedmiotów gracza.</param>
+    /// <param name="currencyName">Nazwa wymienianej waluty.</param>
+    /// <param name="action">Typ akcji (kupna/sprzedaży).</param>
+    /// <param name="amount">Ilość wymienianej waluty.</param>
+    /// <param name="shopTransaction">Informacje o wykonywanej transakcji.</param>
     public static void ProcessCurrencyExchange(District district, PlantationStorage playerPlantationStorage, 
         PlayerStorage playerStorage, string currencyName, string action, decimal amount, ShopTransaction shopTransaction)
     {
@@ -123,7 +144,17 @@ public static class StorageHubHelper
                 break;
         }
     }
-        
+
+    /// <summary>
+    /// Metoda statyczna odpowiedzialna za zakup produktu przez użytkownika.
+    /// Wylicza cenę za zakupioną ilość produktu, sprawdza czy użytkownik ma wystarczającą ilość złota i aktualizuje ilość produktu oraz stan konta plantacji.
+    /// </summary>
+    /// <param name="shopTransaction">Obiekt transakcji sklepu.</param>
+    /// <param name="action">Typ akcji (kupna/sprzedaży).</param>
+    /// <param name="plantationStorage">Magazyn plantacji gracza.</param>
+    /// <param name="amount">Ilość produktu do zakupu.</param>
+    /// <param name="product">Obiekt produktu.</param>
+    /// <typeparam name="T">Typ produktu.</typeparam>
     public static void BuyAction<T>(ShopTransaction shopTransaction, string action, PlantationStorage plantationStorage, decimal amount, IStorageProduct product)
     {
         var buyPrice = (decimal) product.BuyPrice;
@@ -143,7 +174,17 @@ public static class StorageHubHelper
             SetNotSuccessFullTransaction(shopTransaction, action);
         }
     }
-        
+
+    /// <summary>
+    /// Metoda statyczna odpowiedzialna za sprzedaż produktu przez użytkownika.
+    /// Wylicza cenę za sprzedaną ilość produktu, sprawdza czy użytkownik ma wystarczającą ilość produktu i aktualizuje ilość produktu oraz stan konta plantacji.
+    /// </summary>
+    /// <param name="shopTransaction">Obiekt transakcji sklepu.</param>
+    /// <param name="action">Typ akcji (kupna/sprzedaży).</param>
+    /// <param name="plantationStorage">Magazyn plantacji gracza.</param>
+    /// <param name="amount">Ilość produktu do sprzedaży.</param>
+    /// <param name="product">Obiekt produktu.</param>
+    /// <typeparam name="T">Typ produktu.</typeparam>
     public static void SellAction<T>(ShopTransaction shopTransaction, string action, PlantationStorage plantationStorage, decimal amount, 
         IStorageProduct product) 
     {
@@ -166,6 +207,17 @@ public static class StorageHubHelper
         }
     }
 
+    /// <summary>
+    /// Metoda prywatna odpowiedzialna za ustawienie komunikatu o powodzeniu transakcji.
+    /// Tworzy komunikat informujący o rodzaju transakcji, ilości i jednostce sprzedanego/kupionego produktu, oraz wartości kosztu lub zysku.
+    /// </summary>
+    /// <param name="shopTransaction">Obiekt transakcji sklepu.</param>
+    /// <param name="amount">Ilość produktu sprzedanego/kupionego</param>
+    /// <param name="goldAmount">Wartość kosztu/zysku w złocie</param>
+    /// <param name="obj">Obiekt sprzedanego/kupionego produktu</param>
+    /// <param name="action">Typ akcji (kupna/sprzedaży).</param>
+    /// <param name="currencyName">Nazwa waluty, w której została przeprowadzona wymiana.</param>
+    /// <typeparam name="T">Typ produktu.</typeparam>
     private static void SetSuccessFullTransactionMessage<T>(ShopTransaction shopTransaction, decimal amount, decimal goldAmount, 
         INamedEntity obj, string action, string currencyName = "")
     {
@@ -181,6 +233,12 @@ public static class StorageHubHelper
         shopTransaction.InfoMessage.Add(expenseOrProfit + goldAmount.ToString("0.##") + "$");
     }
 
+    /// <summary>
+    /// Metoda prywatna odpowiedzialna za ustawienie komunikatu o niepowodzeniu transakcji.
+    /// Tworzy komunikat informujący o rodzaju błędu - braku wystarczającej ilości produktu lub braku wystarczających środków finansowych, w zależności od rodzaju działania - sprzedaż/kupno.
+    /// </summary>
+    /// <param name="shopTransaction">Obiekt transakcji sklepu.</param>
+    /// <param name="action">Typ akcji (kupna/sprzedaży).</param>
     private static void SetNotSuccessFullTransaction(ShopTransaction shopTransaction, string action)
     {
         shopTransaction.SuccessfulTransaction = false;

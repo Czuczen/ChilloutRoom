@@ -9,8 +9,22 @@ using CzuczenLand.ExtendingModels.Models.Products;
 
 namespace CzuczenLand.ExtendingFunctionalities.Services.General.Plant.Base;
 
+/// <summary>
+/// Klasa pomocnicza dla usług związanych z roślinami.
+/// </summary>
 public static class PlantServiceHelper
 {
+    /// <summary>
+    /// Oblicza łączną prędkość wzrostu rośliny.
+    /// </summary>
+    /// <param name="lamp">Lampa użyta do stworzenia rośliny.</param>
+    /// <param name="manure">Nawóz użyty do stworzenia rośliny.</param>
+    /// <param name="soil">Gleba użyta do stworzenia rośliny.</param>
+    /// <param name="water">Woda użyta do stworzenia rośliny.</param>
+    /// <param name="seed">Nasiono użyte do stworzenia rośliny.</param>
+    /// <param name="pot">Doniczka użyta do stworzenia rośliny.</param>
+    /// <param name="formBonuses">Zwiększenie prędkości wzrostu z bonusów.</param>
+    /// <returns>Obliczona prędkość wzrostu rośliny.</returns>
     public static decimal CalculateGrowingSpeed(Lamp lamp, Manure manure, Soil soil, Water water, Seed seed, Pot pot, decimal formBonuses)
     {
         var growingSpeed = lamp.IncreaseGrowingSpeed + manure.IncreaseGrowingSpeed + soil.IncreaseGrowingSpeed +
@@ -19,6 +33,17 @@ public static class PlantServiceHelper
         return growingSpeed;
     }
 
+    /// <summary>
+    /// Oblicza szansę na nasiona podczas zbioru rośliny.
+    /// </summary>
+    /// <param name="lamp">Lampa użyta do stworzenia rośliny.</param>
+    /// <param name="manure">Nawóz użyty do stworzenia rośliny.</param>
+    /// <param name="soil">Gleba użyta do stworzenia rośliny.</param>
+    /// <param name="water">Woda użyta do stworzenia rośliny.</param>
+    /// <param name="seed">Nasiono użyte do stworzenia rośliny.</param>
+    /// <param name="pot">Doniczka użyta do stworzenia rośliny.</param>
+    /// <param name="formBonuses">Zwiększenie szansy na nasiona z bonusów.</param>
+    /// <returns>Obliczona szansa na nasiona.</returns>
     public static int CalculateChanceForSeed(Lamp lamp, Manure manure, Soil soil, Water water, Seed seed, Pot pot, int formBonuses)
     {
         var chanceForDrop = lamp.IncreaseChanceForSeed + manure.IncreaseChanceForSeed + soil.IncreaseChanceForSeed +
@@ -27,6 +52,17 @@ public static class PlantServiceHelper
         return chanceForDrop;
     }
         
+    /// <summary>
+    /// Oblicza czas niewrażliwości rośliny.
+    /// </summary>
+    /// <param name="lamp">Lampa użyta do stworzenia rośliny.</param>
+    /// <param name="manure">Nawóz użyty do stworzenia rośliny.</param>
+    /// <param name="soil">Gleba użyta do stworzenia rośliny.</param>
+    /// <param name="water">Woda użyta do stworzenia rośliny.</param>
+    /// <param name="seed">Nasiono użyte do stworzenia rośliny.</param>
+    /// <param name="pot">Doniczka użyta do stworzenia rośliny.</param>
+    /// <param name="formBonuses">Zwiększenie czasu niewrażliwości z bonusów.</param>
+    /// <returns>Obliczony czas niewrażliwości.</returns>
     public static int CalculateTimeOfInsensitivity(Lamp lamp, Manure manure, Soil soil, Water water, Seed seed, Pot pot, int formBonuses)
     {
         var timeOfInsensitivity = lamp.IncreaseTimeOfInsensitivity + manure.IncreaseTimeOfInsensitivity + soil.IncreaseTimeOfInsensitivity +
@@ -35,6 +71,17 @@ public static class PlantServiceHelper
         return timeOfInsensitivity;
     }
         
+    /// <summary>
+    /// Oblicza ilość suszu ze zbioru rośliny.
+    /// </summary>
+    /// <param name="lamp">Lampa użyta do stworzenia rośliny.</param>
+    /// <param name="manure">Nawóz użyty do stworzenia rośliny.</param>
+    /// <param name="soil">Gleba użyta do stworzenia rośliny.</param>
+    /// <param name="water">Woda użyta do stworzenia rośliny.</param>
+    /// <param name="seed">Nasiono użyte do stworzenia rośliny.</param>
+    /// <param name="pot">Doniczka użyta do stworzenia rośliny.</param>
+    /// <param name="formBonuses">Zwiększenie ilości suszu z bonusów.</param>
+    /// <returns>Obliczona ilość suszu.</returns>
     public static decimal CalculateDriedFruitAmount(Lamp lamp, Manure manure, Soil soil, Water water, Seed seed, Pot pot, decimal formBonuses)
     {
         var chanceForDrop = lamp.IncreaseDriedFruitAmount + manure.IncreaseDriedFruitAmount + soil.IncreaseDriedFruitAmount +
@@ -42,7 +89,18 @@ public static class PlantServiceHelper
 
         return chanceForDrop;
     }
-        
+     
+    /// <summary>
+    /// Oblicza ilość nasion ze zbioru rośliny.
+    /// </summary>
+    /// <param name="lamp">Lampa użyta do stworzenia rośliny.</param>
+    /// <param name="manure">Nawóz użyty do stworzenia rośliny.</param>
+    /// <param name="soil">Gleba użyta do stworzenia rośliny.</param>
+    /// <param name="water">Woda użyta do stworzenia rośliny.</param>
+    /// <param name="seed">Nasiono użyte do stworzenia rośliny.</param>
+    /// <param name="pot">Doniczka użyta do stworzenia rośliny.</param>
+    /// <param name="formBonuses">Zwiększenie ilości nasion z bonusów.</param>
+    /// <returns>Obliczona ilość nasion.</returns>
     public static int CalculateSeedAmount(Lamp lamp, Manure manure, Soil soil, Water water, Seed seed, Pot pot, int formBonuses)
     {
         var chanceForDrop = lamp.IncreaseSeedAmount + manure.IncreaseSeedAmount + soil.IncreaseSeedAmount +
@@ -51,6 +109,17 @@ public static class PlantServiceHelper
         return chanceForDrop;
     }
         
+    /// <summary>
+    /// Oblicza ilość doświadczenia ze zbioru rośliny.
+    /// </summary>
+    /// <param name="lamp">Lampa użyta do stworzenia rośliny.</param>
+    /// <param name="manure">Nawóz użyty do stworzenia rośliny.</param>
+    /// <param name="soil">Gleba użyta do stworzenia rośliny.</param>
+    /// <param name="water">Woda użyta do stworzenia rośliny.</param>
+    /// <param name="seed">Nasiono użyte do stworzenia rośliny.</param>
+    /// <param name="pot">Doniczka użyta do stworzenia rośliny.</param>
+    /// <param name="formBonuses">Zwiększenie ilości doświadczenia z bonusów.</param>
+    /// <returns>Obliczona ilość doświadczenia.</returns>
     public static decimal CalculateGainedExp(Lamp lamp, Manure manure, Soil soil, Water water, Seed seed, Pot pot, decimal formBonuses)
     {
         var chanceForDrop = lamp.IncreaseGainedExp + manure.IncreaseGainedExp + soil.IncreaseGainedExp +
@@ -58,7 +127,14 @@ public static class PlantServiceHelper
 
         return chanceForDrop;
     }
-        
+
+    /// <summary>
+    /// Oblicza mnożnik prędkości wzrostu z zestawów produktów i bonusów.
+    /// </summary>
+    /// <param name="productsSetsNames">Lista nazw zestawów produktów.</param>
+    /// <param name="activeBonuses">Lista aktywnych bonusów.</param>
+    /// <param name="district">Dzielnica, w której znajduje się roślina.</param>
+    /// <returns>Obliczony mnożnik prędkości wzrostu z zestawów.</returns>
     public static int CalculateSetsBuff(List<string> productsSetsNames, List<Bonus> activeBonuses, ExtendingModels.Models.General.District district)
     {
         var setsBaf = 1;
@@ -124,12 +200,25 @@ public static class PlantServiceHelper
         return setsBaf;
     }
     
+    /// <summary>
+    /// Oblicza pozostały czas do osiągnięcia pełnego wzrostu rośliny.
+    /// </summary>
+    /// <param name="growingLevel">Aktualny poziom wzrostu rośliny.</param>
+    /// <param name="growingSpeed">Prędkość wzrostu rośliny.</param>
+    /// <param name="growingSpeedDivider">Dzielnik prędkości wzrostu rośliny.</param>
+    /// <returns>Pozostały czas do osiągnięcia pełnego wzrostu rośliny.</returns>
     public static int CalculateTimeRemaining(decimal growingLevel, decimal growingSpeed, decimal growingSpeedDivider)
     {
         var remainingDistance = 100 - growingLevel;
         return (int) Math.Ceiling(remainingDistance / (growingSpeed / growingSpeedDivider));
     }
 
+    /// <summary>
+    /// Przetwarza proces wzrostu i więdnięcia rośliny.
+    /// </summary>
+    /// <param name="plant">Roślina do przetworzenia.</param>
+    /// <param name="wiltSpeed">Prędkość więdnięcia rośliny.</param>
+    /// <param name="growingSpeed">Prędkość wzrostu rośliny.</param>
     public static void ProcessPlantGrowing(ExtendingModels.Models.General.Plant plant, decimal wiltSpeed, decimal growingSpeed)
     {
         if (plant.GrowingLevel >= 100)
@@ -165,6 +254,12 @@ public static class PlantServiceHelper
         }
     }
     
+    /// <summary>
+    /// Oblicza karę gleby na podstawie pojemności doniczki.
+    /// Czyli za każdym razem kiedy doniczka przestaje być używana pobierane jest 20% gleby. 
+    /// </summary>
+    /// <param name="pot">Doniczka, dla której obliczana jest kara gleby.</param>
+    /// <returns>Obliczona kara gleby.</returns>
     public static decimal CountSoilPenalty(Pot pot)
     {
         var soilPenaltyCount = decimal.Parse(((decimal) 20 / 100 * pot.Capacity).ToString("0.##").Replace(",", "."),
@@ -173,6 +268,11 @@ public static class PlantServiceHelper
         return soilPenaltyCount;
     }
 
+    /// <summary>
+    /// Oblicza i ustawia karę za zwiędnięcie rośliny.
+    /// Procent zwiędnięcia to procent kary.
+    /// </summary>
+    /// <param name="plant">Roślina, dla której obliczana i ustawiana jest kara.</param>
     public static void CalculateAndSetWiltPenalty(ExtendingModels.Models.General.Plant plant)
     {
         if (plant.WiltLevel > 0)
@@ -192,6 +292,11 @@ public static class PlantServiceHelper
         }
     }
 
+    /// <summary>
+    /// Ustawia koszty tworzenia rośliny.
+    /// </summary>
+    /// <param name="createPlant">Obiekt z danymi tworzenia rośliny.</param>
+    /// <param name="ignoreChangeService">Usługa ignorowania zmian.</param>
     public static async Task SetCreationCosts(CreatePlant createPlant, IIgnoreChangeService ignoreChangeService)
     {
         var lamp = createPlant.Lamp;

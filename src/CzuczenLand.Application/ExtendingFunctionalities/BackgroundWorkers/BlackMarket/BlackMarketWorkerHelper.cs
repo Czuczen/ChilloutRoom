@@ -4,11 +4,23 @@ using CzuczenLand.ExtendingModels.Models.General;
 
 namespace CzuczenLand.ExtendingFunctionalities.BackgroundWorkers.BlackMarket;
 
+/// <summary>
+/// Klasa pomocnicza dla pracownika czarnego rynku.
+/// </summary>
 public static class BlackMarketWorkerHelper
 {
+    /// <summary>
+    /// Generator liczb losowych.
+    /// </summary>
     private static readonly Random Random = new();
 
 
+    /// <summary>
+    /// Oblicza ilość wystawianego produktu na czarnym rynku.
+    /// </summary>
+    /// <param name="entityName">Nazwa encji produktu.</param>
+    /// <param name="district">Dzielnica dla której wystawiana jest transakcja.</param>
+    /// <returns>Ilość produktu do wystawienia.</returns>
     public static decimal CalculateQuantity(string entityName, District district)
     {
         switch (entityName)

@@ -12,6 +12,11 @@ namespace CzuczenLand.ExtendingFunctionalities.StateUpdater.EntityAnalysisStateB
 
 public static class EntityAnalysisStateBuilderHelper
 {
+    /// <summary>
+    /// Ustawia stan analizy dla magazynu gracza.
+    /// </summary>
+    /// <param name="state">Bieżący stan analizy.</param>
+    /// <param name="playerStorage">Encja magazynu gracza.</param>
     public static void SetPlayerStorageAnalysisState(AnalysisState state, PlayerStorage playerStorage)
     {
         var userId = playerStorage.UserId;
@@ -36,6 +41,11 @@ public static class EntityAnalysisStateBuilderHelper
         state.QuestsWithRequirements = GetQuestsWithRequirements(state);
     }
         
+    /// <summary>
+    /// Pobiera dostępne zadania dla bieżącego stanu analizy.
+    /// </summary>
+    /// <param name="state">Bieżący stan analizy.</param>
+    /// <returns>Lista dostępnych zadań.</returns>
     public static List<Quest> GetAvailableQuests(AnalysisState state)
     {
         var plantationStorage = state.PlantationStorage;
@@ -51,6 +61,11 @@ public static class EntityAnalysisStateBuilderHelper
         return ret;
     }
 
+    /// <summary>
+    /// Pobiera zadania wraz z ich wymaganiami dla bieżącego stanu analizy.
+    /// </summary>
+    /// <param name="state">Bieżący stan analizy.</param>
+    /// <returns>Lista zadań wraz z ich wymaganiami.</returns>
     public static List<QuestWithRequirements> GetQuestsWithRequirements(AnalysisState state)
     {
         var ret = new List<QuestWithRequirements>();
@@ -71,6 +86,10 @@ public static class EntityAnalysisStateBuilderHelper
         return ret;
     }
 
+    /// <summary>
+    /// Pobiera dostępne dzielnice dla uzyskanych poziomów.
+    /// </summary>
+    /// <param name="state">Bieżący stan analizy.</param>
     private static void GetReceivedLvlDistricts(AnalysisState state)
     {
         if (!state.IsDistrictWarden)
@@ -88,6 +107,11 @@ public static class EntityAnalysisStateBuilderHelper
         }
     }
         
+    /// <summary>
+    /// Generuje listę dzielnic do wyboru dla biblioteki Select2.
+    /// </summary>
+    /// <param name="state">Bieżący stan analizy.</param>
+    /// <returns>Lista dzielnic do wyboru dla biblioteki Select2.</returns>
     private static List<Select2Data> GenerateS2DistrictsList(AnalysisState state)
     {
         var storage = state.PlayerStorage;
@@ -120,6 +144,11 @@ public static class EntityAnalysisStateBuilderHelper
         return NewPlayerGeneratorHelper.GetS2DistrictsList(availableDistricts, playerDistricts);
     }
     
+    /// <summary>
+    /// Pobiera ilość otrzymanych poziomów.
+    /// </summary>
+    /// <param name="state">Bieżący stan analizy.</param>
+    /// <returns>Ilość otrzymanych poziomów.</returns>
     public static int GetReceivedLevels(AnalysisState state)
     {
         var lastPropertiesChanges = state.LastEntityPropertyChanges;

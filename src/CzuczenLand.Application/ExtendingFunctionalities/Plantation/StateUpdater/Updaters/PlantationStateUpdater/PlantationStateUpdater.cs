@@ -13,13 +13,16 @@ using CzuczenLand.ExtendingModels.Models.Shared;
 
 namespace CzuczenLand.ExtendingFunctionalities.StateUpdater.Updaters.PlantationStateUpdater;
 
+/// <summary>
+/// Klasa do aktualizacji stanu plantacji.
+/// </summary>
 public static class PlantationStateUpdater
 {
     /// <summary>
-    /// Aktualizacja wybranych produktów przy kreacji rośliny i produktów w zasobach
+    /// Aktualizacja wybranych produktów przy kreacji rośliny i produktów w zasobach.
     /// </summary>
-    /// <param name="state"></param>
-    /// <returns></returns>
+    /// <param name="state">Bieżący stan analizy.</param>
+    /// <returns>Zaktualizowany stan analizy.</returns>
     public static AnalysisState UpdateProductsState(this AnalysisState state)
     {
         if (!state.InitStatus ||
@@ -42,12 +45,12 @@ public static class PlantationStateUpdater
 
         return state;
     }
-        
+
     /// <summary>
     /// Aktualizacja bonusów Wzmocnienie/Artefakt
     /// </summary>
-    /// <param name="state"></param>
-    /// <returns></returns>
+    /// <param name="state">Bieżący stan analizy.</param>
+    /// <returns>Zaktualizowany stan analizy.</returns>
     public static AnalysisState UpdateBonusesState(this AnalysisState state)
     {
         if (!state.InitStatus ||
@@ -66,12 +69,12 @@ public static class PlantationStateUpdater
 
         return state;
     }
-        
+    
     /// <summary>
-    /// Aktualizacja magazynów
+    /// Aktualizacja magazynów.
     /// </summary>
-    /// <param name="state"></param>
-    /// <returns></returns>
+    /// <param name="state">Bieżący stan analizy.</param>
+    /// <returns>Zaktualizowany stan analizy.</returns>
     public static AnalysisState UpdateStorageState(this AnalysisState state)
     {
         if (!state.InitStatus || state.LastEntityPropertyChanges == null) return state;
@@ -120,10 +123,10 @@ public static class PlantationStateUpdater
     }
 
     /// <summary>
-    /// Aktualizacja czarnego rynku
+    /// Aktualizacja czarnego rynku.
     /// </summary>
-    /// <param name="state"></param>
-    /// <returns></returns>
+    /// <param name="state">Bieżący stan analizy.</param>
+    /// <returns>Zaktualizowany stan analizy.</returns>
     public static AnalysisState UpdateBlackMarketState(this AnalysisState state)
     {
         var entity = state.BlackMarketEntity;

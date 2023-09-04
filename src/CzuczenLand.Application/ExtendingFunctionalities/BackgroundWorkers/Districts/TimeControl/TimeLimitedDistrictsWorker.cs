@@ -14,21 +14,60 @@ using Microsoft.AspNet.SignalR;
 
 namespace CzuczenLand.ExtendingFunctionalities.BackgroundWorkers.Districts.TimeControl;
 
+/// <summary>
+/// Klasa wykonująca pracę w cyklach związaną z ograniczonymi czasowo dzielnicami.
+/// </summary>
 public class TimeLimitedDistrictsWorker : PeriodicBackgroundWorkerBase, ISingletonDependency
 {
+    /// <summary>
+    /// Repozytorium dzielnic.
+    /// </summary>
     private readonly IRepository<District> _districtRepository;
+    
+    /// <summary>
+    /// Repozytorium magazynów plantacji.
+    /// </summary>
     private readonly IRepository<PlantationStorage> _plantationStorageRepository;
+    
+    /// <summary>
+    /// Repozytorium magazynów graczy.
+    /// </summary>
     private readonly IRepository<PlayerStorage> _playerStorageRepository;
+    
+    /// <summary>
+    /// Kontekst Huba informacyjnego.
+    /// </summary>
     private IHubContext _infoHub;
+    
+    /// <summary>
+    /// Okres czasu (w milisekundach) między cyklami pracy.
+    /// </summary>
     private const int PeriodTime = 60000; // 1min
     
+    
+    /// <summary>
+    /// Lista zdefiniowanych dzielnic.
+    /// </summary>
     private List<District> DefinedDistricts { get; set; }
 
+    /// <summary>
+    /// Lista magazynów plantacji zdefiniowanych dzielnic.
+    /// </summary>
     private List<PlantationStorage> PlantationStorages { get; set; }
-        
+    
+    /// <summary>
+    /// Lista magazynów graczy zdefiniowanych dzielnic.
+    /// </summary>
     private List<PlayerStorage> PlayerStorages { get; set; }
 
-
+    
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="districtRepository">Repozytorium dzielnic.</param>
+    /// <param name="plantationStorageRepository">Repozytorium magazynów plantacji.</param>
+    /// <param name="playerStorageRepository">Repozytorium magazynów gracza.</param>
+    /// <param name="timer">AbpTimer do określania czasu cyklu pracy.</param>
     public TimeLimitedDistrictsWorker(
         IRepository<District> districtRepository,
         IRepository<PlantationStorage> plantationStorageRepository,
@@ -42,7 +81,12 @@ public class TimeLimitedDistrictsWorker : PeriodicBackgroundWorkerBase, ISinglet
         _plantationStorageRepository = plantationStorageRepository;
         _playerStorageRepository = playerStorageRepository;
     }
-
+    
+    /// <summary>
+    /// Metoda wykonywana w każdym cyklu pracy pracownika.
+    /// Nie wychodziło równo co sekundę. Dlatego robimy korektę.
+    /// Czasami jeszcze łapie poślizg 15 milisekund ale jak dla mnie jest to już wystarczające.
+    /// </summary>
     protected override void DoWork()
     {
         var watch = Stopwatch.StartNew();
@@ -50,7 +94,12 @@ public class TimeLimitedDistrictsWorker : PeriodicBackgroundWorkerBase, ISinglet
         watch.Stop();
         Timer.Period = WorkersHelper.CalculatePeriodTime(PeriodTime, watch);
     }
-
+    
+    /// <summary>
+    /// Przygotowuje dane potrzebne do analizy dzielnic ograniczonych czasowo.
+    /// Musi mieć jednostkę pracy. Musi być virtual. Może być protected lub public. Inaczej nie aktualizuje zmian.
+    /// Osobno po to, żeby Stopwatch zrobił prawidłowy pomiar bo na koniec metody jednostka pracy wykonuje swoje operacje
+    /// </summary>
     [UnitOfWork]
     protected virtual void ExecuteWork()
     {
@@ -77,6 +126,7 @@ public class TimeLimitedDistrictsWorker : PeriodicBackgroundWorkerBase, ISinglet
     }
     
     /// <summary>
+    /// Ustawia nagrody otrzymane za grę na dzielnicy, której czas się skończył i wysyła informacje o końcu dostępności dzielnicy. 
     /// Jeśli dzielnica zaraz ma się skończyć a użytkownikowi akurat tworzy się dziupla to czasami może ona mu się nie usunąć
     /// i będzie mógł grać na takiej dzielnicy póki nie odświeży strony ale to co zdążył zrobić zostanie zachowane do czasu końca dzielnicy.
     /// Dlatego dodono sprawdzanie dzielnic których czas ma dopiero nadejść czy czasem taka dzielnica ma jakieś magazyny plantacji
@@ -159,6 +209,9 @@ public class TimeLimitedDistrictsWorker : PeriodicBackgroundWorkerBase, ISinglet
         }
     }
 
+    /// <summary>
+    /// Usuwa magazyny plantacji dla dzielnic cyklicznych, które już zakończyły swój czas aktywności.
+    /// </summary>
     private void DeleteCyclicDistrictsPlantationStorages()
     {
         var currDateTime = Clock.Now;
@@ -176,6 +229,9 @@ public class TimeLimitedDistrictsWorker : PeriodicBackgroundWorkerBase, ISinglet
             _plantationStorageRepository.Delete(item => item.DistrictId == district.Id && item.UserId != district.UserId);
     }
     
+    /// <summary>
+    /// Metoda do aktualizacji czasu cyklicznych dzielnic.
+    /// </summary>
     private void SetCyclicTime()
     {
         var currDateTime = Clock.Now;

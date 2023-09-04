@@ -18,20 +18,75 @@ using Newtonsoft.Json;
 
 namespace CzuczenLand.ExtendingFunctionalities.Services.General.Quest.Base;
 
+/// <summary>
+/// Serwis podstawowy obsługujący logikę biznesową związaną z zadaniami.
+/// </summary>
 public class QuestService : IQuestService
 {
+    /// <summary>
+    /// Repozytorium zadań.
+    /// </summary>
     private readonly IRepository<ExtendingModels.Models.General.Quest> _questRepository;
+    
+    /// <summary>
+    /// Repozytorium typu generowanego.
+    /// </summary>
     private readonly IRepository<ExtendingModels.Models.General.GeneratedType> _generatedTypeRepository;
+    
+    /// <summary>
+    /// Repozytorium magazynu gracza.
+    /// </summary>
     private readonly IRepository<ExtendingModels.Models.General.PlayerStorage> _playerStorageRepository;
+    
+    /// <summary>
+    /// Repozytorium magazynu plantacji.
+    /// </summary>
     private readonly IRepository<ExtendingModels.Models.General.PlantationStorage> _plantationStorageRepository;
+    
+    /// <summary>
+    /// Repozytorium wymagań.
+    /// </summary>
     private readonly IRepository<ExtendingModels.Models.General.Requirement> _requirementRepository;
+    
+    /// <summary>
+    /// Repozytorium nasion.
+    /// </summary>
     private readonly IRepository<Seed> _seedRepository;
+    
+    /// <summary>
+    /// Repozytorium suszu.
+    /// </summary>
     private readonly IRepository<DriedFruit> _driedFruitRepository;
+    
+    /// <summary>
+    /// Repozytorium tabeli łączącej nagrody z zadaniami.
+    /// </summary>
     private readonly IRepository<DropQuest> _dropQuestRepository;
+    
+    /// <summary>
+    /// Repozytorium postępu wymagań zadania.
+    /// </summary>
     private readonly IRepository<QuestRequirementsProgress> _questRequirementsProgressRepository;
+    
+    /// <summary>
+    /// Kontroluje tworzenie niestandardowych repozytoriów.
+    /// </summary>
     private readonly ICustomRepositoryLoader _customRepositoryLoader;
 
     
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="questRepository">Repozytorium zadań.</param>
+    /// <param name="generatedTypeRepository">Repozytorium typu generowanego.</param>
+    /// <param name="playerStorageRepository">Repozytorium magazynu gracza.</param>
+    /// <param name="plantationStorageRepository">Repozytorium magazynu plantacji.</param>
+    /// <param name="requirementRepository">Repozytorium wymagań.</param>
+    /// <param name="seedRepository">Repozytorium nasion.</param>
+    /// <param name="driedFruitRepository">Repozytorium suszu.</param>
+    /// <param name="dropQuestRepository">Repozytorium tabeli łączącej nagrody z zadaniami.</param>
+    /// <param name="questRequirementsProgressRepository">Repozytorium postępu wymagań zadania.</param>
+    /// <param name="customRepositoryLoader">Kontroluje tworzenie niestandardowych repozytoriów.</param>
     public QuestService(
         IRepository<ExtendingModels.Models.General.Quest> questRepository,
         IRepository<ExtendingModels.Models.General.GeneratedType> generatedTypeRepository,
@@ -57,6 +112,10 @@ public class QuestService : IQuestService
         _customRepositoryLoader = customRepositoryLoader;
     }
 
+    /// <summary>
+    /// Ustawia synchronicznie wartości początkowe dla zadań gracza.
+    /// </summary>
+    /// <param name="playerDefinitions">Lista zadań gracza.</param>
     public void SetStartValues(List<ExtendingModels.Models.General.Quest> playerDefinitions)
     {
         if (!playerDefinitions.Any()) return;
@@ -172,6 +231,10 @@ public class QuestService : IQuestService
         }
     }
 
+    /// <summary>
+    /// Ustawia asynchronicznie wartości początkowe dla zadań gracza.
+    /// </summary>
+    /// <param name="playerDefinitions">Lista zadań gracza.</param>
     public async Task SetStartValuesAsync(List<ExtendingModels.Models.General.Quest> playerDefinitions)
     {
         if (!playerDefinitions.Any()) return;
@@ -287,6 +350,12 @@ public class QuestService : IQuestService
         }
     }
 
+    /// <summary>
+    /// Tworzy połączenia dla zadania z określonej encji i przypisanych do niej identyfikatorów.
+    /// </summary>
+    /// <param name="entityId">Identyfikator zadania będącego definicją.</param>
+    /// <param name="entitiesIds">Słownik zawierający nazwę encji i przypisane do niej identyfikatory.</param>
+    /// <returns>Lista zadań graczy z przypisanymi połączeniami.</returns>
     private async Task<List<ExtendingModels.Models.General.Quest>> CreateQuestConnections(int entityId, Dictionary<string, List<int>> entitiesIds)
     {
         var questRequirementsProgress = new Dictionary<int, decimal>();
@@ -350,6 +419,11 @@ public class QuestService : IQuestService
         return playersDefinitions;
     }
 
+    /// <summary>
+    /// Ustawia zależności zadania i wartości początkowe.
+    /// </summary>
+    /// <param name="entityId">Identyfikator zadania będącego definicją.</param>
+    /// <param name="entitiesIds">Słownik zawierający nazwę encji i przypisane do niej identyfikatory.</param>
     public async Task SetQuestDependencies(int? entityId, Dictionary<string, List<int>> entitiesIds)
     {
         if (entitiesIds == null || entitiesIds.Count == 0 || entityId == null) return;
@@ -358,13 +432,23 @@ public class QuestService : IQuestService
         foreach (var group in playersDefinitions.GroupBy(item => item.PlantationStorageId))
             await SetStartValuesAsync(group.ToList());
     }
-        
+
+    /// <summary>
+    /// Aktualizuje zależności zadania.
+    /// </summary>
+    /// <param name="entityId">Identyfikator zadania będącego definicją.</param>
+    /// <param name="entitiesIds">Słownik zawierający nazwę encji i przypisane do niej identyfikatory.</param>
     public async Task UpdateQuestDependencies(int? entityId, Dictionary<string, List<int>> entitiesIds)
     {
         await _dropQuestRepository.DeleteAsync(item => item.QuestId == entityId);
         await SetQuestDependencies(entityId, entitiesIds);
     }
 
+    /// <summary>
+    /// Tworzy postęp wymagań zadań dla gracza na podstawie zadań będących definicją.
+    /// </summary>
+    /// <param name="questsDefinitions">Lista definicji zadań.</param>
+    /// <param name="playerDefinitions">Lista zadań gracza.</param>
     public async Task CreatePlayerQuestsRequirementsProgress(List<ExtendingModels.Models.General.Quest> questsDefinitions, 
         List<ExtendingModels.Models.General.Quest> playerDefinitions)
     {

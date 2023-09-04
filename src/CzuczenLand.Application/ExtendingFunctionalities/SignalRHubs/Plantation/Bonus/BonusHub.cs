@@ -13,21 +13,49 @@ using Microsoft.AspNet.SignalR;
 
 namespace CzuczenLand.ExtendingFunctionalities.SignalRHubs.Plantation.Bonus;
 
+/// <summary>
+/// Hub SignalR obsługujący bonusy.
+/// [AbpAuthorize] dawało wyjątek - Abp.Authorization.AbpAuthorizationException: Current user did not login to the application!
+/// Nic nie psuł ale jednak wyskakiwał. W każdym hub'ie wyskakiwał. Użycie [AbpMvcAuthorize] rozwiązało problem.
+/// </summary>
 [AbpMvcAuthorize]
 public class BonusHub : Hub, ITransientDependency
 {
+    /// <summary>
+    /// Repozytorium przechowujące bonusy w bazie danych.
+    /// </summary>
     private readonly IRepository<ExtendingModels.Models.Products.Bonus> _bonusRepository;
-    private readonly IRepository<PlantationStorage> _plantationStorageRepository;
-    private readonly IgnoreChangeService _ignoreChangeService;
     
     /// <summary>
-    /// Musi być public i musi mieć setter
+    /// Repozytorium przechowujące magazyny plantacji w bazie danych.
+    /// </summary>
+    private readonly IRepository<PlantationStorage> _plantationStorageRepository;
+    
+    /// <summary>
+    /// Serwis do zarządzania ignorowaniem zmian.
+    /// </summary>
+    private readonly IgnoreChangeService _ignoreChangeService;
+    
+    
+    /// <summary>
+    /// Właściwość pozwalająca na uzyskanie dostępu do sesji Abp, która przechowuje informacje dotyczące aktualnie zalogowanego użytkownika.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
     /// </summary>
     public IAbpSession AbpSession { get; set; }
     
+    /// <summary>
+    /// Interfejs ILogger służy do rejestrowania komunikatów z aplikacji.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
+    /// </summary>
     public ILogger Logger { get; set; }
 
     
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="bonusRepository">Repozytorium przechowujące bonusy w bazie danych.</param>
+    /// <param name="plantationStorageRepository">Repozytorium przechowujące magazyny plantacji w bazie danych.</param>
+    /// <param name="ignoreChangeService">Serwis do zarządzania ignorowaniem zmian.</param>
     public BonusHub(
         IRepository<ExtendingModels.Models.Products.Bonus> bonusRepository,
         IRepository<PlantationStorage> plantationStorageRepository,
@@ -41,6 +69,12 @@ public class BonusHub : Hub, ITransientDependency
         Logger = NullLogger.Instance;
     }
 
+    /// <summary>
+    /// Metoda asynchroniczna, obsługująca akcje bonusów.
+    /// </summary>
+    /// <param name="bonusId">Identyfikator bonusu.</param>
+    /// <param name="artifactAction">Akcja związana z artefaktem. Domyślnie wartość jest pusta.</param>
+    /// <returns>Obiekt zawierający informacje o aktywacji bonusu.</returns>
     [UnitOfWork]
     public virtual async Task<BonusActivation> BonusAction(int bonusId, string artifactAction = "")
     {
@@ -72,7 +106,13 @@ public class BonusHub : Hub, ITransientDependency
             return null;
         }
     }
-        
+
+    /// <summary>
+    /// Metoda służy do odblokowania miejsca na bonus w określonej dzielnicy dla danego użytkownika.
+    /// </summary>
+    /// <param name="districtId">Identyfikator dzielnicy.</param>
+    /// <param name="unlockType">Typ odblokowania (artefakt lub wzmocnienie).</param>
+    /// <returns>Obiekt zawierający informacje o aktywacji odblokowania.</returns>
     [UnitOfWork]
     public virtual async Task<BonusActivation> UnlockBonusSlot(int districtId, string unlockType)
     {

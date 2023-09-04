@@ -26,29 +26,129 @@ using Newtonsoft.Json;
 
 namespace CzuczenLand.ExtendingFunctionalities.DistrictCloner;
 
+/// <summary>
+/// Klasa umożliwiająca klonowanie dzielnic w różnych kontekstach.
+/// </summary>
 public class DistrictCloner : IDistrictCloner
 {
+    /// <summary>
+    /// Dostawca kontekstu bazy danych AbpDbContext.
+    /// </summary>
     private readonly IDbContextProvider<AbpDbContext> _dbContextProvider;
+    
+    /// <summary>
+    /// Repozytorium dzielnic.
+    /// </summary>
     private readonly IRepository<District> _districtRepository;
+    
+    /// <summary>
+    /// Repozytorium typów generowanych.
+    /// </summary>
     private readonly IRepository<GeneratedType> _generatedTypeRepository;
+    
+    /// <summary>
+    /// Repozytorium suszu.
+    /// </summary>
     private readonly IRepository<DriedFruit> _driedFruitRepository;
+    
+    /// <summary>
+    /// Repozytorium lamp.
+    /// </summary>
     private readonly IRepository<Lamp> _lampRepository;
+    
+    /// <summary>
+    /// Repozytorium nawozów.
+    /// </summary>
     private readonly IRepository<Manure> _manureRepository;
+    
+    /// <summary>
+    /// Repozytorium doniczek.
+    /// </summary>
     private readonly IRepository<Pot> _potRepository;
+    
+    /// <summary>
+    /// Repozytorium nasion.
+    /// </summary>
     private readonly IRepository<Seed> _seedRepository;
+    
+    /// <summary>
+    /// Repozytorium gleb.
+    /// </summary>
     private readonly IRepository<Soil> _soilRepository;
+    
+    /// <summary>
+    /// Repozytorium wód.
+    /// </summary>
     private readonly IRepository<Water> _waterRepository;
+    
+    /// <summary>
+    /// Repozytorium nagród.
+    /// </summary>
     private readonly IRepository<Drop> _dropRepository;
+    
+    /// <summary>
+    /// Repozytorium zadań.
+    /// </summary>
     private readonly IRepository<Quest> _questRepository;
+    
+    /// <summary>
+    /// Repozytorium bonusów.
+    /// </summary>
     private readonly IRepository<Bonus> _bonusRepository;
+    
+    /// <summary>
+    /// Repozytorium wymagań.
+    /// </summary>
     private readonly IRepository<Requirement> _requirementRepository;
+    
+    /// <summary>
+    /// Repozytorium postępu wymagań zadań.
+    /// </summary>
     private readonly IRepository<QuestRequirementsProgress> _questRequirementsProgressRepository;
+    
+    /// <summary>
+    /// Repozytorium tabeli łączącej nagrody z zadaniami.
+    /// </summary>
     private readonly IRepository<DropQuest> _dropQuestRepository;
+    
+    /// <summary>
+    /// Repozytorium ról użytkowników.
+    /// </summary>
     private readonly IRepository<Role> _roleRepository;
+    
+    /// <summary>
+    /// Usługa aplikacyjna użytkowników.
+    /// </summary>
     private readonly IUserAppService _userAppService;
+    
+    /// <summary>
+    /// Usługa aplikacyjna ról użytkowników.
+    /// </summary>
     private readonly IRoleAppService _roleAppService;
 
 
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="dbContextProvider">Dostawca kontekstu bazy danych.</param>
+    /// <param name="districtRepository">Repozytorium dzielnic.</param>
+    /// <param name="generatedTypeRepository">Repozytorium typów generowanych.</param>
+    /// <param name="driedFruitRepository">Repozytorium suszu.</param>
+    /// <param name="lampRepository">Repozytorium lamp.</param>
+    /// <param name="manureRepository">Repozytorium nawozów.</param>
+    /// <param name="potRepository">Repozytorium doniczek.</param>
+    /// <param name="seedRepository">Repozytorium nasion.</param>
+    /// <param name="soilRepository">Repozytorium gleb.</param>
+    /// <param name="waterRepository">Repozytorium wód.</param>
+    /// <param name="dropRepository">Repozytorium dropów.</param>
+    /// <param name="questRepository">Repozytorium zadań.</param>
+    /// <param name="bonusRepository">Repozytorium bonusów.</param>
+    /// <param name="requirementRepository">Repozytorium wymagań.</param>
+    /// <param name="questRequirementsProgressRepository">Repozytorium postępu wymagań zadań.</param>
+    /// <param name="dropQuestRepository">Repozytorium tabeli łączącej nagrody z zadaniami.</param>
+    /// <param name="roleRepository">Repozytorium ról użytkowników.</param>
+    /// <param name="userAppService">Usługa aplikacyjna użytkowników.</param>
+    /// <param name="roleAppService">Usługa aplikacyjna ról użytkowników.</param>
     public DistrictCloner(
         IDbContextProvider<AbpDbContext> dbContextProvider,
         IRepository<District> districtRepository,
@@ -93,9 +193,9 @@ public class DistrictCloner : IDistrictCloner
     }
 
     /// <summary>
-    /// Kopia z plików zamieszczonych w projekcie
+    /// Wykonuje klonowanie z plików zamieszczonych w projekcie do bazy danych.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Kontekst dzielnicy po klonowaniu.</returns>
     public async Task<DistrictContext> Clone()
     {
         var ctx = await _dbContextProvider.GetDbContextAsync();
@@ -115,13 +215,13 @@ public class DistrictCloner : IDistrictCloner
     }
 
     /// <summary>
-    /// Kopia do plików projektu w formacie .csv/.xls
+    /// Wykonuje klonowanie istniejącej dzielnicy do plików projektu w formatach .csv/.xls.
     /// https://cloudconvert.com/xls-to-xlsx
     /// xls dlatego, że konwerter z csv do xls dodawał do pierwszej kolumny znaki UTF-8 BOM
     /// z xls który tak naprawdę jest sformatowany jak csv konwertujemy na xlsx i wszystko jest ok
     /// </summary>
-    /// <param name="districtId"></param>
-    /// <returns></returns>
+    /// <param name="districtId">Identyfikator dzielnicy do sklonowania.</param>
+    /// <returns>Kontekst dzielnicy po klonowaniu.</returns>
     public async Task<DistrictContext> Clone(int districtId)
     {
         var ret = await GetDistrictContext(districtId);
@@ -180,12 +280,12 @@ public class DistrictCloner : IDistrictCloner
 
         return ret;
     }
-        
+    
     /// <summary>
-    /// Kopia z plików na dysku google
+    /// Wykonuje klonowanie z plików (xls) na dysku Google do bazy danych.
     /// </summary>
-    /// <param name="filesIds"></param>
-    /// <returns></returns>
+    /// <param name="filesIds">Identyfikatory plików na dysku Google do sklonowania.</param>
+    /// <returns>Kontekst dzielnicy po klonowaniu.</returns>
     public async Task<DistrictContext> Clone(List<string> filesIds)
     {
         var ctx = await _dbContextProvider.GetDbContextAsync();
@@ -205,11 +305,11 @@ public class DistrictCloner : IDistrictCloner
     }
 
     /// <summary>
-    /// Kopia z istniejącej dzielnicy
+    /// Wykonuje klonowanie istniejącej dzielnicy do bazy danych w określonej liczbie kopii.
     /// </summary>
-    /// <param name="districtId"></param>
-    /// <param name="howMany"></param>
-    /// <returns></returns>
+    /// <param name="districtId">Identyfikator dzielnicy do sklonowania.</param>
+    /// <param name="howMany">Liczba kopii do utworzenia.</param>
+    /// <returns>Lista kontekstów dzielnic po klonowaniu.</returns>
     public async Task<List<DistrictContext>> Clone(int districtId, int howMany)
     {
         var ret = new List<DistrictContext>();
@@ -256,6 +356,12 @@ public class DistrictCloner : IDistrictCloner
         return ret;
     }
 
+    /// <summary>
+    /// Wykonuje proces klonowania.
+    /// </summary>
+    /// <param name="ctx">Kontekst bazy danych.</param>
+    /// <param name="arrangedInOrder">Uporządkowane dane do utworzenia obiektów.</param>
+    /// <returns>Słownik zawierający utworzone obiekty po procesie klonowania.</returns>
     private async Task<Dictionary<string, List<object>>> ExecuteCloning(AbpDbContext ctx, 
         Dictionary<string, List<Dictionary<string, object>>> arrangedInOrder)
     {
@@ -289,6 +395,11 @@ public class DistrictCloner : IDistrictCloner
         return ret;
     } 
         
+    /// <summary>
+    /// Pobiera kontekst dzielnicy.
+    /// </summary>
+    /// <param name="districtId">Identyfikator dzielnicy.</param>
+    /// <returns>Kontekst dzielnicy z danymi obiektów skojarzonych z dzielnicą.</returns>
     private async Task<DistrictContext> GetDistrictContext(int districtId)
     {
         var ret = new DistrictContext();
@@ -349,6 +460,10 @@ public class DistrictCloner : IDistrictCloner
         return ret;
     }
 
+    /// <summary>
+    /// Pobiera maksymalne numery ID dla poszczególnych encji.
+    /// </summary>
+    /// <returns>Słownik zawierający maksymalne numery ID dla poszczególnych encji.</returns>
     private async Task<Dictionary<string, int>> GetEntitiesMaxIdNumber()
     {
         var districts = await _districtRepository.GetAllListAsync();
@@ -403,6 +518,12 @@ public class DistrictCloner : IDistrictCloner
         };
     }
         
+    /// <summary>
+    /// Pobiera listę stworzonych obiektów.
+    /// </summary>
+    /// <param name="entityName">Nazwa encji.</param>
+    /// <param name="ids">Lista identyfikatorów obiektów.</param>
+    /// <returns>Lista stworzonych obiektów.</returns>
     private async Task<List<object>> GetCreatedObjects(string entityName, List<int> ids)
     {
         var ret = new List<object>();
@@ -475,6 +596,12 @@ public class DistrictCloner : IDistrictCloner
         return ret;
     }
 
+    /// <summary>
+    /// Tworzy użytkownika typu opiekun dla określonej dzielnicy.
+    /// </summary>
+    /// <param name="district">Dzielnica, dla której tworzony jest opiekun.</param>
+    /// <param name="wardenPassword">Hasło opiekuna.</param>
+    /// <returns>Nowo utworzony użytkownik typu opiekun dzielnicy.</returns>
     private async Task<UserDto> CreateWardenForDistrict(District district, string wardenPassword)
     {
         await CreateWardenRoleIfNotExist();
@@ -499,6 +626,9 @@ public class DistrictCloner : IDistrictCloner
         return await _userAppService.CreateAsync(user); 
     }
         
+    /// <summary>
+    /// Tworzy rolę opiekuna dzielnicy, jeśli nie istnieje.
+    /// </summary>
     private async Task CreateWardenRoleIfNotExist()
     {
         var wardenRole = await _roleRepository.FirstOrDefaultAsync(item => item.Name == OtherConsts.WardenRoleName);

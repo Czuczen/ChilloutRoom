@@ -23,17 +23,57 @@ using IObjectMapper = Abp.ObjectMapping.IObjectMapper;
 
 namespace CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.ConfigurationPanelManager;
 
+/// <summary>
+/// Klasa zarządzająca panelem konfiguracyjnym.
+/// </summary>
 public class ConfigurationPanelManager : IConfigurationPanelManager
 {
-    private readonly IStructureTests _structureTests;
+    /// <summary>
+    /// Repozytorium dla typów generowanych.
+    /// </summary>
     private readonly IRepository<GeneratedType> _generatedTypeRepository;
+    
+    /// <summary>
+    /// Repozytorium dla nagród.
+    /// </summary>
     private readonly IRepository<Drop> _dropRepository;
+    
+    /// <summary>
+    /// Repozytorium dla wymagań.
+    /// </summary>
     private readonly IRepository<Requirement> _requirementRepository;
+    
+    /// <summary>
+    /// Repozytorium dla tabeli łączącej nagrody z zadaniami.
+    /// </summary>
     private readonly IRepository<DropQuest> _dropQuestRepository;
+    
+    /// <summary>
+    /// Repozytorium dla postępu wymagań w zadaniach.
+    /// </summary>
     private readonly IRepository<QuestRequirementsProgress> _questRequirementsProgressRepository;
+    
+    /// <summary>
+    /// Interfejs do testów struktury.
+    /// </summary>
+    private readonly IStructureTests _structureTests;
+    
+    /// <summary>
+    /// Interfejs do ładowania list wyboru.
+    /// </summary>
     private readonly ISelectListLoader _selectListLoader;
 
     
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="generatedTypeRepository">Repozytorium dla typów generowanych.</param>
+    /// <param name="dropRepository">Repozytorium dla nagród.</param>
+    /// <param name="requirementRepository">Repozytorium dla wymagań.</param>
+    /// <param name="dropQuestRepository">Repozytorium dla tabeli łączącej nagrody z zadaniami.</param>
+    /// <param name="questRequirementsProgressRepository">Repozytorium dla postępu wymagań w zadaniach.</param>
+    /// <param name="structureTests">Interfejs do testów struktury.</param>
+    /// <param name="selectListLoader">Interfejs do ładowania list wyboru.</param>
     public ConfigurationPanelManager(
         IRepository<GeneratedType> generatedTypeRepository,
         IRepository<Drop> dropRepository,
@@ -53,6 +93,10 @@ public class ConfigurationPanelManager : IConfigurationPanelManager
         _structureTests = structureTests;
     }
         
+    /// <summary>
+    /// Formatuje logi zapisane w pliku do obiektu Logs.
+    /// </summary>
+    /// <returns>Obiekt Logs zawierający sformatowane logi.</returns>
     public Logs FormatLogs()
     {
         var ret = new Logs();
@@ -121,8 +165,23 @@ public class ConfigurationPanelManager : IConfigurationPanelManager
         return ret;
     }
         
+    /// <summary>
+    /// Rozpoczyna testy struktury.
+    /// </summary>
+    /// <param name="isAdmin">Czy użytkownik jest administratorem.</param>
+    /// <param name="userId">Identyfikator użytkownika.</param>
+    /// <returns>Lista testów struktury.</returns>
     public async Task<List<StructureTest>> StartTests(bool isAdmin, long userId) => await _structureTests.BeginTests(isAdmin, userId);
 
+    /// <summary>
+    /// Ładuje dane potrzebne do wygenerowania formularza edycji lub tworzenia obiektu.
+    /// </summary>
+    /// <param name="entity">Nazwa encji.</param>
+    /// <param name="objectMapper">Interfejs do mapowania obiektów.</param>
+    /// <param name="isAdmin">Czy użytkownik jest administratorem.</param>
+    /// <param name="objectId">Identyfikator obiektu (jeśli edycja).</param>
+    /// <param name="editManyAction">Akcja edycji wielu obiektów (jeśli nie puste).</param>
+    /// <returns>Obiekt EditOrCreate zawierający informacje o edycji/tworzeniu obiektu.</returns>
     public async Task<EditOrCreate> EditOrCreateObject(string entity, IObjectMapper objectMapper, bool isAdmin, int? objectId, string editManyAction)
     {
         var ret = new EditOrCreate();
@@ -159,9 +218,16 @@ public class ConfigurationPanelManager : IConfigurationPanelManager
         return ret;
     }
 
+    /// <summary>
+    /// Ładuje selektory dla formularza encji, która ma możliwość ustawiania relacji Many-to-many.
+    /// </summary>
+    /// <param name="editOrCreate">Obiekt EditOrCreate zawierający informacje o edycji/tworzeniu obiektu.</param>
+    /// <param name="objectId">Identyfikator obiektu (jeśli edycja).</param>
+    /// <param name="obj">Obiekt do edycji.</param>
     private async Task LoadSelectors(EditOrCreate editOrCreate, int? objectId, object obj)
     {
         editOrCreate.ConnectionSelectors = ConfigurationPanelManagerHelper.GetEntityConnections(editOrCreate.EntityName);
+        
         if (editOrCreate.IsEdit)
         {
             var drops = new List<Drop>();
@@ -208,6 +274,14 @@ public class ConfigurationPanelManager : IConfigurationPanelManager
         }
     }
 
+    /// <summary>
+    /// Wyszukuje sugestie dla formularza encji, która ma możliwość ustawiania relacji Many-to-many.
+    /// </summary>
+    /// <param name="valueToSearch">Tekst do wyszukania.</param>
+    /// <param name="entity">Nazwa encji.</param>
+    /// <param name="generatedTypeId">Identyfikator typu generowanego.</param>
+    /// <param name="districtId">Identyfikator dzielnicy.</param>
+    /// <returns>Lista sugestii pasujących do wyszukiwanego tekstu.</returns>
     public async Task<List<object>> SearchSuggestions(string valueToSearch, string entity, int? generatedTypeId, int? districtId)
     {
         var ret = new List<object>();

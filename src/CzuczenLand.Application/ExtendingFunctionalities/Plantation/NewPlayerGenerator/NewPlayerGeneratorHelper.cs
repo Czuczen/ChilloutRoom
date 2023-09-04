@@ -9,8 +9,17 @@ using Newtonsoft.Json;
 
 namespace CzuczenLand.ExtendingFunctionalities.NewPlayerGenerator;
 
+/// <summary>
+/// Klasa pomocnicza dla generatora danych gracza.
+/// </summary>
 public static class NewPlayerGeneratorHelper
 {
+    /// <summary>
+    /// Tworzy listę danych dla biblioteki Select2 na podstawie dostępnych dzielnic i tych w których posiada już plantacje.
+    /// </summary>
+    /// <param name="districts">Lista dostępnych dzielnic.</param>
+    /// <param name="userDistricts">Lista dzielnic w których gracz posiada już plantacje.</param>
+    /// <returns>Lista danych dla biblioteki Select2.</returns>
     public static List<Select2Data> GetS2DistrictsList(List<District> districts, List<District> userDistricts)
     {
         var ret = new List<Select2Data>();
@@ -42,6 +51,15 @@ public static class NewPlayerGeneratorHelper
         return ret;
     }
     
+    /// <summary>
+    /// Tworzy dla gracza nowy obiekt na podstawie definicji.
+    /// </summary>
+    /// <typeparam name="TEntity">Typ encji.</typeparam>
+    /// <param name="definition">Definicja obiektu jako JSON.</param>
+    /// <param name="plantationStorageId">Id magazynu plantacji.</param>
+    /// <param name="entityEnum">Enum reprezentujący typ encji.</param>
+    /// <param name="playerStorageId">Id magazynu gracza.</param>
+    /// <returns>Nowy obiekt utworzony na podstawie definicji.</returns>
     public static TEntity GetNewObjectByDefinition<TEntity>(string definition, int plantationStorageId, EnumUtils.Entities? entityEnum, int playerStorageId)
     {
         var dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(definition);

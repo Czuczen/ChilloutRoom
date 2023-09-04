@@ -20,8 +20,16 @@ using Newtonsoft.Json;
 
 namespace CzuczenLand.ExtendingFunctionalities.PlantationManager;
 
+/// <summary>
+/// Pomocnicza klasa do zarządzania plantacjami.
+/// </summary>
 public static class PlantationManagerHelper
 {
+    /// <summary>
+    /// Pobiera czytelną nazwę dla podanej właściwości.
+    /// </summary>
+    /// <param name="currProp">Informacje o bieżącej właściwości.</param>
+    /// <returns>Czytelna nazwa właściwości lub null, jeśli nie znaleziono.</returns>
     public static string GetHrPropName(PropertyInfo currProp)
     {
         var propName = currProp?.CustomAttributes?.SingleOrDefault(currAttr =>
@@ -31,6 +39,11 @@ public static class PlantationManagerHelper
         return propName;
     }
     
+    /// <summary>
+    /// Pobiera listę czytelnych nazw właściwości dla podanego typu.
+    /// </summary>
+    /// <param name="type">Typ, dla którego mają być pobrane właściwości HR.</param>
+    /// <returns>Lista nazw właściwości HR lub pusta lista, jeśli nie znaleziono.</returns>
     public static List<string> GetHrPropList(Type type)
     {
         var props = type?.GetProperties().Select(currProp => currProp.CustomAttributes?.SingleOrDefault(currAttr => 
@@ -40,6 +53,11 @@ public static class PlantationManagerHelper
         return props;
     }
         
+    /// <summary>
+    /// Pobiera listę nazw wszystkich właściwości dla podanego typu.
+    /// </summary>
+    /// <param name="type">Typ, dla którego mają być pobrane nazwy właściwości.</param>
+    /// <returns>Lista nazw wszystkich właściwości.</returns>
     public static List<string> GetPropList(Type type)
     {
         var props = type?.GetProperties().Select(currProp => currProp.Name).ToList();
@@ -47,6 +65,11 @@ public static class PlantationManagerHelper
         return props;
     }
 
+    /// <summary>
+    /// Określa minimalną jednostkę zmiany dla wartości pola formularza.
+    /// </summary>
+    /// <param name="itemEntityName">Nazwa encji.</param>
+    /// <returns>Wartość minimalna kroku.</returns>
     public static string GetInputStepForProduct(string itemEntityName)
     {
         string ret;
@@ -83,11 +106,21 @@ public static class PlantationManagerHelper
         return ret;
     }
 
+    /// <summary>
+    /// Pobiera jednostkę miary na podstawie typu encji.
+    /// </summary>
+    /// <param name="type">Typ encji.</param>
+    /// <returns>Jednostka miary jako ciąg znaków.</returns>
     public static string GetMeasureUnitByType(Type type)
     {
         return GetMeasureUnitByEntityName(type?.Name);
     }
     
+    /// <summary>
+    /// Pobiera jednostkę miary na podstawie nazwy encji.
+    /// </summary>
+    /// <param name="entityName">Nazwa encji.</param>
+    /// <returns>Jednostka miary jako ciąg znaków.</returns>
     public static string GetMeasureUnitByEntityName(string entityName)
     {
         string ret;
@@ -124,6 +157,11 @@ public static class PlantationManagerHelper
         return ret;
     }
         
+    /// <summary>
+    /// Pobiera jednostkę miary dla wymiany walut na podstawie nazwy waluty.
+    /// </summary>
+    /// <param name="currencyName">Nazwa waluty.</param>
+    /// <returns>Jednostka miary jako ciąg znaków.</returns>
     public static string GetMeasureUnitForCurrencyExchange(string currencyName)
     {
         string ret;
@@ -160,6 +198,12 @@ public static class PlantationManagerHelper
         return ret;
     }
         
+    /// <summary>
+    /// Generuje listę elementów do sprzedaży na czarnym rynku na podstawie listy produktów.
+    /// </summary>
+    /// <typeparam name="TEntity">Typ produktu dziedziczący po klasie Product.</typeparam>
+    /// <param name="items">Lista produktów.</param>
+    /// <returns>Lista elementów do sprzedaży na czarnym rynku.</returns>
     public static List<BlackMarketSellItem> GenerateBlackMarketSellItems<TEntity>(List<TEntity> items) 
         where TEntity : Product
     {
@@ -187,14 +231,15 @@ public static class PlantationManagerHelper
 
         return ret;
     }
-    
+
     /// <summary>
+    /// Sprawdza limity i dostępność zadania.
     /// Zadania które ma ustawiony czas startu później niż końca nie da się rozpocząć.
     /// </summary>
-    /// <param name="quest"></param>
-    /// <param name="plantationStorage"></param>
-    /// <param name="questHub"></param>
-    /// <returns></returns>
+    /// <param name="quest">Zadanie do sprawdzenia.</param>
+    /// <param name="plantationStorage">Magazyn plantacji.</param>
+    /// <param name="questHub">Kontekst huba dla zadań.</param>
+    /// <returns>True, jeśli limit został przekroczony; w przeciwnym razie false.</returns>
     public static bool CheckQuestLimitsAndSetProgressStatus(Quest quest, PlantationStorage plantationStorage, IHubContext questHub)
     {
         var ret = false;
@@ -249,6 +294,10 @@ public static class PlantationManagerHelper
         return ret;
     }
         
+    /// <summary>
+    /// Ustawia wymianę walut.
+    /// </summary>
+    /// <param name="plantation">Informacje o plantacji.</param>
     public static void SetCurrencyExchanges(Plantation plantation)
     {
         var plantationStorage = plantation.PlantationStorage;
@@ -321,6 +370,18 @@ public static class PlantationManagerHelper
         }
     }
 
+    /// <summary>
+    /// Tworzy nową instancję wymiany waluty.
+    /// </summary>
+    /// <param name="name">Nazwa waluty.</param>
+    /// <param name="description">Opis wymiany waluty.</param>
+    /// <param name="exchangeRate">Kurs wymiany..</param>
+    /// <param name="plantationStorageId">Identyfikator magazynu plantacji.</param>
+    /// <param name="ownedAmount">Ilość posiadanej waluty.</param>
+    /// <param name="sellPrice">Cena sprzedaży waluty.</param>
+    /// <param name="buyPrice">Cena kupna waluty.</param>
+    /// <param name="isOnlyToPlantationGoldTransfer">Określa, czy możliwa jest tylko wymiana na złoto plantacji.</param>
+    /// <returns>Nowa instancja wymiany waluty.</returns>
     private static CurrencyExchange CreateCurrencyExchange(string name, string description, int exchangeRate, int plantationStorageId,
         decimal ownedAmount, decimal sellPrice, decimal buyPrice, bool isOnlyToPlantationGoldTransfer)
     {
@@ -337,6 +398,17 @@ public static class PlantationManagerHelper
         };
     }
 
+    /// <summary>
+    /// Dodaje poziomy gracza oraz plantacji w zależności od zdobytego doświadczenia.
+    /// </summary>
+    /// <param name="district">Dzielnica, w której rozgrywka ma miejsce.</param>
+    /// <param name="playerPlantationStorage">Magazyn plantacji gracza.</param>
+    /// <param name="gainedExp">Zdobyte doświadczenie.</param>
+    /// <param name="dropsNotification">Powiadomienia o zdobytych nagrodach.</param>
+    /// <param name="playerStorage">Magazyn gracza.</param>
+    /// <param name="isManyLevel">Określa, czy zdobyto wiele poziomów naraz. Używane w rekurencji do określania czy mamy doczynienia z kolejnym wykonaniem.</param>
+    /// <param name="tempPlantGainedExp">Tymczasowe zdobyte doświadczenie dla plantacji. Używane w rekurencji do przechowywania zdobytego doświadczenia pomniejszonego o popszedni poziom.</param>
+    /// <param name="tempExpToNexLevel">Tymczasowy próg do następnego poziomu dla plantacji. Używane w rekurencji do przechowywania wymaganego doświadczenia na kolejny poziom.</param>
     public static void AddLevels(District district, PlantationStorage playerPlantationStorage, decimal gainedExp, List<string> dropsNotification, PlayerStorage playerStorage,
         bool isManyLevel = false, decimal tempPlantGainedExp = decimal.MinValue, decimal tempExpToNexLevel = decimal.MinValue)
     {
@@ -374,6 +446,17 @@ public static class PlantationManagerHelper
         }
     }
 
+    /// <summary>
+    /// Przetwarza zebrane plony z rośliny na plantacji gracza, dodając susz i potencjalnie nasiona.
+    /// </summary>
+    /// <param name="playerDriedFruit">Susz gracza powiązany z rośliną.</param>
+    /// <param name="plant">Roślina, z której zebrane są plony.</param>
+    /// <param name="dropsNotification">Powiadomienia o zdobytych przedmiotach.</param>
+    /// <param name="playerSeed">Nasiono gracza powiązane z rośliną.</param>
+    /// <param name="district">Dzielnica, w której rozgrywka ma miejsce.</param>
+    /// <param name="playerPlantationStorage">Magazyn plantacji gracza.</param>
+    /// <param name="random">Generator liczb losowych.</param>
+    /// <param name="ignoreChangeService">Serwis do ignorowania zmian.</param>
     public static async Task ProcessCollectPlantDrops(DriedFruit playerDriedFruit, Plant plant, List<string> dropsNotification, 
         Seed playerSeed, District district, PlantationStorage playerPlantationStorage, Random random, IIgnoreChangeService ignoreChangeService)
     {
@@ -397,6 +480,11 @@ public static class PlantationManagerHelper
         TokensOperator.UnlockTokenProfit(district, playerPlantationStorage, dropsNotification);
     }
 
+    /// <summary>
+    /// Dodaje zdobyte waluty z nagrody do informacji o ukończonym zadaniu.
+    /// </summary>
+    /// <param name="drop">Nagroda.</param>
+    /// <param name="completeQuest">Informacje o ukończonym zadaniu.</param>
     public static void AddGainedCurrency(Drop drop, CompleteQuest completeQuest)
     {
         if (drop.Prestige != null)
@@ -419,6 +507,10 @@ public static class PlantationManagerHelper
             completeQuest.GainedHonor += (int) drop.Honor;
     }
 
+    /// <summary>
+    /// Ustawia wiadomości dotyczące otrzymanych przedmiotów na podstawie informacji o ukończonym zadaniu.
+    /// </summary>
+    /// <param name="completeQuest">Informacje o ukończonym zadaniu.</param>
     public static void SetReceivedItemsMessages(CompleteQuest completeQuest)
     {
         var startMessage = "Otrzymano ";
@@ -479,6 +571,12 @@ public static class PlantationManagerHelper
                                                     PlayerStorageObservedFields.Honor));
     }
 
+    /// <summary>
+    /// Sprawdza spełnienie wymagań do stworzenia rośliny.
+    /// </summary>
+    /// <param name="createPlant">Dane dotyczące tworzonej rośliny.</param>
+    /// <param name="message">Wiadomość z ewentualnymi brakującymi wymaganiami.</param>
+    /// <returns>True, jeśli wymagania zostały spełnione, w przeciwnym razie False.</returns>
     public static bool CheckRequirements(CreatePlant createPlant, out string message)
     {
         message = "";
@@ -566,7 +664,12 @@ public static class PlantationManagerHelper
         return lampOk && manureOk && soilOk && waterOk && seedOk && soilOwnedAmountOk && soilClassOk && lampAmountOk 
                && manureAmountOk && soilAmountOk && waterAmountOk && seedAmountOk && potAmountOk;
     }
-       
+
+    /// <summary>
+    /// Sprawdza, czy wszystkie wymagania ukończenia zadania zostały spełnione.
+    /// </summary>
+    /// <param name="completeQuest">Informacje o ukończonym zadaniu.</param>
+    /// <returns>True, jeśli wszystkie wymagania zostały spełnione, w przeciwnym razie False.</returns>
     public static bool AllRequirementsIsDone(CompleteQuest completeQuest)
     {
         var ret = true;

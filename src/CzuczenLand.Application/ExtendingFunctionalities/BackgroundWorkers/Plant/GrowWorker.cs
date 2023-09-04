@@ -11,14 +11,39 @@ using CzuczenLand.ExtendingModels.Models.General;
 
 namespace CzuczenLand.ExtendingFunctionalities.BackgroundWorkers.Plant;
 
+/// <summary>
+/// Klasa wykonująca pracę w cyklach związaną z wzrostem roślin.
+/// </summary>
 public class GrowWorker : PeriodicBackgroundWorkerBase, ISingletonDependency
 {
+    /// <summary>
+    /// Repozytorium roślin.
+    /// </summary>
     private readonly IRepository<ExtendingModels.Models.General.Plant> _plantRepository;
+    
+    /// <summary>
+    /// Repozytorium magazynów plantacji.
+    /// </summary>
     private readonly IRepository<PlantationStorage> _plantationStorageRepository;
+    
+    /// <summary>
+    /// Repozytorium dzielnic.
+    /// </summary>
     private readonly IRepository<District> _districtRepository;
+    
+    /// <summary>
+    /// Okres czasu (w milisekundach) między cyklami pracy.
+    /// </summary>
     private const int PeriodTime = 1000; // 1s 
         
 
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="timer">AbpTimer do określania czasu cyklu pracy.</param>
+    /// <param name="plantRepository">Repozytorium roślin.</param>
+    /// <param name="plantationStorageRepository">Repozytorium magazynów plantacji.</param>
+    /// <param name="districtRepository">Repozytorium dzielnic.</param>
     public GrowWorker(
         AbpTimer timer,
         IRepository<ExtendingModels.Models.General.Plant> plantRepository,
@@ -34,6 +59,7 @@ public class GrowWorker : PeriodicBackgroundWorkerBase, ISingletonDependency
     }
         
     /// <summary>
+    /// Metoda wykonywana w każdym cyklu pracy pracownika.
     /// Nie wychodziło równo co sekundę. Dlatego robimy korektę.
     /// Czasami jeszcze łapie poślizg 15 milisekund ale jak dla mnie jest to już wystarczające.
     /// </summary>
@@ -46,6 +72,7 @@ public class GrowWorker : PeriodicBackgroundWorkerBase, ISingletonDependency
     }
 
     /// <summary>
+    /// Analizuje i ustawia poziom wzrostu i więdnięcia rośliny.
     /// Musi mieć jednostkę pracy. Musi być virtual. Może być protected lub public. Inaczej nie aktualizuje zmian.
     /// Osobno po to, żeby Stopwatch zrobił prawidłowy pomiar bo na koniec metody jednostka pracy wykonuje swoje operacje 
     /// </summary>

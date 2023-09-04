@@ -13,11 +13,19 @@ using CzuczenLand.ExtendingFunctionalities.Services.General.Requirement.Dto;
 
 namespace CzuczenLand.ExtendingFunctionalities.Services.General.Requirement.App;
 
+/// <summary>
+/// Serwis aplikacyjny do obsługi operacji na encji "Requirement".
+/// </summary>
 [AbpAuthorize]
 public class RequirementAppService : 
     DistrictEntityAsyncCrudAppService<ExtendingModels.Models.General.Requirement, RequirementDto, PagedResultRequestDto, RequirementCreateDto, RequirementUpdateDto>, 
     IRequirementAppService
 {
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="repository">Repozytorium wymagań.</param>
+    /// <param name="responseBuilder">Budowniczy odpowiedzi dla wymagań.</param>
     public RequirementAppService(
         IRepository<ExtendingModels.Models.General.Requirement, int> repository,
         IResponseBuilder<RequirementDto> responseBuilder
@@ -26,6 +34,11 @@ public class RequirementAppService :
     {
     }
 
+    /// <summary>
+    /// Tworzy nowe wymaganie na podstawie dostarczonych informacji, uwzględniając warunki i porównania.
+    /// </summary>
+    /// <param name="input">Dane wejściowe obejmujące informacje o wymaganiu.</param>
+    /// <returns>Odpowiedź z informacją lub wynik akcji tworzenia.</returns>
     public override async Task<EntityAsyncCrudResponse> ActionCreate(InputWithConnections<RequirementCreateDto> input)
     {
         switch (input.Input.Condition)

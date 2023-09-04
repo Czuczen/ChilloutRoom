@@ -11,17 +11,48 @@ using CzuczenLand.ExtendingModels.Models.General;
 
 namespace CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.DeletePlayerDefinition;
 
+/// <summary>
+/// Bazowa klasa abstrakcyjna do usuwania rekordów graczy generowanych na podstawie definicji.
+/// </summary>
+/// <typeparam name="TEntity">Typ encji, który ma być usuwany.</typeparam>
 public abstract class DeleteDefinition<TEntity>
     where TEntity : class, IPlantationGeneratedEntity
 {
+    /// <summary>
+    /// Repozytorium encji generowanej.
+    /// </summary>
     protected readonly IRepository<TEntity> Repository;
+    
+    /// <summary>
+    /// Repozytorium dzielnic.
+    /// </summary>
     protected readonly IRepository<District> DistrictRepository;
+    
+    /// <summary>
+    /// Repozytorium typów generowanych.
+    /// </summary>
     protected readonly IRepository<GeneratedType> GeneratedTypeRepository;
+    
+    /// <summary>
+    /// Serwis roślin.
+    /// </summary>
     protected readonly IPlantService PlantService;
 
+    
+    /// <summary>
+    /// Właściwość pozwalająca na uzyskanie dostępu do sesji Abp, która przechowuje informacje dotyczące aktualnie zalogowanego użytkownika.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
+    /// </summary>
     public IAbpSession AbpSession { get; set; }
 
     
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="repository">Repozytorium encji generowanej.</param>
+    /// <param name="districtRepository">Repozytorium dzielnic.</param>
+    /// <param name="generatedTypeRepository">Repozytorium typów generowanych.</param>
+    /// <param name="plantService">Serwis roślin.</param>
     protected DeleteDefinition(
         IRepository<TEntity> repository,
         IRepository<District> districtRepository,
@@ -36,6 +67,10 @@ public abstract class DeleteDefinition<TEntity>
         PlantService = plantService;
     }
         
+    /// <summary>
+    /// Usuwa rekordy graczy na podstawie usuniętej definicji.
+    /// </summary>
+    /// <param name="objectId">Identyfikator usuwanej definicji.</param>
     public async Task Delete(int objectId)
     {
         var entityName = typeof(TEntity).Name;
@@ -43,6 +78,10 @@ public abstract class DeleteDefinition<TEntity>
         await DeleteDefinitionHelper.DeleteAllDefinitionsAsync(new List<int>{objectId}, currRepo, entityName, PlantService);
     }
         
+    /// <summary>
+    /// Usuwa rekordy graczy na podstawie usuwanych definicji.
+    /// </summary>
+    /// <param name="ids">Lista identyfikatorów usuwanych definicji.</param>
     public async Task Delete(List<int> ids)
     {
         var entityName = typeof(TEntity).Name;

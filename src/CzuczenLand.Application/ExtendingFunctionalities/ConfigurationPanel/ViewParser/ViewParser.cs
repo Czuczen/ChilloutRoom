@@ -17,14 +17,34 @@ using Newtonsoft.Json;
 
 namespace CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.ViewParser;
 
+/// <summary>
+/// Klasa odpowiedzialna za przetwarzanie wartości obiektów, które będą wyświetlone użytkownikowi.
+/// </summary>
 public class ViewParser : IViewParser
 {
+    /// <summary>
+    /// Repozytorium użytkowników.
+    /// </summary>
     private readonly IRepository<User, long> _userRepository;
+    
+    /// <summary>
+    /// Kontroluje tworzenie niestandardowych repozytoriów.
+    /// </summary>
     private readonly ICustomRepositoryLoader _customRepositoryLoader;
 
+    
+    /// <summary>
+    /// Interfejs ILogger służy do rejestrowania komunikatów z aplikacji.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
+    /// </summary>
     public ILogger Logger { get; set; }
         
     
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="userRepository">Repozytorium użytkowników.</param>
+    /// <param name="customRepositoryLoader">Kontroluje tworzenie niestandardowych repozytoriów.</param>
     public ViewParser(
         IRepository<User, long> userRepository,
         ICustomRepositoryLoader customRepositoryLoader
@@ -35,6 +55,12 @@ public class ViewParser : IViewParser
         _customRepositoryLoader = customRepositoryLoader;
     }
         
+    /// <summary>
+    /// Przetwarza listę obiektów DTO na listę słowników zawierających przetworzone wartości.
+    /// </summary>
+    /// <param name="dtoObjList">Lista obiektów DTO do przetworzenia.</param>
+    /// <param name="properties">Lista informacji o właściwościach obiektów.</param>
+    /// <returns>Lista przetworzonych obiektów jako słowniki.</returns>
     public async Task<List<object>> ParseObjectsValues(List<object> dtoObjList, List<PropertyInfo> properties)
     {
         var ret = new List<Dictionary<string, object>>();
@@ -64,6 +90,12 @@ public class ViewParser : IViewParser
         return ret.Cast<object>().ToList();
     }
 
+    /// <summary>
+    /// Przetwarza pole relacyjne w którym zawarte jest id obiektu na jego nazwę lub w przypadku pola typu select na nazwę czytelną dla użytkownika.
+    /// </summary>
+    /// <param name="prop">Informacje o właściwości pola relacyjnego.</param>
+    /// <param name="objElem">Para klucz-wartość pola relacyjnego.</param>
+    /// <returns>Nazwa przetworzonego pola relacyjnego.</returns>
     private async Task<string> ParseRelationFieldToName(PropertyInfo prop, KeyValuePair<string, object> objElem)
     {
         var ret = "";

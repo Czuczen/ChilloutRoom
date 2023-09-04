@@ -8,8 +8,16 @@ using CzuczenLand.ExtendingModels.Models.Products;
 
 namespace CzuczenLand.ExtendingFunctionalities.ModelsFactory;
 
+/// <summary>
+/// Fabryka do tworzenia obiektów bazodanowych.
+/// </summary>
 public static class DbModelFactory
 {
+    /// <summary>
+    /// Zwraca nowy obiekt bazodanowy na podstawie nazwy encji bazodanowej.
+    /// </summary>
+    /// <param name="entityDbName">Nazwa encji bazodanowej do stworzenia.</param>
+    /// <returns>Nowy obiekt bazodanowy odpowiadający nazwie encji.</returns>
     public static object GetDbNewObjectByEntityDbName(string entityDbName)
     {
         switch (entityDbName)
@@ -53,6 +61,11 @@ public static class DbModelFactory
         }
     }
         
+    /// <summary>
+    /// Zwraca typ encji bazodanowej na podstawie nazwy encji bazodanowej.
+    /// </summary>
+    /// <param name="entityDbName">Nazwa encji bazodanowej.</param>
+    /// <returns>Typ encji bazodanowej odpowiadający nazwie encji.</returns>
     public static Type GetDbEntityTypeByEntityDbName(string entityDbName)
     {
         switch (entityDbName)
@@ -100,6 +113,11 @@ public static class DbModelFactory
         }
     }
         
+    /// <summary>
+    /// Zwraca typ encji bazodanowej na podstawie nazwy encji DTO.
+    /// </summary>
+    /// <param name="entityDtoName">Nazwa encji DTO.</param>
+    /// <returns>Typ encji bazodanowej odpowiadający nazwie encji DTO.</returns>
     public static Type GetDbEntityTypeByEntityDtoName(string entityDtoName)
     {
         switch (entityDtoName)

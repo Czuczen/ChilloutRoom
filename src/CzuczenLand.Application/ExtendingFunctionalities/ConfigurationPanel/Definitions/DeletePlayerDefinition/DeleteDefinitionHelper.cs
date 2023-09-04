@@ -9,8 +9,18 @@ using CzuczenLand.ExtendingModels.Interfaces;
 
 namespace CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.DeletePlayerDefinition;
 
+/// <summary>
+/// Klasa pomocnicza do usuwania rekordów graczy generowanych na podstawie definicji.
+/// </summary>
 public static class DeleteDefinitionHelper
 {
+    /// <summary>
+    /// Usuwa wszystkie rekordy graczy na podstawie usuwanych definicji.
+    /// </summary>
+    /// <param name="ids">Lista identyfikatorów usuwanych definicji.</param>
+    /// <param name="repo">Repozytorium niestandardowe.</param>
+    /// <param name="entityName">Nazwa encji.</param>
+    /// <param name="plantService">Serwis roślin.</param>
     public static async Task DeleteAllDefinitionsAsync(List<int> ids, ICustomRepository repo, string  entityName, IPlantService plantService)
     {
         if (ids == null) return;

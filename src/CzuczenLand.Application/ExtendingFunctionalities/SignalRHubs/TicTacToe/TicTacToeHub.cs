@@ -15,24 +15,76 @@ using Microsoft.AspNet.SignalR;
 
 namespace CzuczenLand.ExtendingFunctionalities.SignalRHubs.TicTacToe;
 
+/// <summary>
+/// Hub SignalR obsługujący grę w kółko i krzyżyk.
+/// [AbpAuthorize] dawało wyjątek - Abp.Authorization.AbpAuthorizationException: Current user did not login to the application!
+/// Nic nie psuł ale jednak wyskakiwał. W każdym hub'ie wyskakiwał. Użycie [AbpMvcAuthorize] rozwiązało problem.
+/// </summary>
 [AbpMvcAuthorize]
 public class TicTacToeHub : Hub, ITransientDependency
 {
+    /// <summary>
+    /// Klucz obiektu gry, który jest tworzony dla każdego nowo połączonego użytkownika.
+    /// Obiekt jest umieszczany we właściwościach obiektu IOnlineClient.
+    /// </summary>
     private const string GameDataKey = "ticTacToe";
+    
+    /// <summary>
+    /// Wartość do porównania czy gra zakończyła się remisem
+    /// </summary>
     private const string Tied = "Tied";
+    
+    /// <summary>
+    /// Wartość do porównania czy gra zakończyła się wygraną
+    /// </summary>
     private const string Win = "Win";
+    
+    /// <summary>
+    /// Wartość do porównania czy gra zakończyła się przegraną
+    /// </summary>
     private const string Lose = "Lose";
 
+    
+    /// <summary>
+    /// Pole zawierające instancję klasy Random.
+    /// </summary>
     private readonly Random _random = new();
+    
+    /// <summary>
+    /// Repozytorium przechowujące dane gry w bazie danych.
+    /// </summary>
     private readonly IRepository<TicTacToeStorage> _ticTacToeStorageRepository;
+    
+    /// <summary>
+    /// Manager klientów do uzyskiwania informacji o użytkownikach online.
+    /// </summary>
     private readonly IOnlineClientManager _onlineClientManager;
+    
+    /// <summary>
+    /// Mapper obiektów wykorzystywany do przekształcania obiektów z jednego typu na inny.
+    /// </summary>
     private readonly IObjectMapper _objectMapper;
         
+    
+    /// <summary>
+    /// Właściwość pozwalająca na uzyskanie dostępu do sesji Abp, która przechowuje informacje dotyczące aktualnie zalogowanego użytkownika.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
+    /// </summary>
     public IAbpSession AbpSession { get; set; }
     
+    /// <summary>
+    /// Interfejs ILogger służy do rejestrowania komunikatów z aplikacji.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
+    /// </summary>
     public ILogger Logger { get; set; }
     
     
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="onlineClientManager">Manager klientów do uzyskiwania informacji o użytkownikach online.</param>
+    /// <param name="objectMapper">Mapper obiektów wykorzystywany do przekształcania obiektów z jednego typu na inny.</param>
+    /// <param name="ticTacToeStorageRepository">Repozytorium przechowujące dane gry w bazie danych.</param>
     public TicTacToeHub(
         IOnlineClientManager onlineClientManager,
         IObjectMapper objectMapper, 
@@ -47,6 +99,10 @@ public class TicTacToeHub : Hub, ITransientDependency
         Logger = NullLogger.Instance;
     }
 
+    /// <summary>
+    /// Metoda asynchroniczna ustawiająca gracza w kolejce oczekujących na przeciwnika do gry w kółko i krzyżyk.
+    /// Wyszukuje przeciwnika spośród wszystkich połączonych klientów i łączy graczy w parę do gry.
+    /// </summary>
     public async Task SetInQueueRoom()
     {
         try
@@ -97,6 +153,10 @@ public class TicTacToeHub : Hub, ITransientDependency
         }
     }
 
+    /// <summary>
+    /// Metoda anulująca oczekiwanie na przeciwnika do gry w kółko i krzyżyk.
+    /// Ustawia flagę WaitForOpponent na false w danych gracza.
+    /// </summary>
     public void CancelWaitForOpponent()
     {
         try
@@ -112,6 +172,12 @@ public class TicTacToeHub : Hub, ITransientDependency
         }
     }
         
+    /// <summary>
+    /// Metoda asynchroniczna wywoływana po odrzuceniu prośby o grę przez przeciwnika w kółko i krzyżyk.
+    /// Zmienia flagi WaitForOpponent oraz WantToPlayWithOpponent w danych graczy, którzy mieli do siebie dopasowanie.
+    /// Wysyła wiadomość do gracza o odrzuceniu prośby o grę.
+    /// </summary>
+    /// <param name="opponentConnectionId">Identyfikator połączenia odrzucającego grę przeciwnika.</param>
     public async Task MatchRejected(string opponentConnectionId)
     {
         try
@@ -135,6 +201,13 @@ public class TicTacToeHub : Hub, ITransientDependency
         }
     }
         
+    /// <summary>
+    /// Metoda wywoływana podczas próby rozpoczęcia gry przez użytkownika.
+    /// W zależności od stanu użytkownika (połączonego z serwerem), łączy użytkownika z jego przeciwnikiem lub oczekuje na wybór przeciwnika.
+    /// Jeśli obaj użytkownicy wyrazili chęć rozpoczęcia gry z konkretnym przeciwnikiem, tworzy nową grupę dla gry, przypisuje graczom odpowiednie symbole i rozpoczyna grę.
+    /// W przypadku błędu, wysyła informację o błędzie do użytkownika.
+    /// </summary>
+    /// <param name="opponentConnectionId">Identyfikator połączenia przeciwnika.</param>
     [UnitOfWork]
     public virtual async Task StartMatch(string opponentConnectionId)
     {
@@ -203,6 +276,14 @@ public class TicTacToeHub : Hub, ITransientDependency
         }
     }
 
+    /// <summary>
+    /// Metoda wywoływana podczas wykonania ruchu przez użytkownika.
+    /// Pobiera dane użytkownika, który wykonał ruch w celu ustawienia symbolu na wybranym elemencie planszy.
+    /// Następnie wysyła informację do wszystkich użytkowników w grupie o wykonanym ruchu.
+    /// W przypadku błędu, wysyła informację o błędzie do użytkownika.
+    /// </summary>
+    /// <param name="groupName">Nazwa grupy, w której toczy się gra.</param>
+    /// <param name="elementId">Identyfikator elementu planszy, na którym został wykonany ruch.</param>
     public async Task MakeMove(string groupName, string elementId)
     {
         try
@@ -219,6 +300,13 @@ public class TicTacToeHub : Hub, ITransientDependency
         }
     }
         
+    /// <summary>
+    /// Metoda kończąca rozgrywkę w grze kółko i krzyżyk. Zapisuje wynik meczu w bazie danych użytkownika, który grał w grę.
+    /// </summary>
+    /// <param name="matchResult">Wynik meczu - Tied, Win lub Lose</param>
+    /// <param name="fromBackend">Flaga określająca, czy zakończenie gry zostało wywołane przez klienta lub serwer na utratę połączenia przeciwnika.</param>
+    /// <param name="opponentUserId">Id użytkownika będącego przeciwnikiem, który utracił połączenie.</param>
+    /// <returns>Dane zakończonej rozgrywki w postaci obiektu klasy TicTacToeEndMatchData</returns>
     [UnitOfWork]
     public virtual async Task<TicTacToeEndMatchData> EndMatch(string matchResult, bool fromBackend = false, long? opponentUserId = null)
     {
@@ -272,6 +360,11 @@ public class TicTacToeHub : Hub, ITransientDependency
         return ret;
     }
 
+    /// <summary>
+    /// Metoda wywoływana przy połączeniu klienta z hub'em.
+    /// Przypisuje klientowi nowy obiekt TicTacToeClientData przechowujący informacje o grze.
+    /// Następnie pobiera listę połączonych klientów do gry i przesyła jej liczbę do wszystkich klientów.
+    /// </summary>
     public override async Task OnConnected()
     {
         try
@@ -291,6 +384,13 @@ public class TicTacToeHub : Hub, ITransientDependency
         await base.OnConnected();
     }
 
+    /// <summary>
+    /// Metoda wywoływana przy rozłączeniu klienta z hub'em.
+    /// Sprawdza czy klient był w trakcie rozgrywki z innym klientem i w przypadku takiej sytuacji informuje drugiego gracza o rozłączeniu oraz kończy grę wynikiem porażki dla klienta, który się rozłączył.
+    /// W przypadku, gdy klient był w kolejce do rozgrywki i akceptował dopasowanie a przeciwnik utracił połączenie akceptacja dopasowania jest anulowana.
+    /// Pobiera listę połączonych klientów do gry i przesyła jej liczbę do wszystkich klientów.
+    /// </summary>
+    /// <param name="stopCalled">Czy rozłączenie zostało wywołane przez klienta.</param>
     public override async Task OnDisconnected(bool stopCalled)
     {
         try
@@ -333,6 +433,10 @@ public class TicTacToeHub : Hub, ITransientDependency
         await base.OnDisconnected(stopCalled);
     }
 
+    /// <summary>
+    /// Metoda zwracająca listę połączonych klientów, którzy posiadają dane do gry TicTacToe czyli są połączeni do hub'a gry w kółko i krzyżyk.
+    /// </summary>
+    /// <returns>Lista połączonych klientów do hub'a gry w kółko i krzyżyk.</returns>
     private List<IOnlineClient> GetConnectedClients()
     {
         var ret = new List<IOnlineClient>();

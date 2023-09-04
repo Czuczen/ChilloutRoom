@@ -19,14 +19,30 @@ using CzuczenLand.ExtendingFunctionalities.Services.General.Quest.Dto;
 
 namespace CzuczenLand.ExtendingFunctionalities.Services.General.Quest.App;
 
+/// <summary>
+/// Serwis aplikacyjny do obsługi operacji na encji "Quest".
+/// </summary>
 [AbpAuthorize]
 public class QuestAppService : 
     GeneratedEntityAsyncCrudAppService<ExtendingModels.Models.General.Quest, QuestDto, PagedResultRequestDto, QuestCreateDto, QuestUpdateDto>, 
     IQuestAppService
 {
+    /// <summary>
+    /// Serwis podstawowy dla zadań.
+    /// </summary>
     private readonly IQuestService _questService;
 
     
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="repository">Repozytorium zadań.</param>
+    /// <param name="questService">Serwis podstawowy dla zadań.</param>
+    /// <param name="generatedTypeRepository">Repozytorium typu generowanego.</param>
+    /// <param name="responseBuilder">Budowniczy odpowiedzi dla zadań.</param>
+    /// <param name="definitionCreator">Klasa odpowiadająca za tworzenie encji "Quest" dla użytkowników na podstawie stworzonej definicji.</param>
+    /// <param name="definitionUpdater">Klasa odpowiadająca za aktualizację encji "Quest" u użytkowników na podstawie aktualizowanej definicji.</param>
+    /// <param name="definitionDeleter">Klasa odpowiadająca za usuwanie encji "Quest" u użytkowników na podstawie usuniętej definicji.</param>
     public QuestAppService(
         IRepository<ExtendingModels.Models.General.Quest, int> repository,
         IQuestService questService,
@@ -41,6 +57,10 @@ public class QuestAppService :
         _questService = questService;
     }
 
+    /// <summary>
+    /// Pobiera dostępne rekordy zadań.
+    /// </summary>
+    /// <returns>Odpowiedź z listą dostępnych zadań.</returns>
     public override async Task<EntityAsyncCrudResponse> ActionGetAvailableRecords()
     {
         var ret = new List<QuestDto>();
@@ -57,6 +77,11 @@ public class QuestAppService :
         return await ResponseBuilder.AddItems(ret).Build(EntityAsyncCrudActions.ActionGetAvailableRecords);
     }
 
+    /// <summary>
+    /// Tworzy nowe zadanie na podstawie dostarczonych informacji i połączeń, uwzględniając zależności.
+    /// </summary>
+    /// <param name="input">Dane wejściowe obejmujące informacje o zadaniu oraz połączeniach.</param>
+    /// <returns>Odpowiedź z wynikiem akcji tworzenia.</returns>
     public override async Task<EntityAsyncCrudResponse> ActionCreate(InputWithConnections<QuestCreateDto> input)
     {
         var entityAsyncCrudResponse = await base.ActionCreate(input);
@@ -65,6 +90,11 @@ public class QuestAppService :
         return entityAsyncCrudResponse;
     }
         
+    /// <summary>
+    /// Aktualizuje istniejące zadanie na podstawie dostarczonych informacji i połączeń, uwzględniając zależności.
+    /// </summary>
+    /// <param name="input">Dane wejściowe obejmujące informacje o zadaniu oraz połączeniach.</param>
+    /// <returns>Odpowiedź z wynikiem akcji aktualizacji.</returns>
     public override async Task<EntityAsyncCrudResponse> ActionUpdate(InputWithConnections<QuestUpdateDto> input)
     {
         var entityAsyncCrudResponse = await base.ActionUpdate(input);

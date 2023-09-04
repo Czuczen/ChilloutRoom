@@ -24,81 +24,383 @@ using Newtonsoft.Json;
 
 namespace CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.StructureTests;
 
+/// <summary>
+/// Klasa zawierająca testy struktury definicji opiekunów dzielnic.
+/// </summary>
 public class StructureTests : IStructureTests
 {
+    /// <summary>
+    /// Repozytorium suszu.
+    /// </summary>
     private readonly IRepository<DriedFruit> _driedFruitRepository;
+    
+    /// <summary>
+    /// Repozytorium lamp.
+    /// </summary>
     private readonly IRepository<Lamp> _lampRepository;
+    
+    /// <summary>
+    /// Repozytorium nawozów.
+    /// </summary>
     private readonly IRepository<Manure> _manureRepository;
+    
+    /// <summary>
+    /// Repozytorium donic.
+    /// </summary>
     private readonly IRepository<Pot> _potRepository;
+    
+    /// <summary>
+    /// Repozytorium nasion.
+    /// </summary>
     private readonly IRepository<Seed> _seedRepository;
+    
+    /// <summary>
+    /// Repozytorium gleb.
+    /// </summary>
     private readonly IRepository<Soil> _soilRepository;
+    
+    /// <summary>
+    /// Repozytorium wód.
+    /// </summary>
     private readonly IRepository<Water> _waterRepository;
+    
+    /// <summary>
+    /// Repozytorium bonusów.
+    /// </summary>
     private readonly IRepository<Bonus> _bonusRepository;
+    
+    /// <summary>
+    /// Repozytorium zadań.
+    /// </summary>
     private readonly IRepository<Quest> _questRepository;
+    
+    /// <summary>
+    /// Repozytorium magazynu plantacji.
+    /// </summary>
     private readonly IRepository<PlantationStorage> _plantationStorageRepository;
+    
+    /// <summary>
+    /// Repozytorium roślin.
+    /// </summary>
     private readonly IRepository<Plant> _plantRepository;
+    
+    /// <summary>
+    /// Repozytorium magazynu gracza.
+    /// </summary>
     private readonly IRepository<PlayerStorage> _playerStorageRepository;
+    
+    /// <summary>
+    /// Repozytorium dzielnic.
+    /// </summary>
     private readonly IRepository<District> _districtRepository;
+    
+    /// <summary>
+    /// Repozytorium wymagań.
+    /// </summary>
     private readonly IRepository<Requirement> _requirementRepository;
+    
+    /// <summary>
+    /// Repozytorium nagród.
+    /// </summary>
     private readonly IRepository<Drop> _dropRepository;
+    
+    /// <summary>
+    /// Repozytorium typów generowanych.
+    /// </summary>
     private readonly IRepository<GeneratedType> _generatedTypeRepository;
+    
+    /// <summary>
+    /// Repozytorium tabeli łączącej zadania z nagrodami.
+    /// </summary>
     private readonly IRepository<DropQuest> _dropQuestRepository;
+    
+    /// <summary>
+    /// Repozytorium ignorowanych zmian.
+    /// </summary>
     private readonly IRepository<IgnoreChange> _ignoreChangeRepository;
+    
+    /// <summary>
+    /// Repozytorium donów dzielnic.
+    /// </summary>
     private readonly IRepository<DistrictDon> _districtDonRepository;
+    
+    /// <summary>
+    /// Repozytorium transakcji na czarnym rynku.
+    /// </summary>
     private readonly IRepository<BlackMarketTransaction> _blackMarketTransactionRepository;
+    
+    /// <summary>
+    /// Repozytorium postępów w wymaganiach zadań.
+    /// </summary>
     private readonly IRepository<QuestRequirementsProgress> _questRequirementsProgressRepository;
+    
+    /// <summary>
+    /// Obiekt do sprawdzania uprawnień.
+    /// </summary>
     private readonly IPermissionChecker _permissionChecker;
+    
+    /// <summary>
+    /// Repozytorium użytkowników.
+    /// </summary>
     private readonly IRepository<User, long> _userRepository;
     
+    
+    /// <summary>
+    /// Wszyscy użytkownicy.
+    /// </summary>
     private List<User> AllUsers { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich suszów.
+    /// </summary>
     private List<DriedFruit> AllDriedFruits  { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich lamp.
+    /// </summary>
     private List<Lamp> AllLamps { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich nawozów.
+    /// </summary>
     private List<Manure> AllManures { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich donic.
+    /// </summary>
     private List<Pot> AllPots { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich nasion.
+    /// </summary>
     private List<Seed> AllSeeds { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich gleb.
+    /// </summary>
     private List<Soil> AllSoils { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich wód.
+    /// </summary>
     private List<Water> AllWaters { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich zadań.
+    /// </summary>
     private List<Quest> AllQuests { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich bonusów.
+    /// </summary>
     private List<Bonus> AllBonuses { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich magazynów plantacji.
+    /// </summary>
     private List<PlantationStorage> AllPlantationStorages { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich roślin.
+    /// </summary>
     private List<Plant> AllPlants { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich magazynów graczy.
+    /// </summary>
     private List<PlayerStorage> AllPlayerStorages { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich dzielnic.
+    /// </summary>
     private List<District> AllDistricts { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich wymagań.
+    /// </summary>
     private List<Requirement> AllRequirements { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich nagród.
+    /// </summary>
     private List<Drop> AllDrops { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich typów generowanych.
+    /// </summary>
     private List<GeneratedType> AllGeneratedTypes { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich tabel łączących zadania z nagrodami.
+    /// </summary>
     private List<DropQuest> AllDropsQuests { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich postępów w wymaganiach zadań.
+    /// </summary>
     private List<QuestRequirementsProgress> AllQuestsRequirementsProgress { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich ignorowanych zmian.
+    /// </summary>
     private List<IgnoreChange> AllIgnoreChanges { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich transakcji na czarnym rynku.
+    /// </summary>
     private List<BlackMarketTransaction> AllBlackMarketTransactions { get; set; }
+    
+    /// <summary>
+    /// Lista wszystkich donów dzielnic.
+    /// </summary>
     private List<DistrictDon> AllDistrictDons { get; set; }
     
+    
+    /// <summary>
+    /// Lista użytkowników w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<User> Users { get; set; }
+    
+    /// <summary>
+    /// Lista suszów w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<DriedFruit> DriedFruits  { get; set; }
+    
+    /// <summary>
+    /// Lista lamp w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<Lamp> Lamps { get; set; }
+    
+    /// <summary>
+    /// Lista nawozów w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<Manure> Manures { get; set; }
+    
+    /// <summary>
+    /// Lista donic w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<Pot> Pots { get; set; }
+    
+    /// <summary>
+    /// Lista nasion w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<Seed> Seeds { get; set; }
+    
+    /// <summary>
+    /// Lista gleb w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<Soil> Soils { get; set; }
+    
+    /// <summary>
+    /// Lista wód w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<Water> Waters { get; set; }
+    
+    /// <summary>
+    /// Lista zadań w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<Quest> Quests { get; set; }
+    
+    /// <summary>
+    /// Lista bonusów w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<Bonus> Bonuses { get; set; }
+    
+    /// <summary>
+    /// Lista magazynów plantacji w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<PlantationStorage> PlantationStorages { get; set; }
+    
+    /// <summary>
+    /// Lista roślin w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<Plant> Plants { get; set; }
+    
+    /// <summary>
+    /// Lista magazynów gracza w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<PlayerStorage> PlayerStorages { get; set; }
+    
+    /// <summary>
+    /// Lista dzielnic opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<District> Districts { get; set; }
+    
+    /// <summary>
+    /// Lista wymagań w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<Requirement> Requirements { get; set; }
+    
+    /// <summary>
+    /// Lista nagród w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<Drop> Drops { get; set; }
+    
+    /// <summary>
+    /// Lista typów generowanych w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<GeneratedType> GeneratedTypes { get; set; }
+    
+    /// <summary>
+    /// Lista tabel łączących nagrody z zadaniami w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<DropQuest> DropsQuests { get; set; }
+    
+    /// <summary>
+    /// Lista postępów wymagań zadań w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<QuestRequirementsProgress> QuestsRequirementsProgress { get; set; }
+    
+    /// <summary>
+    /// Lista ignorowanych zmian dla opiekuna dzielnicy nie dostępna, tylko dla administratora.
+    /// </summary>
     private List<IgnoreChange> IgnoreChanges { get; set; }
+    
+    /// <summary>
+    /// Lista transakcji czarnego rynku w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<BlackMarketTransaction> BlackMarketTransactions { get; set; }
+    
+    /// <summary>
+    /// Lista donów w dzielnicy opiekuna lub wszystkie jeśli administrator.
+    /// </summary>
     private List<DistrictDon> DistrictDons { get; set; }
-        
+    
+    
+    /// <summary>
+    /// Interfejs ILogger służy do rejestrowania komunikatów z aplikacji.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
+    /// </summary>
     public ILogger Logger { get; set; }
         
 
+    
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="userRepository">Repozytorium użytkowników.</param>
+    /// <param name="driedFruitRepository">Repozytorium suszu.</param>
+    /// <param name="lampRepository">Repozytorium lamp.</param>
+    /// <param name="manureRepository">Repozytorium nawozów.</param>
+    /// <param name="potRepository">Repozytorium donic.</param>
+    /// <param name="seedRepository">Repozytorium nasion.</param>
+    /// <param name="soilRepository">Repozytorium gleb.</param>
+    /// <param name="waterRepository">Repozytorium wód.</param>
+    /// <param name="bonusRepository">Repozytorium bonusów.</param>
+    /// <param name="questRepository">Repozytorium zadań.</param>
+    /// <param name="plantationStorageRepository">Repozytorium magazynu plantacji.</param>
+    /// <param name="plantRepository">Repozytorium roślin.</param>
+    /// <param name="playerStorageRepository">Repozytorium magazynu gracza.</param>
+    /// <param name="districtRepository">Repozytorium dzielnic.</param>
+    /// <param name="requirementRepository">Repozytorium wymagań.</param>
+    /// <param name="dropRepository">Repozytorium nagród.</param>
+    /// <param name="generatedTypeRepository">Repozytorium typów generowanych.</param>
+    /// <param name="dropQuestRepository">Repozytorium tabeli łączącej zadania z nagrodami.</param>
+    /// <param name="ignoreChangeRepository">Repozytorium ignorowanych zmian.</param>
+    /// <param name="districtDonRepository">Repozytorium donów dzielnic.</param>
+    /// <param name="blackMarketTransactionRepository">Repozytorium transakcji na czarnym rynku.</param>
+    /// <param name="questRequirementsProgressRepository">Repozytorium postępów w wymaganiach zadań.</param>
+    /// <param name="permissionChecker">Obiekt do sprawdzania uprawnień.</param>
     public StructureTests(
         IRepository<User, long> userRepository,
         IRepository<DriedFruit> driedFruitRepository,
@@ -151,6 +453,12 @@ public class StructureTests : IStructureTests
         _permissionChecker = permissionChecker;
     }
     
+    /// <summary>
+    /// Rozpoczyna testy struktury aplikacji i zwraca ich wyniki.
+    /// </summary>
+    /// <param name="isAdmin">Określa, czy użytkownik jest administratorem.</param>
+    /// <param name="userId">Identyfikator użytkownika.</param>
+    /// <returns>Lista wyników testów struktury.</returns>
     public async Task<List<StructureTest>> BeginTests(bool isAdmin, long userId)
     {
         var ret =  new List<StructureTest>();
@@ -199,6 +507,11 @@ public class StructureTests : IStructureTests
         return ret;
     }
 
+    /// <summary>
+    /// Ładuje kontekst, inicjalizując listy obiektów na podstawie uprawnień.
+    /// </summary>
+    /// <param name="isAdmin">Czy użytkownik jest administratorem.</param>
+    /// <param name="userId">Identyfikator użytkownika.</param>
     private async Task LoadContext(bool isAdmin, long userId)
     {
         AllDistricts = await _districtRepository.GetAllListAsync();
@@ -278,6 +591,10 @@ public class StructureTests : IStructureTests
         }
     }
 
+    /// <summary>
+    /// Wyświetli raport o liście pól aktualizowanych u użytkowników podczas aktualizacji definicji przez opiekuna dzielnicy.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do której będą dodane wyniki testu aktualizacji pól.</param>
     private void UpdatePlayerDefinitionDtoFieldsList(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -313,6 +630,10 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
         
+    /// <summary>
+    /// Generuje listę stałych aplikacji wraz z ich wartościami.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do której będą dodane wyniki testu stałych aplikacji.</param>
     private void MyAppConstsList(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -347,10 +668,14 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
         
+    /// <summary>
+    /// Sprawdza, czy każdy typ generowany ma przypisaną dokładnie jedną definicję produktu.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do której będą dodane wyniki testu powiązania typów generowanych z definicjami produktów.</param>
     private void GeneratedTypeHasConnectedOneProductDefinition(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
-        structureTest.TestName = "Czy każdy typ jest zdefiniowany na jednej definicji typu generowanego";
+        structureTest.TestName = "Czy każdy typ generowany ma zdefiniowany jeden produkt";
 
         foreach (var generatedType in GeneratedTypes)
         {
@@ -435,6 +760,10 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
 
+    /// <summary>
+    /// Sprawdza, czy każda definicja nasiona ma jedną definicję suszu o takim samym typie.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do której będą dodane wyniki testu powiązania definicji nasion z definicjami suszu.</param>
     private void SeedAndDriedFruitHeaveSameType(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -479,10 +808,14 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
 
+    /// <summary>
+    /// Testuje istnienie uprawnień opiekunów dla dzielnic w systemie.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do której będą dodane wyniki testu istnienia uprawnień opiekunów dla dzielnic.</param>
     private async Task WardenPermissionForDistrictsExistenceCheck(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
-        structureTest.TestName = "Test sprawdzający uprawnienia opiekuna dla dzielnic";
+        structureTest.TestName = "Test sprawdzający uprawnienia opiekunów dla dzielnic";
         try
         {
             foreach (var user in Users)
@@ -580,6 +913,10 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
 
+    /// <summary>
+    /// Sprawdza istnienie dzielnic zdefiniowanych na typach generowanych.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do której będą dodane wyniki testu istnienia dzielnic dla typów generowanych.</param>
     private void GeneratedTypeDistrictExist(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -615,10 +952,14 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
 
+    /// <summary>
+    /// Sprawdza istnienie typów generowanych zdefiniowanych na produktach.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do której będą dodane wyniki testu istnienia typów generowanych na produktach.</param>
     private void ProductGeneratedTypeExist(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
-        structureTest.TestName = "Czy typ generowany zdefiniowany na produktach istnieje";
+        structureTest.TestName = "Czy typy generowane zdefiniowane na produktach istnieją";
             
         try
         {
@@ -651,10 +992,14 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
 
+    /// <summary>
+    /// Sprawdza, czy magazyny plantacji wszystkich użytkowników posiadają definicje produktów dla typów generowanych dzielnicy.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do której będą dodane wyniki testu.</param>
     private void AllUsersPlantationStoragesHasProductsDefinitions(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
-        structureTest.TestName = "Czy magazyny plantacji wszystkich użytkowników posiadają definicje typów generowanych dzielnicy";
+        structureTest.TestName = "Czy magazyny plantacji wszystkich użytkowników posiadają definicje produktów dla typów generowanych dzielnicy";
             
         foreach (var playerStorage in PlayerStorages)
         {
@@ -736,6 +1081,10 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
 
+    /// <summary>
+    /// Sprawdza, czy każdy użytkownik posiada jeden magazyn gracza.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do której będą dodane wyniki testu.</param>
     private void UsersHasOnePlayerStorage(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -782,6 +1131,10 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
 
+    /// <summary>
+    /// Sprawdza, czy każdy użytkownik nie posiada więcej niż jeden magazyn plantacji dla jednej dzielnicy.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do której będą dodane wyniki testu.</param>
     private async Task UsersNotHasMoreThanOnePlantationStorageForOneDistrict(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -840,6 +1193,10 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
 
+    /// <summary>
+    /// Sprawdza, czy dzielnice magazynów plantacji istnieją.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do której będą dodane wyniki testu.</param>
     private void PlantationsStoragesDistrictsExists(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -876,6 +1233,10 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
 
+    /// <summary>
+    /// Sprawdza, czy encje połączone z roślinami istnieją.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do której będą dodane wyniki testu.</param>
     private void PlantsConnectedEntitiesExist(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -914,6 +1275,10 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
 
+    /// <summary>
+    /// Sprawdza, czy produkty w użyciu są równe ilości roślin.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do której będą dodane wyniki testu.</param>
     private void CheckInUseProductsWithAllPlantsCount(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -961,6 +1326,10 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
             
+    /// <summary>
+    /// Sprawdza, czy ilość roślin użytkownika jest równa ilości doniczek i lamp w użyciu.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do której będą dodane wyniki testu.</param>
     private void UserPlantsCountIsSameWithPotAndLampInUseCount(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -1032,10 +1401,14 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
         
+    /// <summary>
+    /// Sprawdza, czy wszystkie produkty generowane użytkownikom posiadają magazyn plantacji.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do której będą dodane wyniki testu.</param>
     private void AllUsersGeneratedTypesHasPlantationStorage(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
-        structureTest.TestName = "Czy wszystkie typy generowane użytkowników posiadają magazyn plantacji";
+        structureTest.TestName = "Czy wszystkie produkty generowane użytkownikom posiadają magazyn plantacji";
         var allTypesCount = 0;
         try
         {
@@ -1083,10 +1456,14 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
         
+    /// <summary>
+    /// Sprawdza, czy wymagania przypisane do zadań istnieją.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do których dodawane są wyniki testu.</param>
     private void QuestsRequirementsExist(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
-        structureTest.TestName = "Czy wymagania progresu wymagań zadania istnieją";
+        structureTest.TestName = "Czy wymagania przypisane do zadań istnieją";
             
         foreach (var quest in Quests)
         {
@@ -1123,6 +1500,10 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
         
+    /// <summary>
+    /// Sprawdza, czy każde zadanie ma przypisany swój postęp wymagań.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do których dodawane są wyniki testu.</param>
     private void AllQuestsHasRequirementsProgress(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -1164,10 +1545,14 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
         
+    /// <summary>
+    /// Sprawdza, czy zadania zdefiniowane na progresach wymagań istnieją.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do których dodawane są wyniki testu.</param>
     private void QuestInQuestRequirementsProgressExist(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
-        structureTest.TestName = "Czy zadania progresu wymagań istnieją";
+        structureTest.TestName = "Czy zadania zdefiniowane na progresach wymagań istnieją";
             
         foreach (var questProgress in QuestsRequirementsProgress)
         {
@@ -1200,6 +1585,10 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
 
+    /// <summary>
+    /// Sprawdza, czy każde zadanie posiada przynajmniej jedno wymaganie i przynajmniej jedną nagrodę.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do których dodawane są wyniki testu.</param>
     private void QuestHaveOneRequirementAndDrop(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -1259,6 +1648,10 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
         
+    /// <summary>
+    /// Sprawdza, czy zadania i nagrody w relacji do siebie istnieją.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do których dodawane są wyniki testu.</param>
     private void DropQuestRelationEntitiesExist(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -1309,10 +1702,15 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
         
+    /// <summary>
+    /// Sprawdza, czy ignorowane zmiany nie są zbyt duże i czy przypisane encje istnieją.
+    /// Tylko dla administratora.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do których dodawane są wyniki testu.</param>
     private void IgnoreChangeIsNotToBigAndEntitiesExist(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
-        structureTest.TestName = "Czy ignorowane zmiany nie są zbyt duże i czy encje istnieją";
+        structureTest.TestName = "Czy ignorowane zmiany nie są zbyt duże i czy przypisane encje istnieją";
 
         var minorTest = new MinorTest();
         if (IgnoreChanges.Count == 0)
@@ -1391,6 +1789,10 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
         
+    /// <summary>
+    /// Sprawdza, czy opiekunowie dzielnic istnieją.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do których dodawane są wyniki testu.</param>
     private void DistrictsWardensExist(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -1427,10 +1829,14 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
 
+    /// <summary>
+    /// Sprawdza, czy encje przypisane do transakcji czarnego rynku istnieją.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do których dodawane są wyniki testu.</param>
     private void EntitiesConnectedToBlackMarketTransactionsExist(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
-        structureTest.TestName = "Czy encje połączone do transakcji czarnego rynku istnieją";
+        structureTest.TestName = "Czy encje przypisane do transakcji czarnego rynku istnieją";
 
         foreach (var transaction in BlackMarketTransactions)
         {
@@ -1565,7 +1971,11 @@ public class StructureTests : IStructureTests
         structureTest.AdditionalInfos = "Ilość wszystkich transakcji czarnego rynku: " + BlackMarketTransactions.Count;
         model.Add(structureTest);
     }
-        
+      
+    /// <summary>
+    /// Sprawdza, czy don'owie dzielnic istnieją i czy dzielnice don'ów istnieją.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do których dodawane są wyniki testu.</param>
     private void DonsAndDistrictExist(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -1617,6 +2027,10 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
         
+    /// <summary>
+    /// Sprawdza, czy don'owie dzielnic są prawidłowo ustawieni.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do których dodawane są wyniki testu.</param>
     private void DistrictsDonsCorrectlySet(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -1696,6 +2110,10 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
 
+    /// <summary>
+    /// Sprawdza, czy nagrody i wymagania posiadają przypisania.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do których dodawane są wyniki testu.</param>
     private void AnyDropsAndRequirementsAreAssigned(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -1773,6 +2191,10 @@ public class StructureTests : IStructureTests
     
     #region ZALEŻNOŚCI PÓL
 
+    /// <summary>
+    /// Sprawdza, czy wymagania mają właściwie ustawione zależności pól.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do których dodawane są wyniki testu.</param>
     private void RequirementFieldDependenciesAreFine(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -1851,6 +2273,10 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
 
+    /// <summary>
+    /// Sprawdza, czy nagrody mają właściwie ustawione zależności pól.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do których dodawane są wyniki testu.</param>
     private void DropFieldDependenciesAreFine(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -1917,6 +2343,10 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
 
+    /// <summary>
+    /// Sprawdza, czy zadania mają właściwie ustawione zależności pól.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do których dodawane są wyniki testu.</param>
     private void QuestFieldDependenciesAreFine(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
@@ -1939,10 +2369,14 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
 
+    /// <summary>
+    /// Sprawdza, czy susze mają właściwie ustawione zależności pól.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do których dodawane są wyniki testu.</param>
     private void DriedFruitFieldDependenciesAreFine(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
-        structureTest.TestName = "Czy susz ma właściwie ustawione zależności pól";
+        structureTest.TestName = "Czy susze mają właściwie ustawione zależności pól";
 
         foreach (var driedFruit in DriedFruits)
         {
@@ -1963,10 +2397,14 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
     
+    /// <summary>
+    /// Sprawdza, czy bonusy mają właściwie ustawione zależności pól.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do których dodawane są wyniki testu.</param>
     private void BonusFieldDependenciesAreFine(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
-        structureTest.TestName = "Czy bonus ma właściwie ustawione zależności pól";
+        structureTest.TestName = "Czy bonusy mają właściwie ustawione zależności pól";
 
         foreach (var bonus in Bonuses)
         {
@@ -1988,10 +2426,14 @@ public class StructureTests : IStructureTests
         model.Add(structureTest);
     }
     
+    /// <summary>
+    /// Sprawdza, czy produkty mają właściwie ustawione zależności pól.
+    /// </summary>
+    /// <param name="model">Lista obiektów StructureTest, do których dodawane są wyniki testu.</param>
     private void ProductFieldDependenciesAreFine(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
-        structureTest.TestName = "Czy produkt ma właściwie ustawione zależności pól";
+        structureTest.TestName = "Czy produkty mają właściwie ustawione zależności pól";
 
         var products = new List<Product>();
         products.AddRange(Lamps);

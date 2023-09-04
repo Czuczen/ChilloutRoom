@@ -12,17 +12,52 @@ using CzuczenLand.ExtendingModels.Models.Products;
 
 namespace CzuczenLand.ExtendingFunctionalities.Services.General.Plant.Base;
 
+/// <summary>
+/// Serwis podstawowy obsługujący logikę biznesową związaną z rośliną.
+/// </summary>
 public class PlantService : IPlantService
 {
+    /// <summary>
+    /// Repozytorium roślin.
+    /// </summary>
     private readonly IRepository<ExtendingModels.Models.General.Plant> _plantRepository;
+    
+    /// <summary>
+    /// Repozytorium lamp.
+    /// </summary>
     private readonly IRepository<Lamp> _lampRepository;
+    
+    /// <summary>
+    /// Repozytorium doniczek.
+    /// </summary>
     private readonly IRepository<Pot> _potRepository;
+    
+    /// <summary>
+    /// Repozytorium gleb.
+    /// </summary>
     private readonly IRepository<Soil> _soilRepository;
+    
+    /// <summary>
+    /// Serwis ignorowania zmian.
+    /// </summary>
     private readonly IgnoreChangeService _ignoreChangeService;
 
+    
+    /// <summary>
+    /// Interfejs ILogger służy do rejestrowania komunikatów z aplikacji.
+    /// Właściwość musi być public oraz mieć getter i setter dla poprawnego działania wstrzykiwania właściwości.
+    /// </summary>
     public ILogger Logger { get; set; }
 
     
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="plantRepository">Repozytorium roślin.</param>
+    /// <param name="lampRepository">Repozytorium lamp.</param>
+    /// <param name="potRepository">Repozytorium doniczek.</param>
+    /// <param name="soilRepository">Repozytorium gleb.</param>
+    /// <param name="ignoreChangeService">Serwis ignorowania zmian.</param>
     public PlantService(
         IRepository<ExtendingModels.Models.General.Plant> plantRepository,
         IRepository<Lamp> lampRepository,
@@ -39,6 +74,16 @@ public class PlantService : IPlantService
         _ignoreChangeService = ignoreChangeService;
     }
         
+    /// <summary>
+    /// Tworzy roślinę gracza.
+    /// </summary>
+    /// <param name="createPlant">Obiekt zawierający informacje do utworzenia nowej rośliny.</param>
+    /// <param name="district">Dzielnica, w której roślina jest tworzona.</param>
+    /// <param name="userName">Nazwa użytkownika.</param>
+    /// <param name="plantationStorageId">Identyfikator magazynu plantacji.</param>
+    /// <param name="activeBonuses">Aktywne bonusy.</param>
+    /// <param name="generatedType">Typ generowany nasiona dla rośliny.</param>
+    /// <returns>Identyfikator nowo utworzonej rośliny.</returns>
     public async Task<int> CreatePlayerPlant(CreatePlant createPlant, ExtendingModels.Models.General.District district, string userName, 
         int plantationStorageId, List<Bonus> activeBonuses, ExtendingModels.Models.General.GeneratedType generatedType)
     {
@@ -86,6 +131,11 @@ public class PlantService : IPlantService
         return plantId;
     }
         
+    /// <summary>
+    /// Usuwa rośliny powiązane z usuniętym produktem.
+    /// </summary>
+    /// <param name="productId">Identyfikator produktu.</param>
+    /// <param name="entityName">Nazwa encji produktu.</param>
     public async Task DeleteConnectedPlantsToProductDefinitionAsync(int productId, string entityName)
     {
         switch (SelectListLoaderHelper.GetEntityEnum(entityName))
@@ -110,14 +160,15 @@ public class PlantService : IPlantService
                 break;
         }
     }
-
+    
     /// <summary>
+    /// Usuwa roślinę i aktualizuje powiązane produkty.
     /// Jeśli dzielnica fast się skończyła a użytkownik miał jakieś rośliny to dodawały się rekordy ignorowania
     /// ale z racji że już nie było magazynu plantacji state updater builder nie usuwał ignorowania. Dlatego potrzebna jest flaga needIgnoreChange.
     /// </summary>
-    /// <param name="fieldToCompare"></param>
-    /// <param name="value"></param>
-    /// <param name="needIgnoreChange"></param>
+    /// <param name="fieldToCompare">Pole do porównania.</param>
+    /// <param name="value">Wartość pola.</param>
+    /// <param name="needIgnoreChange">Flaga określająca potrzebę ignorowania zmian.</param>
     public async Task DeletePlantAndSetUseCountConnectedProductsAsync(string fieldToCompare, int value, bool needIgnoreChange = true)
     {
         var plantType = typeof(ExtendingModels.Models.General.Plant);

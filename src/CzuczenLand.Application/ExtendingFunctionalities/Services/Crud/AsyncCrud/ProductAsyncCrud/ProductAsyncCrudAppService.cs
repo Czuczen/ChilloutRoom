@@ -17,6 +17,14 @@ using CzuczenLand.ExtendingModels.Models.Shared;
 
 namespace CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.ProductAsyncCrud;
 
+/// <summary>
+/// Abstrakcyjna klasa bazowa do obsługi operacji na produktach.
+/// </summary>
+/// <typeparam name="TProduct">Typ produktu.</typeparam>
+/// <typeparam name="TEntityDto">Typ DTO encji.</typeparam>
+/// <typeparam name="TGetAllInput">Typ danych wejściowych dla operacji pobierania rekordów.</typeparam>
+/// <typeparam name="TCreateInput">Typ danych wejściowych dla operacji tworzenia rekordu.</typeparam>
+/// <typeparam name="TUpdateInput">Typ danych wejściowych dla operacji aktualizacji rekordu.</typeparam>
 public abstract class ProductAsyncCrudAppService<TProduct, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput> : 
     GeneratedEntityAsyncCrudAppService<TProduct, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput>, 
     IProductAsyncCrudAppService<TCreateInput, TUpdateInput>
@@ -25,6 +33,15 @@ public abstract class ProductAsyncCrudAppService<TProduct, TEntityDto, TGetAllIn
     where TUpdateInput : class, IEntityDto<int>
     where TCreateInput : class
 {
+    /// <summary>
+    /// Konstruktor, który ustawia wstrzykiwane zależności.
+    /// </summary>
+    /// <param name="repository">Repozytorium produktu.</param>
+    /// <param name="responseBuilder">Klasa budująca odpowiedzi na zapytania.</param>
+    /// <param name="generatedTypeRepository">Repozytorium typu generowanego.</param>
+    /// <param name="definitionCreator">Klasa odpowiadająca za tworzenie encji "Quest" dla użytkowników na podstawie stworzonej definicji.</param>
+    /// <param name="definitionUpdater">Klasa odpowiadająca za aktualizację encji "Quest" u użytkowników na podstawie aktualizowanej definicji.</param>
+    /// <param name="definitionDeleter">Klasa odpowiadająca za usuwanie encji "Quest" u użytkowników na podstawie usuniętej definicji.</param>
     protected ProductAsyncCrudAppService(
         IRepository<TProduct, int> repository, 
         IResponseBuilder<TEntityDto> responseBuilder,
@@ -37,6 +54,10 @@ public abstract class ProductAsyncCrudAppService<TProduct, TEntityDto, TGetAllIn
     {
     }
 
+    /// <summary>
+    /// Wykonuje operację pobrania dostępnych rekordów.
+    /// </summary>
+    /// <returns>Odpowiedź zawierająca dostępne rekordy.</returns>
     public override async Task<EntityAsyncCrudResponse> ActionGetAvailableRecords()
     {
         var ret = new List<TEntityDto>();
