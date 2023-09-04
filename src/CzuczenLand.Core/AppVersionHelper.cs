@@ -13,7 +13,7 @@ public class AppVersionHelper
     /// Pobiera aktualną wersję aplikacji. 
     /// Jest ona również pokazywana na stronie internetowej.
     /// </summary>
-    public const string Version = "4.6.3.1";
+    public const string Version = "1.0";
 
     /// <summary>
     /// Pobiera datę wydania (ostatniej kompilacji) aplikacji.
