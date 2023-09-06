@@ -106,17 +106,10 @@ public class CustomersHub : Hub, ITransientDependency
                 playerPlantationStorage.Gold += decimal.Parse(earnedCash.ToString("0.##"));
 
                 TokensOperator.DealerTokenProfit(district, playerPlantationStorage, amount);
-                var driedFruitAmount = currPlayerDriedFruit.OwnedAmount;
-                var driedFruitId = currPlayerDriedFruit.Id;
-                var plantationGold = playerPlantationStorage.Gold;
                 var sellMessage = "Sprzedano " + amount + "g " + currPlayerDriedFruit.Name;
 
-                ret = new CustomersSellData
-                {
-                    SellMessage = sellMessage, DriedFruitAmount = driedFruitAmount,
-                    PlantationGold = plantationGold, DriedFruitId = driedFruitId, Status = "Success"
-                };
-                    
+                ret = new CustomersSellData {SellMessage = sellMessage, Status = "Success"};
+                
                 Clients.All.removeOffer(offerId);
             }
             else
