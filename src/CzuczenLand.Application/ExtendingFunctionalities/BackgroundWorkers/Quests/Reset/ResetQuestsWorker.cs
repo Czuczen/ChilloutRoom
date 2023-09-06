@@ -90,15 +90,10 @@ public class ResetQuestsWorker : PeriodicBackgroundWorkerBase, ISingletonDepende
                 (progress, quest) => new {progress, quest}).ToList();
 
         var allDistricts = _districtRepository.GetAllList();
+        var allPlantationStorages = _plantationStorageRepository.GetAllList();
 
         var completedQuests = filteredQuestAndQuestProgress.Select(item => item.quest).ToList();
         var questsProgress = filteredQuestAndQuestProgress.Select(item => item.progress).ToList();
-
-        var plantationStorages = _plantationStorageRepository.GetAll().Join(
-            questQuery,
-            storage => storage.Id,
-            quest => quest.PlantationStorageId,
-            (storage, quest) => storage).ToList().GroupBy(item => item.Id).Select(item => item.First()).ToList();
         
         _questHub ??= GlobalHost.ConnectionManager.GetHubContext<QuestHub>();
         
@@ -108,7 +103,7 @@ public class ResetQuestsWorker : PeriodicBackgroundWorkerBase, ISingletonDepende
             {
                 try
                 {
-                    var playerPlantationStorage = plantationStorages.Single(item => item.Id == quest.PlantationStorageId);
+                    var playerPlantationStorage = allPlantationStorages.Single(item => item.Id == quest.PlantationStorageId);
                     var district = allDistricts.Single(item => item.Id == playerPlantationStorage.DistrictId);
                     if (!district.IsDefined) continue;
                     
@@ -140,17 +135,7 @@ public class ResetQuestsWorker : PeriodicBackgroundWorkerBase, ISingletonDepende
             }
         }
 
-        if (!plantationStorages.Any()) return;
-        
-        foreach (var plantationStorage in plantationStorages)
-        {
-            var district = allDistricts.Single(item => item.Id == plantationStorage.DistrictId);
-            if (!district.IsDefined) continue;
-            
-            plantationStorage.StartedDailyQuestsCount = 0;
-            if (weeklyLimitTimeHasPassed)
-                plantationStorage.StartedWeeklyQuestsCount = 0;
-        }
+        WorkersHelper.ResetStartedQuestsLimit(allPlantationStorages, allDistricts, weeklyLimitTimeHasPassed);
 
         if (weeklyLimitTimeHasPassed)
             DateOfFirstDayWeek = DateTimeUtils.GetDateOfFirstDayWeek(CurrDateTime);
