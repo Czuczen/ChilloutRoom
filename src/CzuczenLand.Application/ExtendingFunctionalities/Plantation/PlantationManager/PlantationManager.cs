@@ -831,21 +831,17 @@ public class PlantationManager : IPlantationManager
                     if (generatedType.EntityName != EntitiesDbNames.Quest) // drop dla typu suszu, rosliny i nasiona to zawsze typ nasiona. Czyli roślina ani susz nie mogą być dropem
                     {
                         if (drop.ItemAmount == null) continue;
-                        
+
                         var repo = CustomRepositoryFactory.GetRepository(generatedType.EntityName);
-                        var connectedRecord =
-                            (await repo.GetWhereAsync(RelationFieldsNames.PlantationStorageId,
-                                completeQuest.PlantationStorage.Id)).Cast<IPlantationGeneratedEntity>()
-                            .SingleOrDefault(item => item.GeneratedTypeId == generatedType.Id);
-                            
-                        var ownedAmountProp = connectedRecord?.GetType().GetProperty(DbComparers.OwnedAmount);
-                        ownedAmountProp?.SetValue(connectedRecord, drop.ItemAmount + (decimal?) ownedAmountProp.GetValue(connectedRecord));
-                        
+                        var connectedRecord = (await repo.GetWhereAsync(RelationFieldsNames.PlantationStorageId,
+                                completeQuest.PlantationStorage.Id)).Cast<Product>()
+                            .Single(item => item.GeneratedTypeId == generatedType.Id);
+
+                        connectedRecord.OwnedAmount += (decimal) drop.ItemAmount;
                         await _ignoreChangeService.Add(connectedRecord);
+                        
                         completeQuest.DropsNotification.Add("Otrzymano " + drop.ItemAmount +
-                                                            PlantationManagerHelper.GetMeasureUnitByEntityName(
-                                                                generatedType.EntityName) + " " +
-                                                            connectedRecord?.Name);
+                            PlantationManagerHelper.GetMeasureUnitByEntityName(generatedType.EntityName) + " " + connectedRecord?.Name);
                     }
                     else
                     {

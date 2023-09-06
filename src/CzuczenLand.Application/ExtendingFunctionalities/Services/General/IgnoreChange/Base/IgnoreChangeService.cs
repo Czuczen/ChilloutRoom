@@ -28,11 +28,10 @@ public class IgnoreChangeService : IIgnoreChangeService
     /// <summary>
     /// Dodaje encję do ignorowanych zmian.
     /// </summary>
-    /// <param name="obj">Encja do dodania.</param>
-    public async Task Add(object obj)
+    /// <param name="entity">Encja do dodania.</param>
+    public async Task Add(Product entity)
     {
-        var entityName = obj.GetType().Name;
-        var entity = (Product) obj;
+        var entityName = entity.GetType().Name;
         var guid = Guid.NewGuid();
         
         entity.IgnoreChangeGuid = guid;

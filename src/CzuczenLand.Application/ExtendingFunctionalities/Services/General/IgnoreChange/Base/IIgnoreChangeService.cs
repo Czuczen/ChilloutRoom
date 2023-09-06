@@ -13,7 +13,7 @@ public interface IIgnoreChangeService : ITransientDependency
     /// Dodaje encję do ignorowanych zmian.
     /// </summary>
     /// <param name="entity">Encja do dodania.</param>
-    Task Add(object entity);
+    Task Add(Product entity);
         
     /// <summary>
     /// Usuwa encję z ignorowanych zmian.
