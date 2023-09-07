@@ -37,22 +37,22 @@ public class QuestAppService :
     /// Konstruktor, który ustawia wstrzykiwane zależności.
     /// </summary>
     /// <param name="repository">Repozytorium zadań.</param>
-    /// <param name="questService">Serwis podstawowy dla zadań.</param>
-    /// <param name="generatedTypeRepository">Repozytorium typu generowanego.</param>
     /// <param name="responseBuilder">Budowniczy odpowiedzi dla zadań.</param>
+    /// <param name="generatedTypeRepository">Repozytorium typu generowanego.</param>
     /// <param name="definitionCreator">Klasa odpowiadająca za tworzenie encji "Quest" dla użytkowników na podstawie stworzonej definicji.</param>
     /// <param name="definitionUpdater">Klasa odpowiadająca za aktualizację encji "Quest" u użytkowników na podstawie aktualizowanej definicji.</param>
     /// <param name="definitionDeleter">Klasa odpowiadająca za usuwanie encji "Quest" u użytkowników na podstawie usuniętej definicji.</param>
+    /// <param name="questService">Serwis podstawowy dla zadań.</param>
     public QuestAppService(
         IRepository<ExtendingModels.Models.General.Quest, int> repository,
-        IQuestService questService,
-        IRepository<ExtendingModels.Models.General.GeneratedType> generatedTypeRepository,
         IResponseBuilder<QuestDto> responseBuilder,
+        IRepository<ExtendingModels.Models.General.GeneratedType> generatedTypeRepository,
         ICreateDefinition<QuestCreateDto> definitionCreator,
         IUpdateDefinition<QuestUpdateDto> definitionUpdater,
-        IDeleteDefinition<ExtendingModels.Models.General.Quest> definitionDeleter
+        IDeleteDefinition<ExtendingModels.Models.General.Quest> definitionDeleter,
+        IQuestService questService
     )
-        : base(repository, generatedTypeRepository, responseBuilder, definitionCreator, definitionUpdater, definitionDeleter)
+        : base(repository, responseBuilder, generatedTypeRepository, definitionCreator, definitionUpdater, definitionDeleter)
     {
         _questService = questService;
     }

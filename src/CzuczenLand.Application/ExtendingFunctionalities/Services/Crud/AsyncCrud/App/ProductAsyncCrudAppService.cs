@@ -48,7 +48,7 @@ public abstract class ProductAsyncCrudAppService<TProduct, TEntityDto, TGetAllIn
         IUpdateDefinition<TUpdateInput> definitionUpdater,
         IDeleteDefinition<TProduct> definitionDeleter
     )
-        : base(repository, generatedTypeRepository, responseBuilder, definitionCreator, definitionUpdater, definitionDeleter)
+        : base(repository, responseBuilder, generatedTypeRepository, definitionCreator, definitionUpdater, definitionDeleter)
     {
     }
 

@@ -63,8 +63,8 @@ public abstract class GeneratedEntityAsyncCrudAppService<TEntity, TEntityDto, TG
     /// <param name="definitionDeleter">Klasa odpowiadająca za usuwanie encji "Quest" u użytkowników na podstawie usuniętej definicji.</param>
     protected GeneratedEntityAsyncCrudAppService(
         IRepository<TEntity, int> repository,
-        IRepository<GeneratedType> generatedTypeRepository,
         IResponseBuilder<TEntityDto> responseBuilder,
+        IRepository<GeneratedType> generatedTypeRepository,
         ICreateDefinition<TCreateInput> definitionCreator,
         IUpdateDefinition<TUpdateInput> definitionUpdater,
         IDeleteDefinition<TEntity> definitionDeleter

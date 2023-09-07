@@ -35,12 +35,12 @@ public class DistrictAppService :
     /// Konstruktor, który ustawia wstrzykiwane zależności.
     /// </summary>
     /// <param name="repository">Repozytorium dla dzielnicy.</param>
-    /// <param name="plantationStorageRepository">Repozytorium magazynu plantacji.</param>
     /// <param name="responseBuilder">Budowniczy odpowiedzi dla dzielnicy.</param>
+    /// <param name="plantationStorageRepository">Repozytorium magazynu plantacji.</param>
     public DistrictAppService(
         IRepository<ExtendingModels.Models.General.District, int> repository,
-        IRepository<ExtendingModels.Models.General.PlantationStorage> plantationStorageRepository,
-        IResponseBuilder<DistrictDto> responseBuilder
+        IResponseBuilder<DistrictDto> responseBuilder,
+        IRepository<ExtendingModels.Models.General.PlantationStorage> plantationStorageRepository
     ) 
         : base(repository, responseBuilder)
     {
