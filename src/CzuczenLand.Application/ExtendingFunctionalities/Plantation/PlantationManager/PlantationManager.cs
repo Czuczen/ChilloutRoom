@@ -322,7 +322,7 @@ public class PlantationManager : IPlantationManager
         ret.FilteredQuests = filteredQuestsAndQuestCreation.Quests;
         ret.QuestInfoCreation = filteredQuestsAndQuestCreation.QuestInfoCreation;
         ret.Plants = await _plantRepository.GetAllListAsync(currPlant => currPlant.PlantationStorageId == ret.PlantationStorage.Id);
-        ret.DonData = await SetDonData(ret);
+        ret.DonData = await GetDonData(ret);
         ret.WardensNames = await GetWardensNames(ret);
         
         await SetUserProducts(ret);
@@ -367,7 +367,7 @@ public class PlantationManager : IPlantationManager
     /// </summary>
     /// <param name="plantation">Informacje o plantacji.</param>
     /// <returns>Dane dotyczące dona dzielnicy.</returns>
-    private async Task<DonData> SetDonData(Plantation plantation)
+    private async Task<DonData> GetDonData(Plantation plantation)
     {
         var districtDon = await _districtDonRepository.FirstOrDefaultAsync(item => item.DistrictId == plantation.District.Id);
         if (districtDon == null) 
