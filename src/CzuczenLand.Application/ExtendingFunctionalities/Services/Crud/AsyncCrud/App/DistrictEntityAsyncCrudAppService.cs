@@ -4,13 +4,12 @@ using Abp.Application.Services.Dto;
 using Abp.Domain.Repositories;
 using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.UpdatePlayerDefinition;
 using CzuczenLand.ExtendingFunctionalities.Consts;
-using CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.EntityAsyncCrud;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder.Dto;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Dto;
 using CzuczenLand.ExtendingModels.Interfaces;
 
-namespace CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.DistrictEntityAsyncCrud;
+namespace CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.App;
 
 /// <summary>
 /// Abstrakcyjna klasa bazowa do obsługi operacji na encjach przynależących do dzielnicy nie będących magazynem.
@@ -20,9 +19,8 @@ namespace CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.DistrictE
 /// <typeparam name="TGetAllInput">Typ danych wejściowych dla operacji pobierania rekordów.</typeparam>
 /// <typeparam name="TCreateInput">Typ danych wejściowych dla operacji tworzenia rekordu.</typeparam>
 /// <typeparam name="TUpdateInput">Typ danych wejściowych dla operacji aktualizacji rekordu.</typeparam>
-public class DistrictEntityAsyncCrudAppService<TEntity, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput> 
-    : EntityAsyncCrudAppService<TEntity, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput>,
-        IDistrictEntityAsyncCrudAppService<TCreateInput, TUpdateInput>
+public abstract class DistrictEntityAsyncCrudAppService<TEntity, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput> : 
+    EntityAsyncCrudAppService<TEntity, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput>
     where TEntity : class, IDistrictEntity
     where TEntityDto : class, IEntityDto<int>
     where TUpdateInput : class, IEntityDto<int>

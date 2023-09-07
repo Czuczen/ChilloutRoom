@@ -10,7 +10,7 @@ using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.Delete
 using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.UpdatePlayerDefinition;
 using CzuczenLand.ExtendingFunctionalities.Consts;
 using CzuczenLand.ExtendingFunctionalities.Consts.Entities.SharedEntitiesFieldsNames.Db;
-using CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.GeneratedEntityAsyncCrud;
+using CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.App;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder.Dto;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Dto;

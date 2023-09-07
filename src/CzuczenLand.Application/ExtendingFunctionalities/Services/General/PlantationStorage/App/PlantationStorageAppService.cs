@@ -1,7 +1,7 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
-using CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.StorageAsyncCrud;
+using CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.App;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder;
 using CzuczenLand.ExtendingFunctionalities.Services.General.PlantationStorage.Dto;
 

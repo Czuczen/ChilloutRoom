@@ -8,14 +8,13 @@ using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.Create
 using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.DeletePlayerDefinition;
 using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.UpdatePlayerDefinition;
 using CzuczenLand.ExtendingFunctionalities.Consts;
-using CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.EntityAsyncCrud;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder.Dto;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Dto;
 using CzuczenLand.ExtendingModels.Interfaces;
 using CzuczenLand.ExtendingModels.Models.General;
 
-namespace CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.GeneratedEntityAsyncCrud;
+namespace CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.App;
 
 /// <summary>
 /// Abstrakcyjna klasa bazowa do obsługi operacji na encjach generowanych użytkownikom na podstawie definicji.
@@ -25,9 +24,8 @@ namespace CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.Generated
 /// <typeparam name="TGetAllInput">Typ danych wejściowych dla operacji pobierania rekordów.</typeparam>
 /// <typeparam name="TCreateInput">Typ danych wejściowych dla operacji tworzenia rekordu.</typeparam>
 /// <typeparam name="TUpdateInput">Typ danych wejściowych dla operacji aktualizacji rekordu.</typeparam>
-public abstract class GeneratedEntityAsyncCrudAppService<TEntity, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput> 
-    : EntityAsyncCrudAppService<TEntity, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput>,
-        IGeneratedEntityAsyncCrudAppService<TCreateInput, TUpdateInput>
+public abstract class GeneratedEntityAsyncCrudAppService<TEntity, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput> : 
+    EntityAsyncCrudAppService<TEntity, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput>
     where TEntity : class, IPlantationGeneratedEntity
     where TEntityDto : class, IEntityDto<int>
     where TUpdateInput : class, IEntityDto<int>

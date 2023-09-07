@@ -4,13 +4,12 @@ using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Domain.Repositories;
 using CzuczenLand.ExtendingFunctionalities.Consts;
-using CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.EntityAsyncCrud;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder.Dto;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Dto;
 using CzuczenLand.ExtendingModels.Interfaces;
 
-namespace CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.StorageAsyncCrud;
+namespace CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.App;
 
 /// <summary>
 /// Abstrakcyjna klasa bazowa do obsługi operacji na magazynach.
@@ -20,9 +19,8 @@ namespace CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.StorageAs
 /// <typeparam name="TGetAllInput">Typ danych wejściowych dla operacji pobierania rekordów.</typeparam>
 /// <typeparam name="TCreateInput">Typ danych wejściowych dla operacji tworzenia rekordu.</typeparam>
 /// <typeparam name="TUpdateInput">Typ danych wejściowych dla operacji aktualizacji rekordu.</typeparam>
-public class StorageAsyncCrudAppService<TEntity, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput> 
-    : EntityAsyncCrudAppService<TEntity, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput>,
-        IStorageAsyncCrudAppService<TCreateInput, TUpdateInput>
+public abstract class StorageAsyncCrudAppService<TEntity, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput> : 
+    EntityAsyncCrudAppService<TEntity, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput>
     where TEntity : class, IUserStorageEntity
     where TEntityDto : class, IEntityDto<int>
     where TUpdateInput : class, IEntityDto<int>

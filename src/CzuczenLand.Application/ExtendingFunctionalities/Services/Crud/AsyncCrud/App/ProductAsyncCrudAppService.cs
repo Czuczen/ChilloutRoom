@@ -9,13 +9,12 @@ using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.Create
 using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.DeletePlayerDefinition;
 using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.UpdatePlayerDefinition;
 using CzuczenLand.ExtendingFunctionalities.Consts;
-using CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.GeneratedEntityAsyncCrud;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder.Dto;
 using CzuczenLand.ExtendingModels.Models.General;
 using CzuczenLand.ExtendingModels.Models.Shared;
 
-namespace CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.ProductAsyncCrud;
+namespace CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.App;
 
 /// <summary>
 /// Abstrakcyjna klasa bazowa do obsługi operacji na produktach.
@@ -26,8 +25,7 @@ namespace CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.ProductAs
 /// <typeparam name="TCreateInput">Typ danych wejściowych dla operacji tworzenia rekordu.</typeparam>
 /// <typeparam name="TUpdateInput">Typ danych wejściowych dla operacji aktualizacji rekordu.</typeparam>
 public abstract class ProductAsyncCrudAppService<TProduct, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput> : 
-    GeneratedEntityAsyncCrudAppService<TProduct, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput>, 
-    IProductAsyncCrudAppService<TCreateInput, TUpdateInput>
+    GeneratedEntityAsyncCrudAppService<TProduct, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput>
     where TProduct : Product, IEntity<int>
     where TEntityDto : class, IEntityDto<int>
     where TUpdateInput : class, IEntityDto<int>

@@ -11,7 +11,7 @@ using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder.Dto;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Dto;
 
-namespace CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.EntityAsyncCrud;
+namespace CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.App;
 
 /// <summary>
 /// Abstrakcyjna klasa bazowa do obsługi operacji na encjach rozszerzających aspnetboilerplate.
@@ -22,11 +22,10 @@ namespace CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.EntityAsy
 /// <typeparam name="TCreateInput">Typ danych wejściowych dla operacji tworzenia rekordu.</typeparam>
 /// <typeparam name="TUpdateInput">Typ danych wejściowych dla operacji aktualizacji rekordu.</typeparam>
 public abstract class EntityAsyncCrudAppService<TEntity, TEntityDto, TGetAllInput, TCreateInput, TUpdateInput> :
-    AsyncCrudAppService<TEntity, TEntityDto, int, TGetAllInput, TCreateInput, TUpdateInput>,
-    IEntityAsyncCrudAppService<TCreateInput, TUpdateInput>
+    AsyncCrudAppService<TEntity, TEntityDto, int, TGetAllInput, TCreateInput, TUpdateInput>
     where TEntity : class, IEntity<int>
     where TEntityDto : class, IEntityDto<int>
-    where TUpdateInput : IEntityDto<int>
+    where TUpdateInput : class, IEntityDto<int>
     where TCreateInput : class
 {
     /// <summary>

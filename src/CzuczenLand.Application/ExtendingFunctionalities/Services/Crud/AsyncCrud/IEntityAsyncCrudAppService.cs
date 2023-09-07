@@ -4,7 +4,7 @@ using Abp.Application.Services.Dto;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder.Dto;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Dto;
 
-namespace CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.EntityAsyncCrud;
+namespace CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud;
 
 /// <summary>
 /// Interfejs abstrakcyjnego serwisu bazowego do obsługi operacji na encjach rozszerzających aspnetboilerplate. 
