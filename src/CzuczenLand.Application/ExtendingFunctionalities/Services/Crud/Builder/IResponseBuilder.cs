@@ -17,15 +17,15 @@ public interface IResponseBuilder<TEntityDto>
     long UserId { get; }
         
     /// <summary>
-    /// Identyfikator opiekuna dzielnicy.
+    /// Identyfikator dzielnicy opiekuna.
     /// </summary>
-    int? DistrictWardenId { get; }
+    int? WardenDistrictId { get; }
         
     /// <summary>
     /// Ustawia identyfikator opiekuna dzielnicy.
     /// </summary>
     /// <returns>Obiekt ResponseBuilder z ustawionym identyfikatorem opiekuna dzielnicy.</returns>
-    ResponseBuilder<TEntityDto> WithDistrictWardenId();
+    ResponseBuilder<TEntityDto> WithWardenDistrictId();
 
     /// <summary>
     /// Ustawia flagę określającą możliwość tworzenia nowych rekordów encji.

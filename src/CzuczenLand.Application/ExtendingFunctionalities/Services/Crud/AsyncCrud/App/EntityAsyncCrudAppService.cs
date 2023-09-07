@@ -96,9 +96,9 @@ public abstract class EntityAsyncCrudAppService<TEntity, TEntityDto, TGetAllInpu
     protected long UserId => ResponseBuilder.UserId;
         
     /// <summary>
-    /// Identyfikator opiekuna dzielnicy.
+    /// Identyfikator dzielnicy opiekuna.
     /// </summary>
-    protected int? WardenDistrictId => ResponseBuilder.DistrictWardenId;
+    protected int? WardenDistrictId => ResponseBuilder.WardenDistrictId;
 
     /// <summary>
     /// Określa czy użytkownik ma uprawnienia administratora.
@@ -138,7 +138,7 @@ public abstract class EntityAsyncCrudAppService<TEntity, TEntityDto, TGetAllInpu
     )
         : base(repository)
     {
-        ResponseBuilder = responseBuilder.WithDistrictWardenId();
+        ResponseBuilder = responseBuilder.WithWardenDistrictId();
     }
     
     /// <summary>
