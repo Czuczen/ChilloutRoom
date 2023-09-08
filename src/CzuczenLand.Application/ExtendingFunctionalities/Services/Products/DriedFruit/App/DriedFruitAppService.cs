@@ -1,9 +1,9 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
-using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.CreatePlayerDefinition;
-using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.DeletePlayerDefinition;
-using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.UpdatePlayerDefinition;
+using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.PlayerRecords.CreateRecord;
+using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.PlayerRecords.DeleteRecord;
+using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.PlayerRecords.UpdateRecord;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.App;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder;
 using CzuczenLand.ExtendingFunctionalities.Services.Products.DriedFruit.Dto;
@@ -25,18 +25,18 @@ public class DriedFruitAppService :
     /// <param name="repository">Repozytorium encji "DriedFruit".</param>
     /// <param name="responseBuilder">Klasa budująca odpowiedzi dla encji "DriedFruit".</param>
     /// <param name="generatedTypeRepository">Repozytorium dla typu generowanego.</param>
-    /// <param name="definitionCreator">Klasa odpowiadająca za tworzenie encji "DriedFruit" dla użytkowników na podstawie stworzonej definicji.</param>
-    /// <param name="definitionUpdater">Klasa odpowiadająca za aktualizację encji "DriedFruit" u użytkowników na podstawie aktualizowanej definicji.</param>
-    /// <param name="definitionDeleter">Klasa odpowiadająca za usuwanie encji "DriedFruit" u użytkowników na podstawie usuniętej definicji.</param>
+    /// <param name="playerRecordCreator">Klasa odpowiadająca za tworzenie encji "DriedFruit" dla użytkowników na podstawie stworzonej definicji.</param>
+    /// <param name="playerRecordUpdater">Klasa odpowiadająca za aktualizację encji "DriedFruit" u użytkowników na podstawie aktualizowanej definicji.</param>
+    /// <param name="playerRecordDeleter">Klasa odpowiadająca za usuwanie encji "DriedFruit" u użytkowników na podstawie usuniętej definicji.</param>
     public DriedFruitAppService(
         IRepository<ExtendingModels.Models.Products.DriedFruit, int> repository,
         IResponseBuilder<DriedFruitDto> responseBuilder,
         IRepository<GeneratedType> generatedTypeRepository,
-        ICreateDefinition<DriedFruitCreateDto> definitionCreator,
-        IUpdateDefinition<DriedFruitUpdateDto> definitionUpdater,
-        IDeleteDefinition<ExtendingModels.Models.Products.DriedFruit> definitionDeleter
+        ICreatePlayerRecord<DriedFruitCreateDto> playerRecordCreator,
+        IUpdatePlayerRecord<DriedFruitUpdateDto> playerRecordUpdater,
+        IDeletePlayerRecord<ExtendingModels.Models.Products.DriedFruit> playerRecordDeleter
     )
-        : base(repository, responseBuilder, generatedTypeRepository, definitionCreator, definitionUpdater, definitionDeleter)
+        : base(repository, responseBuilder, generatedTypeRepository, playerRecordCreator, playerRecordUpdater, playerRecordDeleter)
     {
     }
 }

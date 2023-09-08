@@ -136,27 +136,27 @@ public class PlantService : IPlantService
     /// </summary>
     /// <param name="productId">Identyfikator produktu.</param>
     /// <param name="entityName">Nazwa encji produktu.</param>
-    public async Task DeleteConnectedPlantsToProductDefinitionAsync(int productId, string entityName)
+    public async Task DeleteConnectedPlantsToProduct(int productId, string entityName)
     {
         switch (SelectListLoaderHelper.GetEntityEnum(entityName))
         {
             case EnumUtils.Entities.Lamp:
-                await DeletePlantAndSetUseCountConnectedProductsAsync("LampId", productId, false);
+                await DeletePlantAndSetUseCountConnectedProducts("LampId", productId, false);
                 break;
             case EnumUtils.Entities.Manure:
-                await DeletePlantAndSetUseCountConnectedProductsAsync("ManureId", productId, false);
+                await DeletePlantAndSetUseCountConnectedProducts("ManureId", productId, false);
                 break;
             case EnumUtils.Entities.Pot:
-                await DeletePlantAndSetUseCountConnectedProductsAsync("PotId", productId, false);
+                await DeletePlantAndSetUseCountConnectedProducts("PotId", productId, false);
                 break;
             case EnumUtils.Entities.Seed:
-                await DeletePlantAndSetUseCountConnectedProductsAsync("SeedId", productId, false);
+                await DeletePlantAndSetUseCountConnectedProducts("SeedId", productId, false);
                 break;
             case EnumUtils.Entities.Soil:
-                await DeletePlantAndSetUseCountConnectedProductsAsync("SoilId", productId, false);
+                await DeletePlantAndSetUseCountConnectedProducts("SoilId", productId, false);
                 break;
             case EnumUtils.Entities.Water:
-                await DeletePlantAndSetUseCountConnectedProductsAsync("WaterId", productId, false);
+                await DeletePlantAndSetUseCountConnectedProducts("WaterId", productId, false);
                 break;
         }
     }
@@ -169,7 +169,7 @@ public class PlantService : IPlantService
     /// <param name="fieldToCompare">Pole do porównania.</param>
     /// <param name="value">Wartość pola.</param>
     /// <param name="needIgnoreChange">Flaga określająca potrzebę ignorowania zmian.</param>
-    public async Task DeletePlantAndSetUseCountConnectedProductsAsync(string fieldToCompare, int value, bool needIgnoreChange = true)
+    public async Task DeletePlantAndSetUseCountConnectedProducts(string fieldToCompare, int value, bool needIgnoreChange = true)
     {
         var plantType = typeof(ExtendingModels.Models.General.Plant);
         var allPlants = await _plantRepository.GetAllListAsync();

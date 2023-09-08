@@ -990,9 +990,9 @@ public class PlantationManager : IPlantationManager
             _generatedTypeRepository.GetAll().Where(item => item.DistrictId == plantation.District.Id),
             quest => quest.GeneratedTypeId,
             generatedType => generatedType.Id,
-            (quest, generatedType) => quest).Where(item => item.PlayerStorageId == null);
+            (quest, generatedType) => quest).Where(item => item.PlantationStorageId == null);
 
-        var definitionQuestProgress = await _questRequirementsProgressRepository.GetAll().Join(districtQuestDefinitionsQuery,
+        var definitionsQuestProgress = await _questRequirementsProgressRepository.GetAll().Join(districtQuestDefinitionsQuery,
             progress => progress.QuestId,
             quest => quest.Id,
             (progress, quest) => progress).ToListAsync();
@@ -1008,7 +1008,7 @@ public class PlantationManager : IPlantationManager
             (drop, dropQuest) => new {drop, dropQuest}).ToListAsync();
 
         var questsProgress = new List<QuestRequirementsProgress>();
-        questsProgress.AddRange(definitionQuestProgress);
+        questsProgress.AddRange(definitionsQuestProgress);
         questsProgress.AddRange(questAndQuestProgress.Select(item => item.progress));
 
         var drop = dropAndDropQuests.Select(item => item.drop).First();

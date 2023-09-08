@@ -1,9 +1,9 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
-using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.CreatePlayerDefinition;
-using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.DeletePlayerDefinition;
-using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.UpdatePlayerDefinition;
+using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.PlayerRecords.CreateRecord;
+using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.PlayerRecords.DeleteRecord;
+using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.PlayerRecords.UpdateRecord;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.App;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder;
 using CzuczenLand.ExtendingFunctionalities.Services.Products.Bonus.Dto;
@@ -25,18 +25,18 @@ public class BonusAppService :
     /// <param name="repository">Repozytorium encji "Bonus".</param>
     /// <param name="responseBuilder">Klasa budująca odpowiedzi dla encji "Bonus".</param>
     /// <param name="generatedTypeRepository">Repozytorium dla typu generowanego.</param>
-    /// <param name="definitionCreator">Klasa odpowiadająca za tworzenie encji "Bonus" dla użytkowników na podstawie stworzonej definicji.</param>
-    /// <param name="definitionUpdater">Klasa odpowiadająca za aktualizację encji "Bonus" u użytkowników na podstawie aktualizowanej definicji.</param>
-    /// <param name="definitionDeleter">Klasa odpowiadająca za usuwanie encji "Bonus" u użytkowników na podstawie usuniętej definicji.</param>
+    /// <param name="playerRecordCreator">Klasa odpowiadająca za tworzenie encji "Bonus" dla użytkowników na podstawie stworzonej definicji.</param>
+    /// <param name="playerRecordUpdater">Klasa odpowiadająca za aktualizację encji "Bonus" u użytkowników na podstawie aktualizowanej definicji.</param>
+    /// <param name="playerRecordDeleter">Klasa odpowiadająca za usuwanie encji "Bonus" u użytkowników na podstawie usuniętej definicji.</param>
     public BonusAppService(
         IRepository<ExtendingModels.Models.Products.Bonus, int> repository,
         IResponseBuilder<BonusDto> responseBuilder,
         IRepository<GeneratedType> generatedTypeRepository,
-        ICreateDefinition<BonusCreateDto> definitionCreator,
-        IUpdateDefinition<BonusUpdateDto> definitionUpdater,
-        IDeleteDefinition<ExtendingModels.Models.Products.Bonus> definitionDeleter
+        ICreatePlayerRecord<BonusCreateDto> playerRecordCreator,
+        IUpdatePlayerRecord<BonusUpdateDto> playerRecordUpdater,
+        IDeletePlayerRecord<ExtendingModels.Models.Products.Bonus> playerRecordDeleter
     )
-        : base(repository, responseBuilder, generatedTypeRepository, definitionCreator, definitionUpdater, definitionDeleter)
+        : base(repository, responseBuilder, generatedTypeRepository, playerRecordCreator, playerRecordUpdater, playerRecordDeleter)
     {
             
     }

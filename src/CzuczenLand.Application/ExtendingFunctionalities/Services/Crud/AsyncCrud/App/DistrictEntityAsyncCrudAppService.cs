@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Domain.Repositories;
-using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.UpdatePlayerDefinition;
+using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.PlayerRecords.UpdateRecord;
 using CzuczenLand.ExtendingFunctionalities.Consts;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder.Dto;
@@ -69,7 +69,7 @@ public abstract class DistrictEntityAsyncCrudAppService<TEntity, TEntityDto, TGe
             foreach (var id in request.Ids)
             {
                 var itemToUpdate = ObjectMapper.Map<TUpdateInput>(await GetEntityByIdAsync(id));
-                var updatedItem = (TUpdateInput) UpdateDefinitionHelper.UpdateObject<TUpdateInput>(request.FieldsToUpdate, itemToUpdate);
+                var updatedItem = (TUpdateInput) AsyncCrudHelper.UpdateObject<TUpdateInput>(request.FieldsToUpdate, itemToUpdate);
                 ResponseBuilder.AddItems(await UpdateAsync(updatedItem));
             }
         }
@@ -80,7 +80,7 @@ public abstract class DistrictEntityAsyncCrudAppService<TEntity, TEntityDto, TGe
                 
             foreach (var itemToUpdate in districtItemsToUpdate)
             {
-                var updatedItem = (TUpdateInput) UpdateDefinitionHelper.UpdateObject<TUpdateInput>(request.FieldsToUpdate, itemToUpdate);
+                var updatedItem = (TUpdateInput) AsyncCrudHelper.UpdateObject<TUpdateInput>(request.FieldsToUpdate, itemToUpdate);
                 ResponseBuilder.AddItems(await UpdateAsync(updatedItem));
             }
         }

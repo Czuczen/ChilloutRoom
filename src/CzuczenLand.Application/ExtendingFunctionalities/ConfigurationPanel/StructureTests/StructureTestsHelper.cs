@@ -30,24 +30,24 @@ public static class StructureTestsHelper
         {
             if (objects.Count > 1)
             {
-                var defsMessage = objects.Aggregate("</br>Nadmiarowe definicje:", (current, obj) => current + "</br>" + obj.Name);
-                minorTest.Description = "Użytkownik posiada nadmiarowe definicje. " + "Użytkownik - " + userName + ". Dzielnica - " + district.Name + ". Id typu generowanego: " + generatedType.Id + ". Typ generowany - " + generatedType.Name + defsMessage;
+                var defsMessage = objects.Aggregate("</br>Nadmiarowe rekordy:", (current, obj) => current + "</br>" + obj.Name);
+                minorTest.Description = "Użytkownik posiada nadmiarowe rekordy. " + "Użytkownik - " + userName + ". Dzielnica - " + district.Name + ". Id typu generowanego: " + generatedType.Id + ". Typ generowany - " + generatedType.Name + defsMessage;
                 minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
             }
             else
             {
-                minorTest.Description = "Użytkownik posiada jedną definicje. " + "Użytkownik - " + userName + ". Dzielnica - " + district.Name + ". Id typu generowanego: " + generatedType.Id + ". Typ generowany - " + generatedType.Name;
+                minorTest.Description = "Użytkownik posiada jeden rekord. " + "Użytkownik - " + userName + ". Dzielnica - " + district.Name + ". Id typu generowanego: " + generatedType.Id + ". Typ generowany - " + generatedType.Name;
                 minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
             }
         }
         else if (definitionExist)
         {
-            minorTest.Description = "Użytkownik nie posiada definicji a definicja dla typu istnieje. " + "Użytkownik - " + userName + ". Dzielnica - " + district.Name + ". Id typu generowanego: " + generatedType.Id + ". Typ generowany - " + generatedType.Name;
+            minorTest.Description = "Użytkownik nie posiada rekordu a definicja dla typu istnieje. " + "Użytkownik - " + userName + ". Dzielnica - " + district.Name + ". Id typu generowanego: " + generatedType.Id + ". Typ generowany - " + generatedType.Name;
             minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
         }
         else
         {
-            minorTest.Description = "Użytkownik nie posiada definicji. " + "Użytkownik - " + userName + ". Dzielnica - " + district.Name + ". Id typu generowanego: " + generatedType.Id + ". Typ generowany - " + generatedType.Name;
+            minorTest.Description = "Użytkownik nie posiada rekordu a definicja dla typu nie istnieje. " + "Użytkownik - " + userName + ". Dzielnica - " + district.Name + ". Id typu generowanego: " + generatedType.Id + ". Typ generowany - " + generatedType.Name;
             minorTest.Status = EnumUtils.StructureTestsStatuses.Warn;
         }
 

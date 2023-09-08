@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Domain.Repositories;
-using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.CreatePlayerDefinition;
-using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.DeletePlayerDefinition;
-using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.UpdatePlayerDefinition;
+using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.PlayerRecords.CreateRecord;
+using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.PlayerRecords.DeleteRecord;
+using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.PlayerRecords.UpdateRecord;
 using CzuczenLand.ExtendingFunctionalities.Consts;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder.Dto;
@@ -39,17 +39,17 @@ public abstract class GeneratedEntityAsyncCrudAppService<TEntity, TEntityDto, TG
     /// <summary>
     /// Klasa odpowiadająca za tworzenie encji "Quest" dla użytkowników na podstawie stworzonej definicji.
     /// </summary>
-    private readonly ICreateDefinition<TCreateInput> _definitionCreator;
+    private readonly ICreatePlayerRecord<TCreateInput> _playerRecordCreator;
     
     /// <summary>
     /// Klasa odpowiadająca za aktualizację encji "Quest" u użytkowników na podstawie aktualizowanej definicji.
     /// </summary>
-    private readonly IUpdateDefinition<TUpdateInput> _definitionUpdater;
+    private readonly IUpdatePlayerRecord<TUpdateInput> _playerRecordUpdater;
     
     /// <summary>
     /// Klasa odpowiadająca za usuwanie encji "Quest" u użytkowników na podstawie usuniętej definicji.
     /// </summary>
-    private readonly IDeleteDefinition<TEntity> _definitionDeleter;
+    private readonly IDeletePlayerRecord<TEntity> _playerRecordDeleter;
 
     
     /// <summary>
@@ -58,23 +58,23 @@ public abstract class GeneratedEntityAsyncCrudAppService<TEntity, TEntityDto, TG
     /// <param name="repository">Repozytorium encji.</param>
     /// <param name="responseBuilder">Klasa budująca odpowiedzi na zapytania.</param>
     /// <param name="generatedTypeRepository">Repozytorium typu generowanego.</param>
-    /// <param name="definitionCreator">Klasa odpowiadająca za tworzenie encji "Quest" dla użytkowników na podstawie stworzonej definicji.</param>
-    /// <param name="definitionUpdater">Klasa odpowiadająca za aktualizację encji "Quest" u użytkowników na podstawie aktualizowanej definicji.</param>
-    /// <param name="definitionDeleter">Klasa odpowiadająca za usuwanie encji "Quest" u użytkowników na podstawie usuniętej definicji.</param>
+    /// <param name="playerRecordCreator">Klasa odpowiadająca za tworzenie encji "Quest" dla użytkowników na podstawie stworzonej definicji.</param>
+    /// <param name="playerRecordUpdater">Klasa odpowiadająca za aktualizację encji "Quest" u użytkowników na podstawie aktualizowanej definicji.</param>
+    /// <param name="playerRecordDeleter">Klasa odpowiadająca za usuwanie encji "Quest" u użytkowników na podstawie usuniętej definicji.</param>
     protected GeneratedEntityAsyncCrudAppService(
         IRepository<TEntity, int> repository,
         IResponseBuilder<TEntityDto> responseBuilder,
         IRepository<GeneratedType> generatedTypeRepository,
-        ICreateDefinition<TCreateInput> definitionCreator,
-        IUpdateDefinition<TUpdateInput> definitionUpdater,
-        IDeleteDefinition<TEntity> definitionDeleter
+        ICreatePlayerRecord<TCreateInput> playerRecordCreator,
+        IUpdatePlayerRecord<TUpdateInput> playerRecordUpdater,
+        IDeletePlayerRecord<TEntity> playerRecordDeleter
     ) 
         : base(repository, responseBuilder)
     {
         GeneratedTypeRepository = generatedTypeRepository;
-        _definitionCreator = definitionCreator;
-        _definitionUpdater = definitionUpdater;
-        _definitionDeleter = definitionDeleter;
+        _playerRecordCreator = playerRecordCreator;
+        _playerRecordUpdater = playerRecordUpdater;
+        _playerRecordDeleter = playerRecordDeleter;
     }
 
     /// <summary>
@@ -85,7 +85,7 @@ public abstract class GeneratedEntityAsyncCrudAppService<TEntity, TEntityDto, TG
     public override async Task<EntityAsyncCrudResponse> ActionCreate(InputWithConnections<TCreateInput> input)
     {
         var ret = await base.ActionCreate(input);
-        await _definitionCreator.Create(input.Input);
+        await _playerRecordCreator.Create(input.Input);
         
         return ret;
     }
@@ -98,7 +98,7 @@ public abstract class GeneratedEntityAsyncCrudAppService<TEntity, TEntityDto, TG
     public override async Task<EntityAsyncCrudResponse> ActionUpdate(InputWithConnections<TUpdateInput> input)
     {
         var ret = await base.ActionUpdate(input);
-        await _definitionUpdater.Update(input.Input);
+        await _playerRecordUpdater.Update(input.Input);
         
         return ret;
     }
@@ -124,7 +124,7 @@ public abstract class GeneratedEntityAsyncCrudAppService<TEntity, TEntityDto, TG
             foreach (var id in request.Ids)
             {
                 var itemToUpdate = ObjectMapper.Map<TUpdateInput>(items.Single(item => item.Id == id));
-                var updatedItem = (TUpdateInput) UpdateDefinitionHelper.UpdateObject<TUpdateInput>(request.FieldsToUpdate, itemToUpdate);
+                var updatedItem = (TUpdateInput) AsyncCrudHelper.UpdateObject<TUpdateInput>(request.FieldsToUpdate, itemToUpdate);
                 ResponseBuilder.AddItems(await UpdateAsync(updatedItem));
             }
         }
@@ -133,12 +133,12 @@ public abstract class GeneratedEntityAsyncCrudAppService<TEntity, TEntityDto, TG
             foreach (var itemToUpdate in items)
             {
                 var mappedItemToUpdate = ObjectMapper.Map<TUpdateInput>(itemToUpdate);
-                var updatedItem = (TUpdateInput) UpdateDefinitionHelper.UpdateObject<TUpdateInput>(request.FieldsToUpdate, mappedItemToUpdate);
+                var updatedItem = (TUpdateInput) AsyncCrudHelper.UpdateObject<TUpdateInput>(request.FieldsToUpdate, mappedItemToUpdate);
                 ResponseBuilder.AddItems(await UpdateAsync(updatedItem));
             }
         }
 
-        await _definitionUpdater.Update(request.FieldsToUpdate, request.Ids);
+        await _playerRecordUpdater.Update(request.FieldsToUpdate, request.Ids);
         return await ResponseBuilder.Build(EntityAsyncCrudActions.ActionUpdateMany);
     }
 
@@ -149,7 +149,7 @@ public abstract class GeneratedEntityAsyncCrudAppService<TEntity, TEntityDto, TG
     /// <returns>Odpowiedź z wynikiem akcji usuwania encji.</returns>
     public override async Task<EntityAsyncCrudResponse> ActionDelete(int objectId)
     {
-        await _definitionDeleter.Delete(objectId);
+        await _playerRecordDeleter.Delete(objectId);
         return await base.ActionDelete(objectId);
     }
 
@@ -160,7 +160,7 @@ public abstract class GeneratedEntityAsyncCrudAppService<TEntity, TEntityDto, TG
     /// <returns>Odpowiedź z wynikiem akcji usuwania wielu encji.</returns>
     public override async Task<EntityAsyncCrudResponse> ActionDeleteMany(List<int> ids)
     {
-        await _definitionDeleter.Delete(ids);
+        await _playerRecordDeleter.Delete(ids);
             
         var isDeleteVisible = ids != null && ids.Count > 0;
         var isDeleteAll = ids == null || ids.Count == 0;

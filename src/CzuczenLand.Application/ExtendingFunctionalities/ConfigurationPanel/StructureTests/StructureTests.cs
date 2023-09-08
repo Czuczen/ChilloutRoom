@@ -471,14 +471,14 @@ public class StructureTests : IStructureTests
             IgnoreChangeIsNotToBigAndEntitiesExist(ret);
         }
 
-        UpdatePlayerDefinitionDtoFieldsList(ret);
+        UpdatePlayerRecordDtoFieldsList(ret);
         await WardenPermissionForDistrictsExistenceCheck(ret);
         DistrictsWardensExist(ret);
         GeneratedTypeHasConnectedOneProductDefinition(ret);
         SeedAndDriedFruitHeaveSameType(ret);
         GeneratedTypeDistrictExist(ret);
         ProductGeneratedTypeExist(ret);
-        AllUsersPlantationStoragesHasProductsDefinitions(ret);
+        AllUsersPlantationStoragesHasProductsRecords(ret);
         UsersHasOnePlayerStorage(ret);
         await UsersNotHasMoreThanOnePlantationStorageForOneDistrict(ret);
         PlantationsStoragesDistrictsExists(ret);
@@ -592,13 +592,13 @@ public class StructureTests : IStructureTests
     }
 
     /// <summary>
-    /// Wyświetli raport o liście pól aktualizowanych u użytkowników podczas aktualizacji definicji przez opiekuna dzielnicy.
+    /// Wyświetli raport o liście pól aktualizowanych w rekordach użytkowników podczas aktualizacji definicji przez opiekuna dzielnicy.
     /// </summary>
     /// <param name="model">Lista obiektów StructureTest, do której będą dodane wyniki testu aktualizacji pól.</param>
-    private void UpdatePlayerDefinitionDtoFieldsList(List<StructureTest> model)
+    private void UpdatePlayerRecordDtoFieldsList(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
-        structureTest.TestName = "Lista pól aktualizowanych u użytkowników podczas aktualizacji definicji";
+        structureTest.TestName = "Lista pól aktualizowanych w rekordach użytkowników podczas aktualizacji definicji";
         var typesCount = 0;
         try
         {
@@ -993,13 +993,13 @@ public class StructureTests : IStructureTests
     }
 
     /// <summary>
-    /// Sprawdza, czy magazyny plantacji wszystkich użytkowników posiadają definicje produktów dla typów generowanych dzielnicy.
+    /// Sprawdza, czy magazyny plantacji wszystkich użytkowników posiadają rekordy produktów dla typów generowanych dzielnicy.
     /// </summary>
     /// <param name="model">Lista obiektów StructureTest, do której będą dodane wyniki testu.</param>
-    private void AllUsersPlantationStoragesHasProductsDefinitions(List<StructureTest> model)
+    private void AllUsersPlantationStoragesHasProductsRecords(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
-        structureTest.TestName = "Czy magazyny plantacji wszystkich użytkowników posiadają definicje produktów dla typów generowanych dzielnicy";
+        structureTest.TestName = "Czy magazyny plantacji wszystkich użytkowników posiadają rekordy produktów dla typów generowanych dzielnicy";
             
         foreach (var playerStorage in PlayerStorages)
         {

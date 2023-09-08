@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using CzuczenLand.Authorization.Users;
-using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.DeletePlayerDefinition;
+using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.PlayerRecords.DeleteRecord;
 using CzuczenLand.ExtendingFunctionalities.Consts.Entities.EntitiesNames.Base;
 using CzuczenLand.ExtendingFunctionalities.Consts.ViewParser;
 using CzuczenLand.ExtendingFunctionalities.General;
@@ -235,7 +235,7 @@ public class Deleter : IDeleter
         var objectId = entity.Id;
         await _questRepository.DeleteAsync(item => item.PlantationStorageId == objectId);
         await _blackMarketTransactionRepository.DeleteAsync(item => item.SellerId == entity.UserId);
-        await _plantService.DeletePlantAndSetUseCountConnectedProductsAsync(RelationFieldsNames.PlantationStorageId, objectId, false);
+        await _plantService.DeletePlantAndSetUseCountConnectedProducts(RelationFieldsNames.PlantationStorageId, objectId, false);
         await _driedFruitRepository.DeleteAsync(item => item.PlantationStorageId == objectId);
         await _lampRepository.DeleteAsync(item => item.PlantationStorageId == objectId);
         await _manureRepository.DeleteAsync(item => item.PlantationStorageId == objectId);
@@ -307,7 +307,7 @@ public class Deleter : IDeleter
             if (questRelations.Count == 1)
             {
                 var currRel = questRelations.First();
-                await DeleteDefinitionHelper.DeleteAllDefinitionsAsync(new List<int> {currRel.QuestId}, questRepo,
+                await DeletePlayerRecordHelper.DeleteAllRecordsByDefs(new List<int> {currRel.QuestId}, questRepo,
                     EntitiesDbNames.Quest, _plantService);
                 await _questRepository.DeleteAsync(currRel.QuestId);
             }
@@ -349,7 +349,7 @@ public class Deleter : IDeleter
             {
                 if (quest.PlantationStorageId != null) continue;
                     
-                await DeleteDefinitionHelper.DeleteAllDefinitionsAsync(new List<int> {quest.Id}, questRepo,
+                await DeletePlayerRecordHelper.DeleteAllRecordsByDefs(new List<int> {quest.Id}, questRepo,
                     EntitiesDbNames.Quest, _plantService);
                 await _questRepository.DeleteAsync(quest);
             }
@@ -373,7 +373,7 @@ public class Deleter : IDeleter
         
         if (generatedTypeDefinition == null) return;
             
-        await DeleteDefinitionHelper.DeleteAllDefinitionsAsync(new List<int> {generatedTypeDefinition.Id}, currRepo, generatedType.EntityName, _plantService);
+        await DeletePlayerRecordHelper.DeleteAllRecordsByDefs(new List<int> {generatedTypeDefinition.Id}, currRepo, generatedType.EntityName, _plantService);
         await currRepo.DeleteAsync(generatedTypeDefinition.Id);
     }
        
@@ -390,7 +390,7 @@ public class Deleter : IDeleter
        
             if (driedFruitDef != null)
             {
-                await DeleteDefinitionHelper.DeleteAllDefinitionsAsync(new List<int> {driedFruitDef.Id}, driedFruitRepo, EntitiesDbNames.DriedFruit, _plantService);
+                await DeletePlayerRecordHelper.DeleteAllRecordsByDefs(new List<int> {driedFruitDef.Id}, driedFruitRepo, EntitiesDbNames.DriedFruit, _plantService);
                 await driedFruitRepo.DeleteAsync(driedFruitDef.Id);
             }
         }
