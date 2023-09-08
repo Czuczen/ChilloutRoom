@@ -73,7 +73,7 @@
             const $playerEmail = $("#PlayerEmail");
             $("#FirstName").val($playerEmail.val());
             $("#UserName").val($playerEmail.val());
-            $("#tempUserEmail").val($playerEmail.val() + "@chilloutroom.pl");
+            $("#tempUserEmail").val($playerEmail.val() + $("#siteEmail").data("site-email"));
             
             if (!_$form.valid())
             {
