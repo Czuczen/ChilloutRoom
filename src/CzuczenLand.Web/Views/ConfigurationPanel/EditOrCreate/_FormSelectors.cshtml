@@ -8,7 +8,9 @@
             <div class="form-group form-float">
                 <div class="clearfix row">
                     <select id="@("selector-" + entity.Key)" name="@("selector-" + entity.Key)"
-                            class="validate form-control connectionSelector width-100 text-center"
+                            class="validate form-control connectionSelector text-center"
+                            @* szerokość musi być podana w style, żeby select2 dobrze ją ustawił *@
+                            style="width: 100%"
                             data-existing_connections="@(Model.ExistingConnections.ContainsKey(entity.Key) ? JsonConvert.SerializeObject(Model.ExistingConnections[entity.Key]) : "")"
                             data-hr_name="@entity.Value"
                             data-existing_connections_district_id="@(Model.ExistingConnectionsDistrictId)"
