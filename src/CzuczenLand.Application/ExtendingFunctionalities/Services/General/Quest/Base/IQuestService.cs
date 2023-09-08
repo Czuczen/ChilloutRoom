@@ -26,20 +26,20 @@ public interface IQuestService : ITransientDependency
     /// <summary>
     /// Ustawia asynchronicznie wartości początkowe dla zadań gracza.
     /// </summary>
-    /// <param name="playerDefinitions">Lista zadań gracza.</param>
-    Task SetStartValuesAsync(List<ExtendingModels.Models.General.Quest> playerDefinitions);
+    /// <param name="playerRecords">Lista zadań gracza.</param>
+    Task SetStartValuesAsync(List<ExtendingModels.Models.General.Quest> playerRecords);
         
     /// <summary>
     /// Ustawia synchronicznie wartości początkowe dla zadań gracza.
     /// </summary>
-    /// <param name="playerDefinitions">Lista zadań gracza.</param>
-    void SetStartValues(List<ExtendingModels.Models.General.Quest> playerDefinitions);
+    /// <param name="playerRecords">Lista zadań gracza.</param>
+    void SetStartValues(List<ExtendingModels.Models.General.Quest> playerRecords);
 
     /// <summary>
     /// Tworzy postęp wymagań zadań dla gracza na podstawie zadań będących definicją.
     /// </summary>
     /// <param name="questsDefinitions">Lista definicji zadań.</param>
-    /// <param name="playerDefinitions">Lista zadań gracza.</param>
+    /// <param name="playerRecords">Lista zadań gracza.</param>
     Task CreatePlayerQuestsRequirementsProgress(List<ExtendingModels.Models.General.Quest> questsDefinitions,
-        List<ExtendingModels.Models.General.Quest> playerDefinitions);
+        List<ExtendingModels.Models.General.Quest> playerRecords);
 }

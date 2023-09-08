@@ -33,7 +33,7 @@
     const $editEmail = $("#EditEmail");
     $editEmail.on("input", () => 
     {
-        $("#email").val($editEmail.val() + "@chilloutroom.pl");
+        $("#email").val($editEmail.val() + $("#siteEmail").data("site-email"));
         $("#username").val($editEmail.val());
         $("#name").val($editEmail.val());
     });

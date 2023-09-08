@@ -113,7 +113,7 @@ ConfigurationPanel.EditOrCreate = {
                         }
                     }
                 },
-                width: 'resolve',
+                width: 'style',
                 language: "pl",
                 allowClear: true,
                 placeholder: "Wybierz " + $selector.data("hr_name"),

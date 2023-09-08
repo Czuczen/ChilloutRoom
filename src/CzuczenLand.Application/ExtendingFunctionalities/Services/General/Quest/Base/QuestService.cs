@@ -115,13 +115,13 @@ public class QuestService : IQuestService
     /// <summary>
     /// Ustawia synchronicznie wartości początkowe dla zadań gracza.
     /// </summary>
-    /// <param name="playerDefinitions">Lista zadań gracza.</param>
-    public void SetStartValues(List<ExtendingModels.Models.General.Quest> playerDefinitions)
+    /// <param name="playerRecords">Lista zadań gracza.</param>
+    public void SetStartValues(List<ExtendingModels.Models.General.Quest> playerRecords)
     {
-        if (!playerDefinitions.Any()) return;
+        if (!playerRecords.Any()) return;
         
         var currDateTime = Clock.Now;
-        var firstQuest = playerDefinitions.First();
+        var firstQuest = playerRecords.First();
         var plantationStorage = _plantationStorageRepository.Single(item => item.Id == firstQuest.PlantationStorageId);
         var playerStorage = _playerStorageRepository.Single(item => item.UserId == plantationStorage.UserId);
         
@@ -150,12 +150,12 @@ public class QuestService : IQuestService
         var requirements = _requirementRepository.GetAllList(item => item.DistrictId == plantationStorage.DistrictId);
         var generatedTypes = generatedTypeQuery.ToList(); 
 
-        foreach (var playerDefinition in playerDefinitions)
+        foreach (var playerRecord in playerRecords)
         {
-            playerDefinition.IsComplete = false; // Po edycji zadania przez opiekuna dzielnicy ukończone zadanie było w ukończonych/akordeon z nieukończonymi wymaganiami. IsComplete ustawiamy na false przez co teraz zadanie będzie w dostępnych.
-            playerDefinition.CurrentDuration = 0;
+            playerRecord.IsComplete = false; // Po edycji zadania przez opiekuna dzielnicy ukończone zadanie było w ukończonych/akordeon z nieukończonymi wymaganiami. IsComplete ustawiamy na false przez co teraz zadanie będzie w dostępnych.
+            playerRecord.CurrentDuration = 0;
                 
-            switch (playerDefinition.QuestType)
+            switch (playerRecord.QuestType)
             {
                 case DbQuestTypesNames.Daily:
                     break;
@@ -163,15 +163,15 @@ public class QuestService : IQuestService
                     break;
                 case DbQuestTypesNames.Event:
                     // Kiedy opiekun dzielnicy edytuje zadanie które jest już nie dostępne czasowo ale jest ukończone to z racji że zostało zresetowane musi zostać usunięte z listy/akordeon ukończonych. Jeśli ustawimy WorkerSent na true to RemoveNotAvailableEventQuests ustawi zadanie tam gdzie jego miejsce.
-                    if (playerDefinition.EndTime < currDateTime) 
-                        playerDefinition.WorkerSent = true;
+                    if (playerRecord.EndTime < currDateTime) 
+                        playerRecord.WorkerSent = true;
                     break;
                 case DbQuestTypesNames.Achievement:
-                    playerDefinition.InProgress = true;
+                    playerRecord.InProgress = true;
                     break;
             }
 
-            var questProgress = questsProgress.Single(item => item.QuestId == playerDefinition.Id);
+            var questProgress = questsProgress.Single(item => item.QuestId == playerRecord.Id);
             var questRequirementsProgress = JsonConvert.DeserializeObject<Dictionary<int, decimal>>(questProgress.RequirementsProgress);
             var newQuestRequirementsProgress = new Dictionary<int, decimal>();
             
@@ -215,7 +215,7 @@ public class QuestService : IQuestService
                 {
                     var generatedType = generatedTypes.Single(item => item.Id == (int) req.GeneratedTypeId);
                     var repo = _customRepositoryLoader.GetRepository(generatedType.EntityName);
-                    var entity = repo.GetWhere(RelationFieldsNames.PlantationStorageId, playerDefinition.PlantationStorageId)?
+                    var entity = repo.GetWhere(RelationFieldsNames.PlantationStorageId, playerRecord.PlantationStorageId)?
                         .Cast<IGeneratedEntity>()
                         .SingleOrDefault(item => item.GeneratedTypeId == generatedType.Id);
                         
@@ -234,13 +234,13 @@ public class QuestService : IQuestService
     /// <summary>
     /// Ustawia asynchronicznie wartości początkowe dla zadań gracza.
     /// </summary>
-    /// <param name="playerDefinitions">Lista zadań gracza.</param>
-    public async Task SetStartValuesAsync(List<ExtendingModels.Models.General.Quest> playerDefinitions)
+    /// <param name="playerRecords">Lista zadań gracza.</param>
+    public async Task SetStartValuesAsync(List<ExtendingModels.Models.General.Quest> playerRecords)
     {
-        if (!playerDefinitions.Any()) return;
+        if (!playerRecords.Any()) return;
         
         var currDateTime = Clock.Now;
-        var firstQuest = playerDefinitions.First();
+        var firstQuest = playerRecords.First();
         var plantationStorage = await _plantationStorageRepository.SingleAsync(item => item.Id == firstQuest.PlantationStorageId);
         var playerStorage = await _playerStorageRepository.SingleAsync(item => item.UserId == plantationStorage.UserId);
         
@@ -269,12 +269,12 @@ public class QuestService : IQuestService
         var requirements = await _requirementRepository.GetAllListAsync(item => item.DistrictId == plantationStorage.DistrictId);
         var generatedTypes = await generatedTypeQuery.ToListAsync(); 
 
-        foreach (var playerDefinition in playerDefinitions)
+        foreach (var playerRecord in playerRecords)
         {
-            playerDefinition.IsComplete = false; // Po edycji zadania przez opiekuna dzielnicy ukończone zadanie było w ukończonych/akordeon z nieukończonymi wymaganiami. IsComplete ustawiamy na false przez co teraz zadanie będzie w dostępnych.
-            playerDefinition.CurrentDuration = 0;
+            playerRecord.IsComplete = false; // Po edycji zadania przez opiekuna dzielnicy ukończone zadanie było w ukończonych/akordeon z nieukończonymi wymaganiami. IsComplete ustawiamy na false przez co teraz zadanie będzie w dostępnych.
+            playerRecord.CurrentDuration = 0;
                 
-            switch (playerDefinition.QuestType)
+            switch (playerRecord.QuestType)
             {
                 case DbQuestTypesNames.Daily:
                     break;
@@ -282,15 +282,15 @@ public class QuestService : IQuestService
                     break;
                 case DbQuestTypesNames.Event:
                     // Kiedy opiekun dzielnicy edytuje zadanie które jest już nie dostępne czasowo ale jest ukończone to z racji że zostało zresetowane musi zostać usunięte z listy/akordeon ukończonych. Jeśli ustawimy WorkerSent na true to RemoveNotAvailableEventQuests ustawi zadanie tam gdzie jego miejsce.
-                    if (playerDefinition.EndTime < currDateTime) 
-                        playerDefinition.WorkerSent = true;
+                    if (playerRecord.EndTime < currDateTime) 
+                        playerRecord.WorkerSent = true;
                     break;
                 case DbQuestTypesNames.Achievement:
-                    playerDefinition.InProgress = true;
+                    playerRecord.InProgress = true;
                     break;
             }
 
-            var questProgress = questsProgress.Single(item => item.QuestId == playerDefinition.Id);
+            var questProgress = questsProgress.Single(item => item.QuestId == playerRecord.Id);
             var questRequirementsProgress = JsonConvert.DeserializeObject<Dictionary<int, decimal>>(questProgress.RequirementsProgress);
             var newQuestRequirementsProgress = new Dictionary<int, decimal>();
             
@@ -334,7 +334,7 @@ public class QuestService : IQuestService
                 {
                     var generatedType = generatedTypes.Single(item => item.Id == (int) req.GeneratedTypeId);
                     var repo = _customRepositoryLoader.GetRepository(generatedType.EntityName);
-                    var entity = (await repo.GetWhereAsync(RelationFieldsNames.PlantationStorageId, playerDefinition.PlantationStorageId))?
+                    var entity = (await repo.GetWhereAsync(RelationFieldsNames.PlantationStorageId, playerRecord.PlantationStorageId))?
                         .Cast<IGeneratedEntity>()
                         .SingleOrDefault(item => item.GeneratedTypeId == generatedType.Id);
                         
@@ -403,20 +403,20 @@ public class QuestService : IQuestService
         else
             questProgress.RequirementsProgress = newRequirementsProgress;
             
-        var playersDefinitions = await _questRepository.GetAllListAsync(item => item.GeneratedTypeId == quest.GeneratedTypeId && item.Id != entityId);
-        foreach (var playerDefinition in playersDefinitions)
+        var playersRecords = await _questRepository.GetAllListAsync(item => item.GeneratedTypeId == quest.GeneratedTypeId && item.Id != entityId);
+        foreach (var playerRecord in playersRecords)
         {
-            var playerDefinitionProgress = questsProgress.SingleOrDefault(item => item.QuestId == playerDefinition.Id);
-            if (playerDefinitionProgress == null)
+            var playerRecordProgress = questsProgress.SingleOrDefault(item => item.QuestId == playerRecord.Id);
+            if (playerRecordProgress == null)
             {
                 await _questRequirementsProgressRepository.InsertAndGetIdAsync(new QuestRequirementsProgress
-                    {QuestId = playerDefinition.Id, RequirementsProgress = newRequirementsProgress});
+                    {QuestId = playerRecord.Id, RequirementsProgress = newRequirementsProgress});
             }
             else
-                playerDefinitionProgress.RequirementsProgress = newRequirementsProgress;
+                playerRecordProgress.RequirementsProgress = newRequirementsProgress;
         }
 
-        return playersDefinitions;
+        return playersRecords;
     }
 
     /// <summary>
@@ -428,8 +428,8 @@ public class QuestService : IQuestService
     {
         if (entitiesIds == null || entitiesIds.Count == 0 || entityId == null) return;
 
-        var playersDefinitions = await CreateQuestConnections((int) entityId, entitiesIds);
-        foreach (var group in playersDefinitions.GroupBy(item => item.PlantationStorageId))
+        var playersRecords = await CreateQuestConnections((int) entityId, entitiesIds);
+        foreach (var group in playersRecords.GroupBy(item => item.PlantationStorageId))
             await SetStartValuesAsync(group.ToList());
     }
 
@@ -448,9 +448,9 @@ public class QuestService : IQuestService
     /// Tworzy postęp wymagań zadań dla gracza na podstawie zadań będących definicją.
     /// </summary>
     /// <param name="questsDefinitions">Lista definicji zadań.</param>
-    /// <param name="playerDefinitions">Lista zadań gracza.</param>
+    /// <param name="playerRecords">Lista zadań gracza.</param>
     public async Task CreatePlayerQuestsRequirementsProgress(List<ExtendingModels.Models.General.Quest> questsDefinitions, 
-        List<ExtendingModels.Models.General.Quest> playerDefinitions)
+        List<ExtendingModels.Models.General.Quest> playerRecords)
     {
         var firstQuestDef = questsDefinitions.First();
         var generatedType = await _generatedTypeRepository.GetAsync(firstQuestDef.GeneratedTypeId);
@@ -466,7 +466,7 @@ public class QuestService : IQuestService
             currQuest => currQuest.Id,
             (progress, currQuest) => progress).ToListAsync();
 
-        foreach (var playerQuest in playerDefinitions)
+        foreach (var playerQuest in playerRecords)
         {
             var questDef = questsDefinitions.Single(item => item.GeneratedTypeId == playerQuest.GeneratedTypeId);
             var questDefRequirementsProgress = questsProgress.Single(item => item.QuestId == questDef.Id);

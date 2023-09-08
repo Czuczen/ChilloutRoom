@@ -25,33 +25,33 @@ public static class StructureTestsHelper
     /// <param name="definitionExist">Flaga określająca czy istnieje definicja dla typu.</param>
     public static void CheckUserProductsExistence(StructureTest structureTest, List<INamedEntity> objects, string userName, District district, GeneratedType generatedType, bool definitionExist)
     {
-        var minorTest = new MinorTest();
+        var subTest = new SubTest();
         if (objects != null && objects.Count > 0)
         {
             if (objects.Count > 1)
             {
-                var defsMessage = objects.Aggregate("</br>Nadmiarowe definicje:", (current, obj) => current + "</br>" + obj.Name);
-                minorTest.Description = "Użytkownik posiada nadmiarowe definicje. " + "Użytkownik - " + userName + ". Dzielnica - " + district.Name + ". Id typu generowanego: " + generatedType.Id + ". Typ generowany - " + generatedType.Name + defsMessage;
-                minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                var defsMessage = objects.Aggregate("</br>Nadmiarowe rekordy:", (current, obj) => current + "</br>" + obj.Name);
+                subTest.Description = "Użytkownik posiada nadmiarowe rekordy. " + "Użytkownik - " + userName + ". Dzielnica - " + district.Name + ". Id typu generowanego: " + generatedType.Id + ". Typ generowany - " + generatedType.Name + defsMessage;
+                subTest.Status = EnumUtils.StructureTestsStatuses.Error;
             }
             else
             {
-                minorTest.Description = "Użytkownik posiada jedną definicje. " + "Użytkownik - " + userName + ". Dzielnica - " + district.Name + ". Id typu generowanego: " + generatedType.Id + ". Typ generowany - " + generatedType.Name;
-                minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest.Description = "Użytkownik posiada jeden rekord. " + "Użytkownik - " + userName + ". Dzielnica - " + district.Name + ". Id typu generowanego: " + generatedType.Id + ". Typ generowany - " + generatedType.Name;
+                subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
             }
         }
         else if (definitionExist)
         {
-            minorTest.Description = "Użytkownik nie posiada definicji a definicja dla typu istnieje. " + "Użytkownik - " + userName + ". Dzielnica - " + district.Name + ". Id typu generowanego: " + generatedType.Id + ". Typ generowany - " + generatedType.Name;
-            minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
+            subTest.Description = "Użytkownik nie posiada rekordu a definicja dla typu istnieje. " + "Użytkownik - " + userName + ". Dzielnica - " + district.Name + ". Id typu generowanego: " + generatedType.Id + ". Typ generowany - " + generatedType.Name;
+            subTest.Status = EnumUtils.StructureTestsStatuses.Error;
         }
         else
         {
-            minorTest.Description = "Użytkownik nie posiada definicji. " + "Użytkownik - " + userName + ". Dzielnica - " + district.Name + ". Id typu generowanego: " + generatedType.Id + ". Typ generowany - " + generatedType.Name;
-            minorTest.Status = EnumUtils.StructureTestsStatuses.Warn;
+            subTest.Description = "Użytkownik nie posiada rekordu a definicja dla typu nie istnieje. " + "Użytkownik - " + userName + ". Dzielnica - " + district.Name + ". Id typu generowanego: " + generatedType.Id + ". Typ generowany - " + generatedType.Name;
+            subTest.Status = EnumUtils.StructureTestsStatuses.Warn;
         }
 
-        structureTest.MinorTests.Add(minorTest);
+        structureTest.SubTests.Add(subTest);
     }
 
     /// <summary>
@@ -61,13 +61,13 @@ public static class StructureTestsHelper
     /// <param name="ex">Wyjątek.</param>
     public static void SetErrorInTest(StructureTest structureTest, Exception ex)
     {
-        var minorTest = new MinorTest
+        var subTest = new SubTest
         {
             Description = "Coś poszło nie tak. " + ex,
             Status = EnumUtils.StructureTestsStatuses.Error
         };
 
-        structureTest.MinorTests.Add(minorTest);
+        structureTest.SubTests.Add(subTest);
     }
 
     /// <summary>
@@ -79,7 +79,7 @@ public static class StructureTestsHelper
     /// <param name="plant">Roślina.</param>
     public static void CheckPlantConnectedEntity<T>(StructureTest structureTest, INamedEntity connectedObj, Plant plant)
     {
-        var minorTest = new MinorTest();
+        var subTest = new SubTest();
         var type = typeof(T);
         var plantName = plant.Name;
 
@@ -89,22 +89,22 @@ public static class StructureTestsHelper
                     
             if (connectedObj != null)
             {
-                minorTest.Description = "Połączony rekord encji istnieje. " + "Roślina - " + plantName + ". Encja - " + hrEntityName + ". Nazwa rekordu - " + connectedObj.Name + ". Id rekordu: " + connectedObj.Id + ". Id rośliny: " + plant.Id;
-                minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest.Description = "Połączony rekord encji istnieje. " + "Roślina - " + plantName + ". Encja - " + hrEntityName + ". Nazwa rekordu - " + connectedObj.Name + ". Id rekordu: " + connectedObj.Id + ". Id rośliny: " + plant.Id;
+                subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
             }
             else
             {
-                minorTest.Description = "Połączony rekord encji nie istnieje. " + "Roślina - " + plantName + ". Encja - " + hrEntityName + ". Id rośliny: " + plant.Id;
-                minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                subTest.Description = "Połączony rekord encji nie istnieje. " + "Roślina - " + plantName + ". Encja - " + hrEntityName + ". Id rośliny: " + plant.Id;
+                subTest.Status = EnumUtils.StructureTestsStatuses.Error;
             }
         }
         else
         {
-            minorTest.Description = "Nie znaleziono wyświetlanej nazwy encji. " + "Nazwa encji w bazie danych - " + type.Name;
-            minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
+            subTest.Description = "Nie znaleziono wyświetlanej nazwy encji. " + "Nazwa encji w bazie danych - " + type.Name;
+            subTest.Status = EnumUtils.StructureTestsStatuses.Error;
         }
 
-        structureTest.MinorTests.Add(minorTest);
+        structureTest.SubTests.Add(subTest);
     }
     
     /// <summary>
@@ -145,21 +145,21 @@ public static class StructureTestsHelper
         {
             foreach (var obj in objects)
             {
-                var minorTest = new MinorTest();
+                var subTest = new SubTest();
                     
                 var generatedType = generatedTypes.SingleOrDefault(item => item.Id == obj.GeneratedTypeId);
                 if (generatedType != null)
                 {
-                    minorTest.Description = "Typ zdefiniowany na produkcie istnieje. " + "Produkt - " + obj.Name + ". Id produktu: " + obj.Id + ". Typ generowany - " + generatedType.Name + ". Id typu generowanego: " + generatedType.Id;
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest.Description = "Typ zdefiniowany na produkcie istnieje. " + "Produkt - " + obj.Name + ". Id produktu: " + obj.Id + ". Typ generowany - " + generatedType.Name + ". Id typu generowanego: " + generatedType.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
                 }
                 else
                 {
-                    minorTest.Description = "Typ zdefiniowany na produkcie nie istnieje. " + "Produkt - " + obj.Name + ". Id produktu: " + obj.Id;
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = "Typ zdefiniowany na produkcie nie istnieje. " + "Produkt - " + obj.Name + ". Id produktu: " + obj.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
                 }
                     
-                structureTest.MinorTests.Add(minorTest);
+                structureTest.SubTests.Add(subTest);
             }
         }
     }

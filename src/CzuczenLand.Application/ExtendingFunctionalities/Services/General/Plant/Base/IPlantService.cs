@@ -29,7 +29,7 @@ public interface IPlantService : ITransientDependency
     /// </summary>
     /// <param name="productId">Identyfikator produktu.</param>
     /// <param name="entityName">Nazwa encji produktu.</param>
-    Task DeleteConnectedPlantsToProductDefinitionAsync(int productId, string entityName);
+    Task DeleteConnectedPlantsToProduct(int productId, string entityName);
 
     /// <summary>
     /// Usuwa roślinę i aktualizuje powiązane produkty.
@@ -39,5 +39,5 @@ public interface IPlantService : ITransientDependency
     /// <param name="fieldToCompare">Pole do porównania.</param>
     /// <param name="value">Wartość pola.</param>
     /// <param name="needIgnoreChange">Flaga określająca potrzebę ignorowania zmian.</param>
-    Task DeletePlantAndSetUseCountConnectedProductsAsync(string fieldToCompare, int value, bool needIgnoreChange = true);
+    Task DeletePlantAndSetUseCountConnectedProducts(string fieldToCompare, int value, bool needIgnoreChange = true);
 }

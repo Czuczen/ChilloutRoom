@@ -56,7 +56,7 @@
     {
         $("#FirstName").val($(this).val());
         $("#UserName").val($(this).val());
-        $("#tempRegisterEmail").val($(this).val() + "@chilloutroom.pl")
+        $("#tempRegisterEmail").val($(this).val() + $("#siteEmail").data("site-email"));
     });
 
 })(jQuery);

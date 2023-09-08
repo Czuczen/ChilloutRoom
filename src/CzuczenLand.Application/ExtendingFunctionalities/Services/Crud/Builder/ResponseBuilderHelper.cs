@@ -6,15 +6,14 @@
 public static class ResponseBuilderHelper
 {
     /// <summary>
-    /// Pobiera wiadomość informacyjną dotyczącą zmiany.
-    /// --------------------
+    /// Pobiera wiadomość informującą o zmianie w konfiguracji dzielnicy.
     /// </summary>
-    /// <param name="isDistrictEntity">Czy encja jest dzielnicą.</param>
+    /// <param name="wardenDistrictId">Id dzielnicy opiekuna</param>
     /// <returns>Wiadomość informacyjna dotycząca zmiany.</returns>
-    public static string GetChangeInfoMessage(bool isDistrictEntity)
+    public static string GetChangeInfoMessage(int? wardenDistrictId)
     {
         string infoMessage; 
-        if (isDistrictEntity)
+        if (wardenDistrictId == null)
             infoMessage = "Administrator dokonał aktualizacji dzielnicy. Nastąpi odświeżenie strony.";
         else
             infoMessage = "Opiekun dzielnicy dokonał aktualizacji . Nastąpi odświeżenie strony.";

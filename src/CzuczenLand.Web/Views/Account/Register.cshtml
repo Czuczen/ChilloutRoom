@@ -51,7 +51,7 @@
 
             <div class="form-group form-float">
                 <div class="form-line">
-                    <input id="registerEmail" type="text" name="RegisterEmail" class="form-control" value="@(Model.EmailAddress?.Replace("@chilloutroom.pl", ""))" required maxlength="@AbpUserBase.MaxEmailAddressLength">
+                    <input id="registerEmail" type="text" name="RegisterEmail" class="form-control" value="@(Model.EmailAddress?.Replace(ViewBag.SiteEmail, ""))" required maxlength="@AbpUserBase.MaxEmailAddressLength">
                     <input id="tempRegisterEmail" type="email" class="form-control d-none" name="EmailAddress" value="@Model.EmailAddress" required maxlength="@AbpUserBase.MaxEmailAddressLength">
                     <label class="form-label">Nick</label>
                 </div>

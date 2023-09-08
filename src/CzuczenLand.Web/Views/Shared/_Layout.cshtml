@@ -81,9 +81,6 @@
                 <div class="copyright text-c-black d-inline-flex">
                     &copy; @Clock.Now.Year<div class="text-c-orangered-imp text-bold">&nbsp;Chillout Room.</div>
                 </div>
-                @* <div class="version"> *@
-                @*     <b>Version </b> @AppVersionHelper.Version [@AppVersionHelper.ReleaseDate.ToString("yyyyMMdd")] *@
-                @* </div> *@
             </div>
             <!-- #Footer -->
         </aside>
@@ -112,6 +109,7 @@
 
             @RenderBody()
             @Html.Partial("Chat/_Chat")
+            <div id="siteEmail" class="d-none" data-site-email="@ViewBag.SiteEmail"></div>
         </div>
     </section>
 

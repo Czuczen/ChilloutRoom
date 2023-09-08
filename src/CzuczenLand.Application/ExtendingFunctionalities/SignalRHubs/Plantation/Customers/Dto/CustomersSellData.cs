@@ -9,22 +9,7 @@ public class CustomersSellData
     /// Wiadomość informująca o sprzedaży suszu.
     /// </summary>
     public string SellMessage { get; set; }
-        
-    /// <summary>
-    /// Ilość pozostałego suszu.
-    /// </summary>
-    public decimal DriedFruitAmount { get; set; }
-        
-    /// <summary>
-    /// Ilość złota na plantacji.
-    /// </summary>
-    public decimal PlantationGold { get; set; }
-        
-    /// <summary>
-    /// Id sprzedanego suszu.
-    /// </summary>
-    public int DriedFruitId { get; set; }
-        
+
     /// <summary>
     /// Status sprzedaży.
     /// </summary>

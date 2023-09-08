@@ -320,7 +320,7 @@ public class NewPlayerGenerator : INewPlayerGenerator
         plantation.PlantationStorage = await InitNewPlayerPlantationStorageForDistrict(plantation);
         
         if (plantation.PlantationStorage != null)
-            await InitNewPlayerEntitiesDefinitions(plantation);
+            await InitNewPlayerEntitiesRecords(plantation);
         else
             throw new AbpException("Tworzenie magazynu plantacji nie powiodło się");
     }
@@ -362,50 +362,50 @@ public class NewPlayerGenerator : INewPlayerGenerator
     /// Inicjuje nowe obiekty dla plantacji nowego gracza na podstawie definicji.
     /// </summary>
     /// <param name="plantation">Obiekt reprezentujący plantację gracza.</param>
-    private async Task InitNewPlayerEntitiesDefinitions(Plantation plantation)
+    private async Task InitNewPlayerEntitiesRecords(Plantation plantation)
     {
         var districtTypes = await _generatedTypeRepository.GetAllListAsync(currItem => currItem.DistrictId == plantation.District.Id);
             
         var driedFruitsDefinitions = (await _driedFruitRepository.GetAllListAsync()).Where(item => 
             item.PlantationStorageId == null && districtTypes.Any(type => type.Id == item.GeneratedTypeId)).ToList();
-        await GenerateAllDefinitionsForNewPlayerPlantationStorage(driedFruitsDefinitions, EnumUtils.Entities.DriedFruit, plantation, _driedFruitRepository);
+        await GenerateRecordsForNewPlayerPlantationStorage(driedFruitsDefinitions, EnumUtils.Entities.DriedFruit, plantation, _driedFruitRepository);
             
         var lampsDefinitions = (await _lampRepository.GetAllListAsync()).Where(item => 
             item.PlantationStorageId == null && districtTypes.Any(type => type.Id == item.GeneratedTypeId)).ToList();
-        await GenerateAllDefinitionsForNewPlayerPlantationStorage(lampsDefinitions,  EnumUtils.Entities.Lamp, plantation, _lampRepository);
+        await GenerateRecordsForNewPlayerPlantationStorage(lampsDefinitions,  EnumUtils.Entities.Lamp, plantation, _lampRepository);
             
         var manuresDefinitions = (await _manureRepository.GetAllListAsync()).Where(item => 
             item.PlantationStorageId == null && districtTypes.Any(type => type.Id == item.GeneratedTypeId)).ToList();
-        await GenerateAllDefinitionsForNewPlayerPlantationStorage(manuresDefinitions, EnumUtils.Entities.Manure, plantation, _manureRepository);
+        await GenerateRecordsForNewPlayerPlantationStorage(manuresDefinitions, EnumUtils.Entities.Manure, plantation, _manureRepository);
             
         var potsDefinitions = (await _potRepository.GetAllListAsync()).Where(item => 
             item.PlantationStorageId == null && districtTypes.Any(type => type.Id == item.GeneratedTypeId)).ToList();
-        await GenerateAllDefinitionsForNewPlayerPlantationStorage(potsDefinitions, EnumUtils.Entities.Pot, plantation, _potRepository);
+        await GenerateRecordsForNewPlayerPlantationStorage(potsDefinitions, EnumUtils.Entities.Pot, plantation, _potRepository);
             
         var seedsDefinitions = (await _seedRepository.GetAllListAsync()).Where(item => 
             item.PlantationStorageId == null && districtTypes.Any(type => type.Id == item.GeneratedTypeId)).ToList();
-        await GenerateAllDefinitionsForNewPlayerPlantationStorage(seedsDefinitions, EnumUtils.Entities.Seed, plantation, _seedRepository);
+        await GenerateRecordsForNewPlayerPlantationStorage(seedsDefinitions, EnumUtils.Entities.Seed, plantation, _seedRepository);
             
         var soilsDefinitions = (await _soilRepository.GetAllListAsync()).Where(item => 
             item.PlantationStorageId == null && districtTypes.Any(type => type.Id == item.GeneratedTypeId)).ToList();
-        await GenerateAllDefinitionsForNewPlayerPlantationStorage(soilsDefinitions, EnumUtils.Entities.Soil, plantation, _soilRepository);
+        await GenerateRecordsForNewPlayerPlantationStorage(soilsDefinitions, EnumUtils.Entities.Soil, plantation, _soilRepository);
             
         var watersDefinitions = (await _waterRepository.GetAllListAsync()).Where(item => 
             item.PlantationStorageId == null && districtTypes.Any(type => type.Id == item.GeneratedTypeId)).ToList();
-        await GenerateAllDefinitionsForNewPlayerPlantationStorage(watersDefinitions, EnumUtils.Entities.Water, plantation, _waterRepository);
+        await GenerateRecordsForNewPlayerPlantationStorage(watersDefinitions, EnumUtils.Entities.Water, plantation, _waterRepository);
             
         var bonusesDefinitions = (await _bonusRepository.GetAllListAsync()).Where(item => 
             item.PlantationStorageId == null && districtTypes.Any(type => type.Id == item.GeneratedTypeId)).ToList();
-        await GenerateAllDefinitionsForNewPlayerPlantationStorage(bonusesDefinitions, EnumUtils.Entities.Bonus, plantation, _bonusRepository);
+        await GenerateRecordsForNewPlayerPlantationStorage(bonusesDefinitions, EnumUtils.Entities.Bonus, plantation, _bonusRepository);
             
         var questsDefinitions = (await _questRepository.GetAllListAsync()).Where(item => 
             item.PlantationStorageId == null && districtTypes.Any(type => type.Id == item.GeneratedTypeId)).ToList();
-        var createdDefinitionsForUser = await GenerateAllDefinitionsForNewPlayerPlantationStorage(questsDefinitions,
+        var createdRecordsForUser = await GenerateRecordsForNewPlayerPlantationStorage(questsDefinitions,
             EnumUtils.Entities.Quest, plantation, _questRepository, true);
 
-        var playerQuestsDefinitions = createdDefinitionsForUser.Cast<Quest>().ToList();
-        await _questService.CreatePlayerQuestsRequirementsProgress(questsDefinitions, playerQuestsDefinitions);
-        await _questService.SetStartValuesAsync(playerQuestsDefinitions);
+        var playerQuestsRecords = createdRecordsForUser.Cast<Quest>().ToList();
+        await _questService.CreatePlayerQuestsRequirementsProgress(questsDefinitions, playerQuestsRecords);
+        await _questService.SetStartValuesAsync(playerQuestsRecords);
     }
 
     /// <summary>
@@ -416,10 +416,10 @@ public class NewPlayerGenerator : INewPlayerGenerator
     /// <param name="entityEnum">Enum reprezentujący typ encji.</param>
     /// <param name="plantation">Obiekt reprezentujący plantację gracza.</param>
     /// <param name="repo">Repozytorium encji do generowania.</param>
-    /// <param name="needDefinitions">Czy metoda ma zwracać utworzone rekordy.</param>
+    /// <param name="needRecords">Czy metoda ma zwracać utworzone rekordy.</param>
     /// <returns>Lista nowo utworzonych obiektów.</returns>
-    private static async Task<List<object>> GenerateAllDefinitionsForNewPlayerPlantationStorage<TEntity>(object definitions, 
-        EnumUtils.Entities? entityEnum, Plantation plantation, IRepository<TEntity, int> repo, bool needDefinitions = false)
+    private static async Task<List<object>> GenerateRecordsForNewPlayerPlantationStorage<TEntity>(object definitions, 
+        EnumUtils.Entities? entityEnum, Plantation plantation, IRepository<TEntity, int> repo, bool needRecords = false)
         where TEntity : class, IEntity<int>
     {
         var ret = new List<object>();
@@ -431,7 +431,7 @@ public class NewPlayerGenerator : INewPlayerGenerator
             var newObject = NewPlayerGeneratorHelper.GetNewObjectByDefinition<TEntity>(serializeForCreateNewObject,
                 plantation.PlantationStorage.Id, entityEnum, plantation.PlayerStorage.Id);
 
-            if (needDefinitions)
+            if (needRecords)
             {
                 var id = await repo.InsertAndGetIdAsync(newObject);
                 var newItem = await repo.GetAsync(id);

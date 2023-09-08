@@ -23,12 +23,12 @@ public static class PlantServiceHelper
     /// <param name="water">Woda użyta do stworzenia rośliny.</param>
     /// <param name="seed">Nasiono użyte do stworzenia rośliny.</param>
     /// <param name="pot">Doniczka użyta do stworzenia rośliny.</param>
-    /// <param name="formBonuses">Zwiększenie prędkości wzrostu z bonusów.</param>
+    /// <param name="fromBonuses">Zwiększenie prędkości wzrostu z bonusów.</param>
     /// <returns>Obliczona prędkość wzrostu rośliny.</returns>
-    public static decimal CalculateGrowingSpeed(Lamp lamp, Manure manure, Soil soil, Water water, Seed seed, Pot pot, decimal formBonuses)
+    public static decimal CalculateGrowingSpeed(Lamp lamp, Manure manure, Soil soil, Water water, Seed seed, Pot pot, decimal fromBonuses)
     {
         var growingSpeed = lamp.IncreaseGrowingSpeed + manure.IncreaseGrowingSpeed + soil.IncreaseGrowingSpeed +
-                           water.IncreaseGrowingSpeed + seed.IncreaseGrowingSpeed + pot.IncreaseGrowingSpeed + formBonuses;
+                           water.IncreaseGrowingSpeed + seed.IncreaseGrowingSpeed + pot.IncreaseGrowingSpeed + fromBonuses;
 
         return growingSpeed;
     }
@@ -42,12 +42,12 @@ public static class PlantServiceHelper
     /// <param name="water">Woda użyta do stworzenia rośliny.</param>
     /// <param name="seed">Nasiono użyte do stworzenia rośliny.</param>
     /// <param name="pot">Doniczka użyta do stworzenia rośliny.</param>
-    /// <param name="formBonuses">Zwiększenie szansy na nasiona z bonusów.</param>
+    /// <param name="fromBonuses">Zwiększenie szansy na nasiona z bonusów.</param>
     /// <returns>Obliczona szansa na nasiona.</returns>
-    public static int CalculateChanceForSeed(Lamp lamp, Manure manure, Soil soil, Water water, Seed seed, Pot pot, int formBonuses)
+    public static int CalculateChanceForSeed(Lamp lamp, Manure manure, Soil soil, Water water, Seed seed, Pot pot, int fromBonuses)
     {
         var chanceForDrop = lamp.IncreaseChanceForSeed + manure.IncreaseChanceForSeed + soil.IncreaseChanceForSeed +
-                            water.IncreaseChanceForSeed + seed.IncreaseChanceForSeed + pot.IncreaseChanceForSeed + formBonuses;
+                            water.IncreaseChanceForSeed + seed.IncreaseChanceForSeed + pot.IncreaseChanceForSeed + fromBonuses;
 
         return chanceForDrop;
     }
@@ -61,12 +61,12 @@ public static class PlantServiceHelper
     /// <param name="water">Woda użyta do stworzenia rośliny.</param>
     /// <param name="seed">Nasiono użyte do stworzenia rośliny.</param>
     /// <param name="pot">Doniczka użyta do stworzenia rośliny.</param>
-    /// <param name="formBonuses">Zwiększenie czasu niewrażliwości z bonusów.</param>
+    /// <param name="fromBonuses">Zwiększenie czasu niewrażliwości z bonusów.</param>
     /// <returns>Obliczony czas niewrażliwości.</returns>
-    public static int CalculateTimeOfInsensitivity(Lamp lamp, Manure manure, Soil soil, Water water, Seed seed, Pot pot, int formBonuses)
+    public static int CalculateTimeOfInsensitivity(Lamp lamp, Manure manure, Soil soil, Water water, Seed seed, Pot pot, int fromBonuses)
     {
         var timeOfInsensitivity = lamp.IncreaseTimeOfInsensitivity + manure.IncreaseTimeOfInsensitivity + soil.IncreaseTimeOfInsensitivity +
-                                  water.IncreaseTimeOfInsensitivity + seed.IncreaseTimeOfInsensitivity + pot.IncreaseTimeOfInsensitivity + formBonuses;
+                                  water.IncreaseTimeOfInsensitivity + seed.IncreaseTimeOfInsensitivity + pot.IncreaseTimeOfInsensitivity + fromBonuses;
 
         return timeOfInsensitivity;
     }
@@ -80,12 +80,12 @@ public static class PlantServiceHelper
     /// <param name="water">Woda użyta do stworzenia rośliny.</param>
     /// <param name="seed">Nasiono użyte do stworzenia rośliny.</param>
     /// <param name="pot">Doniczka użyta do stworzenia rośliny.</param>
-    /// <param name="formBonuses">Zwiększenie ilości suszu z bonusów.</param>
+    /// <param name="fromBonuses">Zwiększenie ilości suszu z bonusów.</param>
     /// <returns>Obliczona ilość suszu.</returns>
-    public static decimal CalculateDriedFruitAmount(Lamp lamp, Manure manure, Soil soil, Water water, Seed seed, Pot pot, decimal formBonuses)
+    public static decimal CalculateDriedFruitAmount(Lamp lamp, Manure manure, Soil soil, Water water, Seed seed, Pot pot, decimal fromBonuses)
     {
         var chanceForDrop = lamp.IncreaseDriedFruitAmount + manure.IncreaseDriedFruitAmount + soil.IncreaseDriedFruitAmount +
-                            water.IncreaseDriedFruitAmount + seed.IncreaseDriedFruitAmount + pot.IncreaseDriedFruitAmount + formBonuses;
+                            water.IncreaseDriedFruitAmount + seed.IncreaseDriedFruitAmount + pot.IncreaseDriedFruitAmount + fromBonuses;
 
         return chanceForDrop;
     }
@@ -99,12 +99,12 @@ public static class PlantServiceHelper
     /// <param name="water">Woda użyta do stworzenia rośliny.</param>
     /// <param name="seed">Nasiono użyte do stworzenia rośliny.</param>
     /// <param name="pot">Doniczka użyta do stworzenia rośliny.</param>
-    /// <param name="formBonuses">Zwiększenie ilości nasion z bonusów.</param>
+    /// <param name="fromBonuses">Zwiększenie ilości nasion z bonusów.</param>
     /// <returns>Obliczona ilość nasion.</returns>
-    public static int CalculateSeedAmount(Lamp lamp, Manure manure, Soil soil, Water water, Seed seed, Pot pot, int formBonuses)
+    public static int CalculateSeedAmount(Lamp lamp, Manure manure, Soil soil, Water water, Seed seed, Pot pot, int fromBonuses)
     {
         var chanceForDrop = lamp.IncreaseSeedAmount + manure.IncreaseSeedAmount + soil.IncreaseSeedAmount +
-                            water.IncreaseSeedAmount + seed.IncreaseSeedAmount + pot.IncreaseSeedAmount + formBonuses;
+                            water.IncreaseSeedAmount + seed.IncreaseSeedAmount + pot.IncreaseSeedAmount + fromBonuses;
 
         return chanceForDrop;
     }
@@ -118,12 +118,12 @@ public static class PlantServiceHelper
     /// <param name="water">Woda użyta do stworzenia rośliny.</param>
     /// <param name="seed">Nasiono użyte do stworzenia rośliny.</param>
     /// <param name="pot">Doniczka użyta do stworzenia rośliny.</param>
-    /// <param name="formBonuses">Zwiększenie ilości doświadczenia z bonusów.</param>
+    /// <param name="fromBonuses">Zwiększenie ilości doświadczenia z bonusów.</param>
     /// <returns>Obliczona ilość doświadczenia.</returns>
-    public static decimal CalculateGainedExp(Lamp lamp, Manure manure, Soil soil, Water water, Seed seed, Pot pot, decimal formBonuses)
+    public static decimal CalculateGainedExp(Lamp lamp, Manure manure, Soil soil, Water water, Seed seed, Pot pot, decimal fromBonuses)
     {
         var chanceForDrop = lamp.IncreaseGainedExp + manure.IncreaseGainedExp + soil.IncreaseGainedExp +
-                            water.IncreaseGainedExp + seed.IncreaseGainedExp + pot.IncreaseGainedExp + formBonuses;
+                            water.IncreaseGainedExp + seed.IncreaseGainedExp + pot.IncreaseGainedExp + fromBonuses;
 
         return chanceForDrop;
     }

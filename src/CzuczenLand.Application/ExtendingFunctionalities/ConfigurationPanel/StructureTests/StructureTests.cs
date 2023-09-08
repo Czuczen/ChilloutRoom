@@ -471,14 +471,14 @@ public class StructureTests : IStructureTests
             IgnoreChangeIsNotToBigAndEntitiesExist(ret);
         }
 
-        UpdatePlayerDefinitionDtoFieldsList(ret);
+        UpdatePlayerRecordDtoFieldsList(ret);
         await WardenPermissionForDistrictsExistenceCheck(ret);
         DistrictsWardensExist(ret);
         GeneratedTypeHasConnectedOneProductDefinition(ret);
         SeedAndDriedFruitHeaveSameType(ret);
         GeneratedTypeDistrictExist(ret);
         ProductGeneratedTypeExist(ret);
-        AllUsersPlantationStoragesHasProductsDefinitions(ret);
+        AllUsersPlantationStoragesHasProductsRecords(ret);
         UsersHasOnePlayerStorage(ret);
         await UsersNotHasMoreThanOnePlantationStorageForOneDistrict(ret);
         PlantationsStoragesDistrictsExists(ret);
@@ -592,13 +592,13 @@ public class StructureTests : IStructureTests
     }
 
     /// <summary>
-    /// Wyświetli raport o liście pól aktualizowanych u użytkowników podczas aktualizacji definicji przez opiekuna dzielnicy.
+    /// Wyświetli raport o liście pól aktualizowanych w rekordach użytkowników podczas aktualizacji definicji przez opiekuna dzielnicy.
     /// </summary>
     /// <param name="model">Lista obiektów StructureTest, do której będą dodane wyniki testu aktualizacji pól.</param>
-    private void UpdatePlayerDefinitionDtoFieldsList(List<StructureTest> model)
+    private void UpdatePlayerRecordDtoFieldsList(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
-        structureTest.TestName = "Lista pól aktualizowanych u użytkowników podczas aktualizacji definicji";
+        structureTest.TestName = "Lista pól aktualizowanych w rekordach użytkowników podczas aktualizacji definicji";
         var typesCount = 0;
         try
         {
@@ -611,13 +611,13 @@ public class StructureTests : IStructureTests
             typesCount = types.Count;
             foreach (var type in types)
             {
-                var minorTest = new MinorTest();
+                var subTest = new SubTest();
                     
-                minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
-                minorTest.Description = type.GetProperties().Aggregate(type.Name + "</br>",
+                subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest.Description = type.GetProperties().Aggregate(type.Name + "</br>",
                     (current, prop) => current + "</br>" + prop.Name + " - " + PlantationManagerHelper.GetHrPropName(prop));
                     
-                structureTest.MinorTests.Add(minorTest);
+                structureTest.SubTests.Add(subTest);
             }
         }
         catch (Exception ex)
@@ -649,13 +649,13 @@ public class StructureTests : IStructureTests
             typesCount = types.Count;
             foreach (var type in types)
             {
-                var minorTest = new MinorTest();
+                var subTest = new SubTest();
                     
-                minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
-                minorTest.Description = type.GetFields().Aggregate(type.Name + "</br>",
+                subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest.Description = type.GetFields().Aggregate(type.Name + "</br>",
                     (current, filed) => current + "</br>" + filed.Name + ": " + filed.GetValue(null));
                     
-                structureTest.MinorTests.Add(minorTest);
+                structureTest.SubTests.Add(subTest);
             }
         }
         catch (Exception ex)
@@ -681,7 +681,7 @@ public class StructureTests : IStructureTests
         {
             try
             {
-                var minorTest = new MinorTest();
+                var subTest = new SubTest();
                     
                 var seedTypeDefinitions = new List<Seed>();
                 var lampTypeDefinitions = new List<Lamp>();
@@ -731,23 +731,23 @@ public class StructureTests : IStructureTests
                 {
                     if (typeDefinitionsCount > 1)
                     {
-                        minorTest.Description = "Typ generowany jest przypisany do więcej niż jednej definicji. " + "Typ generowany - " + generatedType.Name + ". Id: " + generatedType.Id;
-                        minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                        subTest.Description = "Typ generowany jest przypisany do więcej niż jednej definicji. " + "Typ generowany - " + generatedType.Name + ". Id: " + generatedType.Id;
+                        subTest.Status = EnumUtils.StructureTestsStatuses.Error;
 
                     }
                     else
                     {
-                        minorTest.Description = "Typ generowany jest przypisany do jednej definicji. " + "Typ generowany - " + generatedType.Name + ". Id: " + generatedType.Id;
-                        minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                        subTest.Description = "Typ generowany jest przypisany do jednej definicji. " + "Typ generowany - " + generatedType.Name + ". Id: " + generatedType.Id;
+                        subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
                     }    
                 }
                 else
                 {
-                    minorTest.Description = "Typ generowany nie jest przypisany do żadnej definicji. " + "Typ generowany - " + generatedType.Name + ". Id: " + generatedType.Id;
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Warn;
+                    subTest.Description = "Typ generowany nie jest przypisany do żadnej definicji. " + "Typ generowany - " + generatedType.Name + ". Id: " + generatedType.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Warn;
                 }
                     
-                structureTest.MinorTests.Add(minorTest);
+                structureTest.SubTests.Add(subTest);
             }
             catch (Exception ex)
             {
@@ -773,29 +773,29 @@ public class StructureTests : IStructureTests
         {
             try
             {
-                var minorTest = new MinorTest();
+                var subTest = new SubTest();
                 var driedFruitsWithSameGeneratedType = DriedFruits.Where(item => item.GeneratedTypeId == seed.GeneratedTypeId && item.PlantationStorageId == null).ToList();
 
                 if (driedFruitsWithSameGeneratedType.Count > 0)
                 {
                     if (driedFruitsWithSameGeneratedType.Count > 1)
                     {
-                        minorTest.Description = "Nasiono ma więcej niż jeden susz o takim samym typie. " + "Nasiono - " + seed.Name + ". Id: " + seed.Id + ". Ilość suszu o takim samym typie: " + driedFruitsWithSameGeneratedType.Count;
-                        minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                        subTest.Description = "Nasiono ma więcej niż jeden susz o takim samym typie. " + "Nasiono - " + seed.Name + ". Id: " + seed.Id + ". Ilość suszu o takim samym typie: " + driedFruitsWithSameGeneratedType.Count;
+                        subTest.Status = EnumUtils.StructureTestsStatuses.Error;
                     }
                     else
                     {
-                        minorTest.Description = "Nasiono ma jeden susz o takim samym typie. " + "Nasiono - " + seed.Name + ". Id: " + seed.Id + ". Ilość suszu o takim samym typie: " + driedFruitsWithSameGeneratedType.Count;
-                        minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                        subTest.Description = "Nasiono ma jeden susz o takim samym typie. " + "Nasiono - " + seed.Name + ". Id: " + seed.Id + ". Ilość suszu o takim samym typie: " + driedFruitsWithSameGeneratedType.Count;
+                        subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
                     }
                 }
                 else
                 {
-                    minorTest.Description = "Nasiono nie ma żadnego suszu o takim samym typie. " + "Nasiono - " + seed.Name + ". Id: " + seed.Id + ". Ilość suszu o takim samym typie: " + driedFruitsWithSameGeneratedType.Count;
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest.Description = "Nasiono nie ma żadnego suszu o takim samym typie. " + "Nasiono - " + seed.Name + ". Id: " + seed.Id + ". Ilość suszu o takim samym typie: " + driedFruitsWithSameGeneratedType.Count;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
                 }
                     
-                structureTest.MinorTests.Add(minorTest);
+                structureTest.SubTests.Add(subTest);
             }
             catch (Exception ex)
             {
@@ -822,7 +822,7 @@ public class StructureTests : IStructureTests
             {
                 try
                 {
-                    var minorTest = new MinorTest();
+                    var subTest = new SubTest();
                     var userName = user.UserName;
                     var userDistricts = Districts.Where(item => item.UserId == user.Id).ToList();
                     var isAdmin = await _permissionChecker.IsGrantedAsync(user.ToUserIdentifier(), PermissionNames.Crud_Admin);
@@ -833,20 +833,20 @@ public class StructureTests : IStructureTests
                         if (userDistricts.Count > 1)
                         {
                             var userDistrictsMessage = userDistricts.Aggregate(" Dzielnice:", (current, district) => current + "</br>" + district.Name);
-                            minorTest.Description = "Użytkownik posiada więcej niż jedną dzielnicę. " + "Użytkownik - " + userName + userDistrictsMessage;
-                            minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                            subTest.Description = "Użytkownik posiada więcej niż jedną dzielnicę. " + "Użytkownik - " + userName + userDistrictsMessage;
+                            subTest.Status = EnumUtils.StructureTestsStatuses.Error;
                         }
                         else
                         {
                             if (isDistrictWarden)
                             {
-                                minorTest.Description = "Użytkownik posiada jedną dzielnicę. " + "Użytkownik - " + userName + ". Dzielnica - " + userDistricts[0].Name;
-                                minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                                subTest.Description = "Użytkownik posiada jedną dzielnicę. " + "Użytkownik - " + userName + ". Dzielnica - " + userDistricts[0].Name;
+                                subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
                             }
                             else
                             {
-                                minorTest.Description = "Użytkownik posiada jedną dzielnicę ale nie ma przypisanej roli opiekuna dzielnicy. " + "Użytkownik - " + userName + ". Dzielnica - " + userDistricts[0].Name;
-                                minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                                subTest.Description = "Użytkownik posiada jedną dzielnicę ale nie ma przypisanej roli opiekuna dzielnicy. " + "Użytkownik - " + userName + ". Dzielnica - " + userDistricts[0].Name;
+                                subTest.Status = EnumUtils.StructureTestsStatuses.Error;
                             }
                         }
                     }
@@ -854,22 +854,22 @@ public class StructureTests : IStructureTests
                     {
                         if (isAdmin)
                         {
-                            minorTest.Description = "Użytkownik nie posiada żadnej dzielnicy. " + "Użytkownik - " + userName + ". Jest administratorem";
-                            minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;    
+                            subTest.Description = "Użytkownik nie posiada żadnej dzielnicy. " + "Użytkownik - " + userName + ". Jest administratorem";
+                            subTest.Status = EnumUtils.StructureTestsStatuses.Ok;    
                         }
                         else if (isDistrictWarden)
                         {
-                            minorTest.Description = "Użytkownik nie posiada żadnej dzielnicy. " + "Użytkownik - " + userName + ". Jest opiekunem";
-                            minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                            subTest.Description = "Użytkownik nie posiada żadnej dzielnicy. " + "Użytkownik - " + userName + ". Jest opiekunem";
+                            subTest.Status = EnumUtils.StructureTestsStatuses.Error;
                         }
                         else
                         {
-                            minorTest.Description = "Użytkownik nie posiada żadnej dzielnicy. " + "Użytkownik - " + userName;
-                            minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;    
+                            subTest.Description = "Użytkownik nie posiada żadnej dzielnicy. " + "Użytkownik - " + userName;
+                            subTest.Status = EnumUtils.StructureTestsStatuses.Ok;    
                         }
                     }
 
-                    structureTest.MinorTests.Add(minorTest);
+                    structureTest.SubTests.Add(subTest);
                 }
                 catch (Exception ex)
                 {
@@ -878,7 +878,7 @@ public class StructureTests : IStructureTests
                 }
             }
 
-            var minorTest2 = new MinorTest();
+            var subTest2 = new SubTest();
             var districtsWithoutWarden = Districts.Where(item => item.UserId == 0).ToList();
 
             if (Districts.Count > 0)
@@ -886,22 +886,22 @@ public class StructureTests : IStructureTests
                 if (districtsWithoutWarden.Count > 0)
                 {
                     var districtsMessage = districtsWithoutWarden.Aggregate("Dzielnice:", (current, district) => current + "</br>" + district.Name);
-                    minorTest2.Description = "Nie wszystkie dzielnice mają opiekunów. " + districtsMessage;
-                    minorTest2.Status = EnumUtils.StructureTestsStatuses.Warn;
+                    subTest2.Description = "Nie wszystkie dzielnice mają opiekunów. " + districtsMessage;
+                    subTest2.Status = EnumUtils.StructureTestsStatuses.Warn;
                 }
                 else
                 {
-                    minorTest2.Description = "Wszystkie dzielnice mają opiekunów";
-                    minorTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest2.Description = "Wszystkie dzielnice mają opiekunów";
+                    subTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
                 }
             }
             else
             {
-                minorTest2.Description = "Brak dzielnic";
-                minorTest2.Status = EnumUtils.StructureTestsStatuses.Warn;
+                subTest2.Description = "Brak dzielnic";
+                subTest2.Status = EnumUtils.StructureTestsStatuses.Warn;
             }
 
-            structureTest.MinorTests.Add(minorTest2);
+            structureTest.SubTests.Add(subTest2);
             structureTest.AdditionalInfos = "Ilość wszystkich dzielnic: " + Districts.Count;
         }
         catch (Exception ex)
@@ -926,20 +926,20 @@ public class StructureTests : IStructureTests
         {
             try
             {
-                var minorTest = new MinorTest();
+                var subTest = new SubTest();
                 var generatedTypeDistrict = Districts.SingleOrDefault(item => item.Id == generatedType.DistrictId);
                 if (generatedTypeDistrict != null)
                 {
-                    minorTest.Description = "Dzielnica istnieje. " + "Typ generowany - " + generatedType.Name + ". Id: " + generatedType.Id + ". Dzielnica - " + generatedTypeDistrict.Name;
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest.Description = "Dzielnica istnieje. " + "Typ generowany - " + generatedType.Name + ". Id: " + generatedType.Id + ". Dzielnica - " + generatedTypeDistrict.Name;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
                 }
                 else
                 {
-                    minorTest.Description = "Dzielnica nie istnieje. " + "Typ generowany - " + generatedType.Name + ". Id: " + generatedType.Id;
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = "Dzielnica nie istnieje. " + "Typ generowany - " + generatedType.Name + ". Id: " + generatedType.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
                 }
                 
-                structureTest.MinorTests.Add(minorTest);
+                structureTest.SubTests.Add(subTest);
             }
             catch (Exception ex)
             {
@@ -993,13 +993,13 @@ public class StructureTests : IStructureTests
     }
 
     /// <summary>
-    /// Sprawdza, czy magazyny plantacji wszystkich użytkowników posiadają definicje produktów dla typów generowanych dzielnicy.
+    /// Sprawdza, czy magazyny plantacji wszystkich użytkowników posiadają rekordy produktów dla typów generowanych dzielnicy.
     /// </summary>
     /// <param name="model">Lista obiektów StructureTest, do której będą dodane wyniki testu.</param>
-    private void AllUsersPlantationStoragesHasProductsDefinitions(List<StructureTest> model)
+    private void AllUsersPlantationStoragesHasProductsRecords(List<StructureTest> model)
     {
         var structureTest = new StructureTest();
-        structureTest.TestName = "Czy magazyny plantacji wszystkich użytkowników posiadają definicje produktów dla typów generowanych dzielnicy";
+        structureTest.TestName = "Czy magazyny plantacji wszystkich użytkowników posiadają rekordy produktów dla typów generowanych dzielnicy";
             
         foreach (var playerStorage in PlayerStorages)
         {
@@ -1094,7 +1094,7 @@ public class StructureTests : IStructureTests
         {
             try
             {
-                var minorTest = new MinorTest();
+                var subTest = new SubTest();
                 var userName = user.UserName;
                 var playerStorages = PlayerStorages.Where(item => item.UserId == user.Id).ToList();
 
@@ -1103,22 +1103,22 @@ public class StructureTests : IStructureTests
                     if (playerStorages.Count > 1)
                     {
                         var storagesMessage = playerStorages.Aggregate(". Magazyny: ", (current, storage) => current + "</br>" + storage.Name);
-                        minorTest.Description = "Użytkownik ma więcej niż jeden magazyn gracza. " + "Użytkownik - " + userName + storagesMessage;
-                        minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                        subTest.Description = "Użytkownik ma więcej niż jeden magazyn gracza. " + "Użytkownik - " + userName + storagesMessage;
+                        subTest.Status = EnumUtils.StructureTestsStatuses.Error;
                     }
                     else
                     {
-                        minorTest.Description = "Użytkownik posiada jeden magazyn gracza. " + "Użytkownik - " + userName;
-                        minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                        subTest.Description = "Użytkownik posiada jeden magazyn gracza. " + "Użytkownik - " + userName;
+                        subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
                     }
                 }
                 else
                 {
-                    minorTest.Description = "Użytkownik nie posiada magazynu gracza. " + "Użytkownik - " + userName;
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Warn;
+                    subTest.Description = "Użytkownik nie posiada magazynu gracza. " + "Użytkownik - " + userName;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Warn;
                 }
 
-                structureTest.MinorTests.Add(minorTest);    
+                structureTest.SubTests.Add(subTest);    
             }
             catch (Exception ex)
             {
@@ -1144,7 +1144,7 @@ public class StructureTests : IStructureTests
         {
             try
             {
-                var minorTest = new MinorTest();
+                var subTest = new SubTest();
                 var userName = user.UserName;
                 var userPlantationStorages = PlantationStorages.Where(item => item.UserId == user.Id).ToList();
                 var withoutDuplicates = userPlantationStorages.GroupBy(item => item.DistrictId).Select(currGroup => currGroup.First()).ToList();
@@ -1154,14 +1154,14 @@ public class StructureTests : IStructureTests
                     var storagesMessage = userPlantationStorages.Aggregate(". Magazyny plantacji użytkownika: ", (current, storage) => current + "</br>" + storage.Name);
                     if (userPlantationStorages.Count == withoutDuplicates.Count)
                     {
-                        minorTest.Description = "Użytkownik nie posiada więcej niż jeden magazyn plantacji dla jednej dzielnicy. " + "Użytkownik - " + userName + storagesMessage;
-                        minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                        subTest.Description = "Użytkownik nie posiada więcej niż jeden magazyn plantacji dla jednej dzielnicy. " + "Użytkownik - " + userName + storagesMessage;
+                        subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
                     }
                     else
                     {
                         var redundantStoragesCount = userPlantationStorages.Count - withoutDuplicates.Count;
-                        minorTest.Description = "Użytkownik posiada więcej niż jeden magazyn plantacji dla jednej dzielnicy. " + "Użytkownik - " + userName + ". Ilość nadmiarowych magazynów plantacji: " + redundantStoragesCount + storagesMessage;
-                        minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                        subTest.Description = "Użytkownik posiada więcej niż jeden magazyn plantacji dla jednej dzielnicy. " + "Użytkownik - " + userName + ". Ilość nadmiarowych magazynów plantacji: " + redundantStoragesCount + storagesMessage;
+                        subTest.Status = EnumUtils.StructureTestsStatuses.Error;
                     }
                 }
                 else
@@ -1169,17 +1169,17 @@ public class StructureTests : IStructureTests
                     var isAdmin = await _permissionChecker.IsGrantedAsync(user.ToUserIdentifier(), PermissionNames.Crud_Admin);
                     if (isAdmin)
                     {
-                        minorTest.Description = "Użytkownik nie posiada żadnych magazynów plantacji. " + "Użytkownik - " + userName + ". Jest administratorem";
-                        minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                        subTest.Description = "Użytkownik nie posiada żadnych magazynów plantacji. " + "Użytkownik - " + userName + ". Jest administratorem";
+                        subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
                     }
                     else
                     {
-                        minorTest.Description = "Użytkownik nie posiada żadnych magazynów plantacji. " + "Użytkownik - " + userName;
-                        minorTest.Status = EnumUtils.StructureTestsStatuses.Warn;   
+                        subTest.Description = "Użytkownik nie posiada żadnych magazynów plantacji. " + "Użytkownik - " + userName;
+                        subTest.Status = EnumUtils.StructureTestsStatuses.Warn;   
                     }
                 }
                     
-                structureTest.MinorTests.Add(minorTest);    
+                structureTest.SubTests.Add(subTest);    
             }
             catch (Exception ex)
             {
@@ -1206,21 +1206,21 @@ public class StructureTests : IStructureTests
         {
             try
             {
-                var minorTest = new MinorTest();
+                var subTest = new SubTest();
                 var storageDistrict = Districts.SingleOrDefault(item => item.Id == storage.DistrictId);
                     
                 if (storageDistrict != null)
                 {
-                    minorTest.Description = "Dzielnica magazynu plantacji istnieje. " + "Magazyn plantacji - " + storage.Name;
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest.Description = "Dzielnica magazynu plantacji istnieje. " + "Magazyn plantacji - " + storage.Name;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
                 }
                 else
                 {
-                    minorTest.Description = "Dzielnica magazynu plantacji nie istnieje. " + "Magazyn plantacji - " + storage.Name;
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = "Dzielnica magazynu plantacji nie istnieje. " + "Magazyn plantacji - " + storage.Name;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
                 }
                     
-                structureTest.MinorTests.Add(minorTest);   
+                structureTest.SubTests.Add(subTest);   
             }
             catch (Exception ex)
             {
@@ -1285,37 +1285,37 @@ public class StructureTests : IStructureTests
         structureTest.TestName = "Czy produkty w użyciu są równe ilości roślin";
         try
         {
-            var minorTest1 = new MinorTest();
-            var minorTest2 = new MinorTest();
+            var subTest1 = new SubTest();
+            var subTest2 = new SubTest();
             
             var allUsedPots = Pots.Sum(usedPot => usedPot.InUseCount);
             var allUsedLamps = Lamps.Sum(usedLamp => usedLamp.InUseCount);
 
             if (allUsedPots == Plants.Count)
             {
-                minorTest1.Description = "Ilość doniczek w użyciu jest równa ilości roślin. " + " Ilość roślin: " + Plants.Count + ". Ilość doniczek w użyciu: " + allUsedPots;
-                minorTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest1.Description = "Ilość doniczek w użyciu jest równa ilości roślin. " + " Ilość roślin: " + Plants.Count + ". Ilość doniczek w użyciu: " + allUsedPots;
+                subTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
             }
             else
             {
-                minorTest1.Description = "Ilość doniczek w użyciu nie jest równa ilości roślin. " + " Ilość roślin: " + Plants.Count + ". Ilość doniczek w użyciu: " + allUsedPots;
-                minorTest1.Status = EnumUtils.StructureTestsStatuses.Error;
+                subTest1.Description = "Ilość doniczek w użyciu nie jest równa ilości roślin. " + " Ilość roślin: " + Plants.Count + ". Ilość doniczek w użyciu: " + allUsedPots;
+                subTest1.Status = EnumUtils.StructureTestsStatuses.Error;
             }
 
             if (allUsedLamps == Plants.Count)
             {
-                minorTest2.Description = "Ilość lamp w użyciu jest równa ilości roślin. " + " Ilość roślin: " + Plants.Count + ". Ilość lamp w użyciu: " + allUsedLamps;
-                minorTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest2.Description = "Ilość lamp w użyciu jest równa ilości roślin. " + " Ilość roślin: " + Plants.Count + ". Ilość lamp w użyciu: " + allUsedLamps;
+                subTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
             }
             else
             {
-                minorTest2.Description = "Ilość lamp w użyciu nie jest równa ilości roślin. " + " Ilość roślin: " + Plants.Count + ". Ilość lamp w użyciu: " + allUsedLamps;
-                minorTest2.Status = EnumUtils.StructureTestsStatuses.Error;
+                subTest2.Description = "Ilość lamp w użyciu nie jest równa ilości roślin. " + " Ilość roślin: " + Plants.Count + ". Ilość lamp w użyciu: " + allUsedLamps;
+                subTest2.Status = EnumUtils.StructureTestsStatuses.Error;
             }
 
             structureTest.AdditionalInfos = "";
-            structureTest.MinorTests.Add(minorTest1);
-            structureTest.MinorTests.Add(minorTest2);
+            structureTest.SubTests.Add(subTest1);
+            structureTest.SubTests.Add(subTest2);
         }
         catch (Exception ex)
         {
@@ -1339,8 +1339,8 @@ public class StructureTests : IStructureTests
         {
             try
             {
-                var minorTest1 = new MinorTest();
-                var minorTest2 = new MinorTest();
+                var subTest1 = new SubTest();
+                var subTest2 = new SubTest();
                     
                 var userPlants = new List<Plant>();
                 var userPots = new List<Pot>();
@@ -1363,32 +1363,32 @@ public class StructureTests : IStructureTests
 
                 if (userPlants.Count == potsInUseCount)
                 {
-                    minorTest1.Description = "Ilość roślin użytkownika jest równa ilości doniczek w użyciu. " + "Użytkownik - " + user.UserName + 
+                    subTest1.Description = "Ilość roślin użytkownika jest równa ilości doniczek w użyciu. " + "Użytkownik - " + user.UserName + 
                                              ". Ilość roślin: " + userPlants.Count + ". Ilość doniczek w użyciu: " + potsInUseCount;
-                    minorTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
                 }
                 else
                 {
-                    minorTest1.Description = "Ilość roślin użytkownika nie jest równa ilości doniczek w użyciu. " + "Użytkownik - " + user.UserName + 
+                    subTest1.Description = "Ilość roślin użytkownika nie jest równa ilości doniczek w użyciu. " + "Użytkownik - " + user.UserName + 
                                              ". Ilość roślin: " + userPlants.Count + ". Ilość doniczek w użyciu: " + potsInUseCount;
-                    minorTest1.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest1.Status = EnumUtils.StructureTestsStatuses.Error;
                 }
                     
                 if (userPlants.Count == lampsInUseCount)
                 {
-                    minorTest2.Description = "Ilość roślin użytkownika jest równa ilości lamp w użyciu. " + "Użytkownik - " + user.UserName + 
+                    subTest2.Description = "Ilość roślin użytkownika jest równa ilości lamp w użyciu. " + "Użytkownik - " + user.UserName + 
                                              ". Ilość roślin: " + userPlants.Count + ". Ilość lamp w użyciu: " + lampsInUseCount;
-                    minorTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
                 }
                 else
                 {
-                    minorTest2.Description = "Ilość roślin użytkownika nie jest równa ilości lamp w użyciu. " + "Użytkownik - " + user.UserName + 
+                    subTest2.Description = "Ilość roślin użytkownika nie jest równa ilości lamp w użyciu. " + "Użytkownik - " + user.UserName + 
                                              ". Ilość roślin: " + userPlants.Count + ". Ilość lamp w użyciu: " + lampsInUseCount;
-                    minorTest2.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest2.Status = EnumUtils.StructureTestsStatuses.Error;
                 }
 
-                structureTest.MinorTests.Add(minorTest1);
-                structureTest.MinorTests.Add(minorTest2);
+                structureTest.SubTests.Add(subTest1);
+                structureTest.SubTests.Add(subTest2);
             }
             catch (Exception ex)
             {
@@ -1424,7 +1424,7 @@ public class StructureTests : IStructureTests
                 
             foreach (var entity in allGeneratedEntities.Where(item => item.PlantationStorageId != null))
             {
-                var minorTest = new MinorTest();
+                var subTest = new SubTest();
 
                 var generatedType = GeneratedTypes.Single(item => item.Id == entity.GeneratedTypeId);
                 var district = Districts.Single(item => item.Id == generatedType.DistrictId);
@@ -1432,16 +1432,16 @@ public class StructureTests : IStructureTests
                     
                 if (plantationStorageExist != null)
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
-                    minorTest.Description = "Encja posiada magazyn plantacji. " + "Encja - " + entity.Name + ". Id: " + entity + ". Magazyn plantacji - " + plantationStorageExist.Name;    
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest.Description = "Encja posiada magazyn plantacji. " + "Encja - " + entity.Name + ". Id: " + entity + ". Magazyn plantacji - " + plantationStorageExist.Name;    
                 }
                 else
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest.Description = "Encja nie posiada magazynu plantacji. " + "Encja - " + entity.Name + ". Id: " + entity + ". Dzielnica - " + district.Name;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = "Encja nie posiada magazynu plantacji. " + "Encja - " + entity.Name + ". Id: " + entity + ". Dzielnica - " + district.Name;
                 }
                     
-                structureTest.MinorTests.Add(minorTest);
+                structureTest.SubTests.Add(subTest);
             }
 
             allTypesCount = allGeneratedEntities.Count;
@@ -1473,20 +1473,20 @@ public class StructureTests : IStructureTests
                 var requirementsProgress = JsonConvert.DeserializeObject<Dictionary<int, decimal>>(questProgress.RequirementsProgress);
                 foreach (var reqProgress in requirementsProgress)
                 {
-                    var minorTest = new MinorTest();
+                    var subTest = new SubTest();
                     var req = Requirements.FirstOrDefault(item => item.Id == reqProgress.Key);
                     if (req == null)
                     {
-                        minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                        minorTest.Description = "Wymaganie nie istnieje. Zadanie - " + quest.Name + ". Id wymagania: " + reqProgress.Key;
+                        subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                        subTest.Description = "Wymaganie nie istnieje. Zadanie - " + quest.Name + ". Id wymagania: " + reqProgress.Key;
                     }
                     else
                     {
-                        minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
-                        minorTest.Description = "Wymaganie istnieje. Zadanie - " + quest.Name + ". Wymaganie - " + req.Name + ". Id wymagania: " + reqProgress.Key;
+                        subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                        subTest.Description = "Wymaganie istnieje. Zadanie - " + quest.Name + ". Wymaganie - " + req.Name + ". Id wymagania: " + reqProgress.Key;
                     }
                     
-                    structureTest.MinorTests.Add(minorTest);
+                    structureTest.SubTests.Add(subTest);
                 }
             }
             catch (Exception ex)
@@ -1513,26 +1513,26 @@ public class StructureTests : IStructureTests
         {
             try
             {
-                var minorTest = new MinorTest();
+                var subTest = new SubTest();
                     
                 var questProgresses = QuestsRequirementsProgress.Where(item => item.QuestId == quest.Id).ToList();
                 if (questProgresses.Count == 0)
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest.Description = "Zadanie nie posiada progresu wymagań. Zadanie - " + quest.Name + ". Id: " + quest.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = "Zadanie nie posiada progresu wymagań. Zadanie - " + quest.Name + ". Id: " + quest.Id;
                 }
                 else if (questProgresses.Count == 1)
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
-                    minorTest.Description = "Zadanie posiada jeden progres wymagań. Zadanie - " + quest.Name + ". Id: " + quest.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest.Description = "Zadanie posiada jeden progres wymagań. Zadanie - " + quest.Name + ". Id: " + quest.Id;
                 }
                 else
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest.Description = "Zadanie posiada więcej niż jeden progres wymagań. Zadanie - " + quest.Name + ". Id: " + quest.Id + ". Ilość progresu wymagań: " + questProgresses.Count;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = "Zadanie posiada więcej niż jeden progres wymagań. Zadanie - " + quest.Name + ". Id: " + quest.Id + ". Ilość progresu wymagań: " + questProgresses.Count;
                 }
                     
-                structureTest.MinorTests.Add(minorTest);
+                structureTest.SubTests.Add(subTest);
             }
             catch (Exception ex)
             {
@@ -1558,21 +1558,21 @@ public class StructureTests : IStructureTests
         {
             try
             {
-                var minorTest = new MinorTest();
+                var subTest = new SubTest();
 
                 var quest = Quests.FirstOrDefault(item => item.Id == questProgress.QuestId);
                 if (quest == null)
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest.Description = "Zadanie nie istnieje. Id zadania: " + questProgress.QuestId + ". Id progresu: " + questProgress.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = "Zadanie nie istnieje. Id zadania: " + questProgress.QuestId + ". Id progresu: " + questProgress.Id;
                 }
                 else
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
-                    minorTest.Description = "Zadanie istnieje. Zadanie - " + quest.Name + ". Id zadania: " + questProgress.QuestId + ". Id progresu: " + questProgress.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest.Description = "Zadanie istnieje. Zadanie - " + quest.Name + ". Id zadania: " + questProgress.QuestId + ". Id progresu: " + questProgress.Id;
                 }
 
-                structureTest.MinorTests.Add(minorTest);
+                structureTest.SubTests.Add(subTest);
             }
             catch (Exception ex)
             {
@@ -1598,8 +1598,8 @@ public class StructureTests : IStructureTests
         {
             try
             {
-                var minorTest1 = new MinorTest();
-                var minorTest2 = new MinorTest();
+                var subTest1 = new SubTest();
+                var subTest2 = new SubTest();
                 var questProgress = QuestsRequirementsProgress.Single(item => item.QuestId == quest.Id);
                 var requirementsProgress = JsonConvert.DeserializeObject<Dictionary<int, decimal>>(questProgress.RequirementsProgress);
                 var questDefinition = Quests.Single(item => item.GeneratedTypeId == quest.GeneratedTypeId && item.PlantationStorageId == null);
@@ -1607,34 +1607,34 @@ public class StructureTests : IStructureTests
                     
                 if (requirementsProgress == null)
                 {
-                    minorTest1.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest1.Description = "Zadanie nie posiada ustawionego progresu wymagań. Zadanie - " + quest.Name + ". Id: " + quest.Id;
+                    subTest1.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest1.Description = "Zadanie nie posiada ustawionego progresu wymagań. Zadanie - " + quest.Name + ". Id: " + quest.Id;
                 }
                 else if (requirementsProgress.Keys.Count == 0)
                 {
-                    minorTest1.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest1.Description = "Zadanie nie posiada żadnego wymagania. Zadanie - " + quest.Name + ". Id: " + quest.Id;
+                    subTest1.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest1.Description = "Zadanie nie posiada żadnego wymagania. Zadanie - " + quest.Name + ". Id: " + quest.Id;
                 }
                 else
                 {
-                    minorTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
-                    minorTest1.Description = "Zadanie posiada wymagania. Zadanie - " + quest.Name + ". Id: " + quest.Id + ". Ilość wymagań: " + requirementsProgress.Keys.Count;
+                    subTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest1.Description = "Zadanie posiada wymagania. Zadanie - " + quest.Name + ". Id: " + quest.Id + ". Ilość wymagań: " + requirementsProgress.Keys.Count;
                 }
                     
                     
                 if (relationsToDrop.Count == 0)
                 {
-                    minorTest2.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest2.Description = "Zadanie nie posiada żadnej nagrody. Zadanie - " + quest.Name + ". Id: " + quest.Id;
+                    subTest2.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest2.Description = "Zadanie nie posiada żadnej nagrody. Zadanie - " + quest.Name + ". Id: " + quest.Id;
                 }
                 else
                 {
-                    minorTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
-                    minorTest2.Description = "Zadanie posiada nagrody. Zadanie - " + quest.Name + ". Id: " + quest.Id + ". Ilość nagród: " + relationsToDrop.Count;
+                    subTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest2.Description = "Zadanie posiada nagrody. Zadanie - " + quest.Name + ". Id: " + quest.Id + ". Ilość nagród: " + relationsToDrop.Count;
                 }
                     
-                structureTest.MinorTests.Add(minorTest1);
-                structureTest.MinorTests.Add(minorTest2);
+                structureTest.SubTests.Add(subTest1);
+                structureTest.SubTests.Add(subTest2);
             }
             catch (Exception ex)
             {
@@ -1661,35 +1661,35 @@ public class StructureTests : IStructureTests
         {
             try
             {
-                var minorTest1 = new MinorTest();
-                var minorTest2 = new MinorTest();
+                var subTest1 = new SubTest();
+                var subTest2 = new SubTest();
 
                 var drop = Drops.FirstOrDefault(item => item.Id == rel.DropId);
                 if (drop == null)
                 {
-                    minorTest1.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest1.Description = "Nagroda nie istnieje. Id relacji: " + rel.Id + ". Id nagrody: " + rel.DropId;
+                    subTest1.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest1.Description = "Nagroda nie istnieje. Id relacji: " + rel.Id + ". Id nagrody: " + rel.DropId;
                 }
                 else
                 {
-                    minorTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
-                    minorTest1.Description = "Nagroda istnieje. Nagroda - " + drop.Name + ". Id relacji: " + rel.Id + ". Id nagrody: " + rel.DropId;
+                    subTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest1.Description = "Nagroda istnieje. Nagroda - " + drop.Name + ". Id relacji: " + rel.Id + ". Id nagrody: " + rel.DropId;
                 }
                     
                 var quest = Quests.FirstOrDefault(item => item.Id == rel.QuestId);
                 if (quest == null)
                 {
-                    minorTest2.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest2.Description =  "Zadanie nie istnieje. Id relacji: " + rel.Id + ". Id nagrody: " + rel.DropId;
+                    subTest2.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest2.Description =  "Zadanie nie istnieje. Id relacji: " + rel.Id + ". Id nagrody: " + rel.DropId;
                 }
                 else
                 {
-                    minorTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
-                    minorTest2.Description = "Zadanie istnieje. Zadanie - " + quest.Name + ". Id: " + quest.Id + ". Id relacji: " + rel.Id + ". Id nagrody: " + rel.DropId;
+                    subTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest2.Description = "Zadanie istnieje. Zadanie - " + quest.Name + ". Id: " + quest.Id + ". Id relacji: " + rel.Id + ". Id nagrody: " + rel.DropId;
                 }
                  
-                structureTest.MinorTests.Add(minorTest1);
-                structureTest.MinorTests.Add(minorTest2);
+                structureTest.SubTests.Add(subTest1);
+                structureTest.SubTests.Add(subTest2);
             }
             catch (Exception ex)
             {
@@ -1712,18 +1712,18 @@ public class StructureTests : IStructureTests
         var structureTest = new StructureTest();
         structureTest.TestName = "Czy ignorowane zmiany nie są zbyt duże i czy przypisane encje istnieją";
 
-        var minorTest = new MinorTest();
+        var subTest = new SubTest();
         if (IgnoreChanges.Count == 0)
         {
-            minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
-            minorTest.Description = "Brak zmian do zignorowania";
-            structureTest.MinorTests.Add(minorTest);
+            subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+            subTest.Description = "Brak zmian do zignorowania";
+            structureTest.SubTests.Add(subTest);
         }
         else if (IgnoreChanges.Count > 5000)
         {
-            minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-            minorTest.Description = "Za dużo zmian do zignorowania. Ilość: " + IgnoreChanges.Count;
-            structureTest.MinorTests.Add(minorTest);
+            subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+            subTest.Description = "Za dużo zmian do zignorowania. Ilość: " + IgnoreChanges.Count;
+            structureTest.SubTests.Add(subTest);
         }
         else
         {
@@ -1731,7 +1731,7 @@ public class StructureTests : IStructureTests
             {
                 try
                 {
-                    var minorTest1 = new MinorTest();
+                    var subTest1 = new SubTest();
 
                     Product obj;
                     switch (ignoreChange.EntityName)
@@ -1766,16 +1766,16 @@ public class StructureTests : IStructureTests
 
                     if (obj == null)
                     {
-                        minorTest1.Status = EnumUtils.StructureTestsStatuses.Error;
-                        minorTest1.Description = "Encja nie istnieje. Id encji: " + ignoreChange.EntityId + ". Nazwa encji - " + ignoreChange.EntityName + ". Id ignorowania: " + ignoreChange.Id;   
+                        subTest1.Status = EnumUtils.StructureTestsStatuses.Error;
+                        subTest1.Description = "Encja nie istnieje. Id encji: " + ignoreChange.EntityId + ". Nazwa encji - " + ignoreChange.EntityName + ". Id ignorowania: " + ignoreChange.Id;   
                     }
                     else
                     {
-                        minorTest1.Status = EnumUtils.StructureTestsStatuses.Warn;
-                        minorTest1.Description = "Encja istnieje. Id encji: " + ignoreChange.EntityId + ". Nazwa encji - " + ignoreChange.EntityName + ". Id ignorowania: " + ignoreChange.Id;
+                        subTest1.Status = EnumUtils.StructureTestsStatuses.Warn;
+                        subTest1.Description = "Encja istnieje. Id encji: " + ignoreChange.EntityId + ". Nazwa encji - " + ignoreChange.EntityName + ". Id ignorowania: " + ignoreChange.Id;
                     }
 
-                    structureTest.MinorTests.Add(minorTest1);
+                    structureTest.SubTests.Add(subTest1);
                 }
                 catch (Exception ex)
                 {
@@ -1800,23 +1800,23 @@ public class StructureTests : IStructureTests
 
         foreach (var district in Districts)
         {
-            var minorTest = new MinorTest();
+            var subTest = new SubTest();
 
             try
             {
                 var warden = Users.SingleOrDefault(item => item.Id == district.UserId);
                 if (warden == null)
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest.Description = "Opiekun dzielnicy nie istnieje. Dzielnica - " + district.Name + ". Id: " + district.Id + ". Id użytkownika: " + district.UserId;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = "Opiekun dzielnicy nie istnieje. Dzielnica - " + district.Name + ". Id: " + district.Id + ". Id użytkownika: " + district.UserId;
                 }
                 else
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
-                    minorTest.Description = "Opiekun dzielnicy istnieje. Dzielnica - " + district.Name + ". Id: " + district.Id + ". Użytkownik - " + warden.Name + ". Id użytkownika: " + district.UserId;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest.Description = "Opiekun dzielnicy istnieje. Dzielnica - " + district.Name + ". Id: " + district.Id + ". Użytkownik - " + warden.Name + ". Id użytkownika: " + district.UserId;
                 }
                 
-                structureTest.MinorTests.Add(minorTest);
+                structureTest.SubTests.Add(subTest);
             }
             catch (Exception ex)
             {
@@ -1842,11 +1842,11 @@ public class StructureTests : IStructureTests
         {
             try
             {
-                var minorTest1 = new MinorTest();
-                var minorTest2 = new MinorTest();
-                var minorTest3 = new MinorTest();
-                var minorTest4 = new MinorTest();
-                var minorTest5 = new MinorTest();
+                var subTest1 = new SubTest();
+                var subTest2 = new SubTest();
+                var subTest3 = new SubTest();
+                var subTest4 = new SubTest();
+                var subTest5 = new SubTest();
 
                 var transactionDistrict = Districts.FirstOrDefault(item => item.Id == transaction.DistrictId);
                 var transactionGeneratedType = GeneratedTypes.FirstOrDefault(item => item.Id == transaction.GeneratedTypeId);
@@ -1886,80 +1886,80 @@ public class StructureTests : IStructureTests
 
                 if (transactionDistrict == null)
                 {
-                    minorTest1.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest1.Description = "Dzielnica transakcji nie istnieje. Id transakcji: " + transaction.Id + ". Id dzielnicy: " + transaction.DistrictId;    
+                    subTest1.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest1.Description = "Dzielnica transakcji nie istnieje. Id transakcji: " + transaction.Id + ". Id dzielnicy: " + transaction.DistrictId;    
                 }
                 else
                 {
-                    minorTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
-                    minorTest1.Description = "Dzielnica transakcji istnieje. Id transakcji: " + transaction.Id + ". Id dzielnicy: " + transaction.DistrictId + ". Dzielnica - " + transactionDistrict.Name;
+                    subTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest1.Description = "Dzielnica transakcji istnieje. Id transakcji: " + transaction.Id + ". Id dzielnicy: " + transaction.DistrictId + ". Dzielnica - " + transactionDistrict.Name;
                 }
                     
                 if (transactionGeneratedType == null)
                 {
-                    minorTest2.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest2.Description = "Typ generowany transakcji nie istnieje. Id transakcji: " + transaction.Id + ". Id typu generowanego: " + transaction.GeneratedTypeId;    
+                    subTest2.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest2.Description = "Typ generowany transakcji nie istnieje. Id transakcji: " + transaction.Id + ". Id typu generowanego: " + transaction.GeneratedTypeId;    
                 }
                 else
                 {
-                    minorTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
-                    minorTest2.Description = "Typ generowany transakcji nie istnieje. Id transakcji: " + transaction.Id + ". Id typu generowanego: " + transaction.GeneratedTypeId + ". Typ generowany - " + transactionGeneratedType.Name;
+                    subTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest2.Description = "Typ generowany transakcji nie istnieje. Id transakcji: " + transaction.Id + ". Id typu generowanego: " + transaction.GeneratedTypeId + ". Typ generowany - " + transactionGeneratedType.Name;
                 }
                     
                 if (buyer == null)
                 {
                     if (transaction.BuyerId == null)
                     {
-                        minorTest3.Status = EnumUtils.StructureTestsStatuses.Ok;
-                        minorTest3.Description = "Kupujący transakcję nie ustawiony. Id transakcji: " + transaction.Id;
+                        subTest3.Status = EnumUtils.StructureTestsStatuses.Ok;
+                        subTest3.Description = "Kupujący transakcję nie ustawiony. Id transakcji: " + transaction.Id;
                     }
                     else
                     {
-                        minorTest3.Status = EnumUtils.StructureTestsStatuses.Error;
-                        minorTest3.Description = "Kupujący transakcję ustawiony i nie znaleziony. Id transakcji: " + transaction.Id + ". Id kupującego: " + transaction.BuyerId;
+                        subTest3.Status = EnumUtils.StructureTestsStatuses.Error;
+                        subTest3.Description = "Kupujący transakcję ustawiony i nie znaleziony. Id transakcji: " + transaction.Id + ". Id kupującego: " + transaction.BuyerId;
                     }
                 }
                 else
                 {
-                    minorTest3.Status = EnumUtils.StructureTestsStatuses.Ok;
-                    minorTest3.Description = "Kupujący transakcję ustawiony i znaleziony. Id transakcji: " + transaction.Id + ". Id kupującego: " + transaction.BuyerId + ". Kupujący - " + buyer.Name;
+                    subTest3.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest3.Description = "Kupujący transakcję ustawiony i znaleziony. Id transakcji: " + transaction.Id + ". Id kupującego: " + transaction.BuyerId + ". Kupujący - " + buyer.Name;
                 }
                     
                 if (seller == null)
                 {
                     if (transaction.SellerId == null)
                     {
-                        minorTest4.Status = EnumUtils.StructureTestsStatuses.Ok;
-                        minorTest4.Description = "Sprzedający transakcję nie ustawiony. Id transakcji: " + transaction.Id;
+                        subTest4.Status = EnumUtils.StructureTestsStatuses.Ok;
+                        subTest4.Description = "Sprzedający transakcję nie ustawiony. Id transakcji: " + transaction.Id;
                     }
                     else
                     {
-                        minorTest4.Status = EnumUtils.StructureTestsStatuses.Error;
-                        minorTest4.Description = "Sprzedający transakcję ustawiony i nie znaleziony. Id transakcji: " + transaction.Id + ". Id sprzedającego: " + transaction.SellerId;  
+                        subTest4.Status = EnumUtils.StructureTestsStatuses.Error;
+                        subTest4.Description = "Sprzedający transakcję ustawiony i nie znaleziony. Id transakcji: " + transaction.Id + ". Id sprzedającego: " + transaction.SellerId;  
                     }
                 }
                 else
                 {
-                    minorTest4.Status = EnumUtils.StructureTestsStatuses.Ok;
-                    minorTest4.Description = "Sprzedający transakcję ustawiony i znaleziony. Id transakcji: " + transaction.Id + ". Id sprzedającego: " + transaction.SellerId + ". Sprzedający - " + seller.Name;
+                    subTest4.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest4.Description = "Sprzedający transakcję ustawiony i znaleziony. Id transakcji: " + transaction.Id + ". Id sprzedającego: " + transaction.SellerId + ". Sprzedający - " + seller.Name;
                 }
 
                 if (obj == null)
                 {
-                    minorTest5.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest5.Description = "Przedmiot transakcji nie istnieje. Id transakcji: " + transaction.Id + ". Id przedmiotu: " + transaction.ItemId + ". Encja przedmiotu - " + transaction.ItemEntityName + ". Nazwa przedmiotu - " + transaction.ItemName;
+                    subTest5.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest5.Description = "Przedmiot transakcji nie istnieje. Id transakcji: " + transaction.Id + ". Id przedmiotu: " + transaction.ItemId + ". Encja przedmiotu - " + transaction.ItemEntityName + ". Nazwa przedmiotu - " + transaction.ItemName;
                 }
                 else
                 {
-                    minorTest5.Status = EnumUtils.StructureTestsStatuses.Ok;
-                    minorTest5.Description = "Przedmiot transakcji istnieje. Id transakcji: " + transaction.Id + ". Id przedmiotu: " + transaction.ItemId + ". Encja przedmiotu - " + transaction.ItemEntityName + ". Nazwa przedmiotu - " + transaction.ItemName;
+                    subTest5.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest5.Description = "Przedmiot transakcji istnieje. Id transakcji: " + transaction.Id + ". Id przedmiotu: " + transaction.ItemId + ". Encja przedmiotu - " + transaction.ItemEntityName + ". Nazwa przedmiotu - " + transaction.ItemName;
                 }
                     
-                structureTest.MinorTests.Add(minorTest1);
-                structureTest.MinorTests.Add(minorTest2);
-                structureTest.MinorTests.Add(minorTest3);
-                structureTest.MinorTests.Add(minorTest4);
-                structureTest.MinorTests.Add(minorTest5);
+                structureTest.SubTests.Add(subTest1);
+                structureTest.SubTests.Add(subTest2);
+                structureTest.SubTests.Add(subTest3);
+                structureTest.SubTests.Add(subTest4);
+                structureTest.SubTests.Add(subTest5);
             }
             catch (Exception ex)
             {
@@ -1985,36 +1985,36 @@ public class StructureTests : IStructureTests
         {
             try
             {
-                var minorTest1 = new MinorTest();
-                var minorTest2 = new MinorTest();
+                var subTest1 = new SubTest();
+                var subTest2 = new SubTest();
 
                 var district = Districts.FirstOrDefault(item => item.Id == don.DistrictId);
                 var donStorage = PlantationStorages.FirstOrDefault(item => item.Id == don.PlantationStorageId);
 
                 if (district == null)
                 {
-                    minorTest1.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest1.Description = "Dzielnica don'a nie istnieje. Id dzielnicy: " + don.DistrictId + ". Id magazynu plantacji: " + don.PlantationStorageId;
+                    subTest1.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest1.Description = "Dzielnica don'a nie istnieje. Id dzielnicy: " + don.DistrictId + ". Id magazynu plantacji: " + don.PlantationStorageId;
                 }
                 else
                 {
-                    minorTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
-                    minorTest1.Description = "Dzielnica don'a istnieje. Dzielnica - " + district.Name + ". Id dzielnicy: " + don.DistrictId + ". Id magazynu plantacji: " + don.PlantationStorageId;
+                    subTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest1.Description = "Dzielnica don'a istnieje. Dzielnica - " + district.Name + ". Id dzielnicy: " + don.DistrictId + ". Id magazynu plantacji: " + don.PlantationStorageId;
                 }
 
                 if (donStorage == null)
                 {
-                    minorTest2.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest2.Description = "Magazyn plantacji don'a nie istnieje. Id dzielnicy: " + don.DistrictId + ". Id magazynu plantacji: " + don.PlantationStorageId;
+                    subTest2.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest2.Description = "Magazyn plantacji don'a nie istnieje. Id dzielnicy: " + don.DistrictId + ". Id magazynu plantacji: " + don.PlantationStorageId;
                 }
                 else
                 {
-                    minorTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
-                    minorTest2.Description = "Magazyn plantacji don'a istnieje. Magazyn plantacji - " + donStorage.Name + ". Id dzielnicy: " + don.DistrictId + ". Id magazynu plantacji: " + don.PlantationStorageId;
+                    subTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest2.Description = "Magazyn plantacji don'a istnieje. Magazyn plantacji - " + donStorage.Name + ". Id dzielnicy: " + don.DistrictId + ". Id magazynu plantacji: " + don.PlantationStorageId;
                 }
                 
-                structureTest.MinorTests.Add(minorTest1);
-                structureTest.MinorTests.Add(minorTest2);
+                structureTest.SubTests.Add(subTest1);
+                structureTest.SubTests.Add(subTest2);
             }
             catch (Exception ex)
             {
@@ -2040,13 +2040,13 @@ public class StructureTests : IStructureTests
         {
             try
             {
-                var minorTest = new MinorTest();
+                var subTest = new SubTest();
                     
                 var districtPlantationStorages = PlantationStorages.Where(item => item.DistrictId == district.Id).ToList();
                 if (!districtPlantationStorages.Any())
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Warn;
-                    minorTest.Description = "Brak magazynów plantacji";
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Warn;
+                    subTest.Description = "Brak magazynów plantacji";
                 }
                 else
                 {
@@ -2058,13 +2058,13 @@ public class StructureTests : IStructureTests
                     if (districtDons.Count > 1)
                     {
                         var donsMessage = districtDons.Aggregate("</br>Id magazynów plantacji nadmiarowych don'ów: ", (current, obj) => current + "</br>" + obj.PlantationStorageId);
-                        minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                        minorTest.Description = "Dzielnica posiada więcej niż jednego don'a. Dzielnica - " + district.Name + ". Wymagany prestiż do zostania donem: " + district.PrestigeToBecomeDon + ". Id dzielnicy: " + district.Id + donsMessage;
+                        subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                        subTest.Description = "Dzielnica posiada więcej niż jednego don'a. Dzielnica - " + district.Name + ". Wymagany prestiż do zostania donem: " + district.PrestigeToBecomeDon + ". Id dzielnicy: " + district.Id + donsMessage;
                     }
                     else if (districtDon == null && districtDonByDistrict != null)
                     {
-                        minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                        minorTest.Description = "Gracz dzielnicy który ma najwiecej prestiżu nie jest don'em. Dzielnica - " + district.Name + ". Wymagany prestiż do zostania donem: " + district.PrestigeToBecomeDon + ". Id dzielnicy: " + district.Id + ". Id najlepszej plantacji: " + bestPlantationStorage.Id + ". Najlepsza plantacja - " + bestPlantationStorage.Name + ". Id plantacji ustawionej jako najlepsza: " + districtDonByDistrict.PlantationStorageId;
+                        subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                        subTest.Description = "Gracz dzielnicy który ma najwiecej prestiżu nie jest don'em. Dzielnica - " + district.Name + ". Wymagany prestiż do zostania donem: " + district.PrestigeToBecomeDon + ". Id dzielnicy: " + district.Id + ". Id najlepszej plantacji: " + bestPlantationStorage.Id + ". Najlepsza plantacja - " + bestPlantationStorage.Name + ". Id plantacji ustawionej jako najlepsza: " + districtDonByDistrict.PlantationStorageId;
                     }
                     else
                     {
@@ -2072,32 +2072,32 @@ public class StructureTests : IStructureTests
                         {
                             if (districtDon == null)
                             {
-                                minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
-                                minorTest.Description = "Dzielnica nie posiada don'a. Dzielnica - " + district.Name + ". Wymagany prestiż do zostania donem: " + district.PrestigeToBecomeDon + ". Id dzielnicy: " + district.Id + ". Najlepsza plantacja - " + bestPlantationStorage.Name + ". Id najlepszej plantacji: " + bestPlantationStorage.Id + ". Prestiż najlepszej plantacji: " + bestPlantationStorage.Prestige;
+                                subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                                subTest.Description = "Dzielnica nie posiada don'a. Dzielnica - " + district.Name + ". Wymagany prestiż do zostania donem: " + district.PrestigeToBecomeDon + ". Id dzielnicy: " + district.Id + ". Najlepsza plantacja - " + bestPlantationStorage.Name + ". Id najlepszej plantacji: " + bestPlantationStorage.Id + ". Prestiż najlepszej plantacji: " + bestPlantationStorage.Prestige;
                             }
                             else
                             {
-                                minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                                minorTest.Description = "Dzielnica posiada don'a. Dzielnica - " + district.Name + ". Wymagany prestiż do zostania donem: " + district.PrestigeToBecomeDon + ". Id dzielnicy: " + district.Id + ". Najlepsza plantacja - " + bestPlantationStorage.Name + ". Id najlepszej plantacji: " + bestPlantationStorage.Id + ". Prestiż najlepszej plantacji: " + bestPlantationStorage.Prestige;
+                                subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                                subTest.Description = "Dzielnica posiada don'a. Dzielnica - " + district.Name + ". Wymagany prestiż do zostania donem: " + district.PrestigeToBecomeDon + ". Id dzielnicy: " + district.Id + ". Najlepsza plantacja - " + bestPlantationStorage.Name + ". Id najlepszej plantacji: " + bestPlantationStorage.Id + ". Prestiż najlepszej plantacji: " + bestPlantationStorage.Prestige;
                             }
                         }
                         else
                         {
                             if (districtDon == null)
                             {
-                                minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                                minorTest.Description = "Dzielnica nie posiada don'a. Dzielnica - " + district.Name + ". Wymagany prestiż do zostania donem: " + district.PrestigeToBecomeDon + ". Id dzielnicy: " + district.Id + ". Najlepsza plantacja - " + bestPlantationStorage.Name + ". Id najlepszej plantacji: " + bestPlantationStorage.Id + ". Prestiż najlepszej plantacji: " + bestPlantationStorage.Prestige;
+                                subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                                subTest.Description = "Dzielnica nie posiada don'a. Dzielnica - " + district.Name + ". Wymagany prestiż do zostania donem: " + district.PrestigeToBecomeDon + ". Id dzielnicy: " + district.Id + ". Najlepsza plantacja - " + bestPlantationStorage.Name + ". Id najlepszej plantacji: " + bestPlantationStorage.Id + ". Prestiż najlepszej plantacji: " + bestPlantationStorage.Prestige;
                             }
                             else
                             {
-                                minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
-                                minorTest.Description = "Dzielnica posiada don'a. Dzielnica - " + district.Name + ". Wymagany prestiż do zostania donem: " + district.PrestigeToBecomeDon + ". Id dzielnicy: " + district.Id + ". Najlepsza plantacja - " + bestPlantationStorage.Name + ". Id najlepszej plantacji: " + bestPlantationStorage.Id + ". Prestiż najlepszej plantacji: " + bestPlantationStorage.Prestige;                        
+                                subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                                subTest.Description = "Dzielnica posiada don'a. Dzielnica - " + district.Name + ". Wymagany prestiż do zostania donem: " + district.PrestigeToBecomeDon + ". Id dzielnicy: " + district.Id + ". Najlepsza plantacja - " + bestPlantationStorage.Name + ". Id najlepszej plantacji: " + bestPlantationStorage.Id + ". Prestiż najlepszej plantacji: " + bestPlantationStorage.Prestige;                        
                             }
                         }
                     }
                 }
 
-                structureTest.MinorTests.Add(minorTest);
+                structureTest.SubTests.Add(subTest);
             }
             catch (Exception ex)
             {
@@ -2123,7 +2123,7 @@ public class StructureTests : IStructureTests
         {
             try
             {
-                var minorTest = new MinorTest();
+                var subTest = new SubTest();
 
                 var assigns = QuestsRequirementsProgress.Where(item =>
                     JsonConvert.DeserializeObject<Dictionary<int, decimal>>(item.RequirementsProgress)
@@ -2131,8 +2131,8 @@ public class StructureTests : IStructureTests
                 
                 if (assigns.Count > 0)
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
-                    minorTest.Description = "Wymaganie posiada przypisania. Wymaganie - " + req.Name +
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest.Description = "Wymaganie posiada przypisania. Wymaganie - " + req.Name +
                                             ". Id wymagania: " + req.Id +
                                             ". Ilość przypisanych zadań: " +
                                             assigns.Count + ". Id przypisanych zadań: " +
@@ -2140,11 +2140,11 @@ public class StructureTests : IStructureTests
                 }
                 else
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Warn;
-                    minorTest.Description = "Wymaganie nie posiada przypisania. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Warn;
+                    subTest.Description = "Wymaganie nie posiada przypisania. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id;
                 }
 
-                structureTest.MinorTests.Add(minorTest);
+                structureTest.SubTests.Add(subTest);
             }
             catch (Exception ex)
             {
@@ -2157,13 +2157,13 @@ public class StructureTests : IStructureTests
         {
             try
             {
-                var minorTest = new MinorTest();
+                var subTest = new SubTest();
 
                 var assigns = DropsQuests.Where(item => item.DropId == drop.Id).ToList();
                 if (assigns.Count > 0)
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
-                    minorTest.Description = "Nagroda posiada przypisania. Nagroda - " + drop.Name + 
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                    subTest.Description = "Nagroda posiada przypisania. Nagroda - " + drop.Name + 
                                             ". Id nagrody: " + drop.Id +
                                             ". Ilość przypisanych zadań: " +
                                             assigns.Count + ". Id przypisanych zadań: " +
@@ -2171,11 +2171,11 @@ public class StructureTests : IStructureTests
                 }
                 else
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Warn;
-                    minorTest.Description = "Nagroda nie posiada przypisania. Nagroda - " + drop.Name + ". Id nagrody: " + drop.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Warn;
+                    subTest.Description = "Nagroda nie posiada przypisania. Nagroda - " + drop.Name + ". Id nagrody: " + drop.Id;
                 }
 
-                structureTest.MinorTests.Add(minorTest);
+                structureTest.SubTests.Add(subTest);
             }
             catch (Exception ex)
             {

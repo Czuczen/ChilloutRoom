@@ -83,7 +83,7 @@ public class CustomersHub : Hub, ITransientDependency
     /// Metoda pozwalająca na sprzedaż suszu dla danego użytkownika na podstawie id typu suszu i ilości.
     /// Sprzedaż suszu klientowi przez użytkownika. 
     /// </summary>
-    /// <param name="typeId">Id typu suszu.</param>
+    /// <param name="typeId">Id typu generowanego suszu.</param>
     /// <param name="amount">Ilość sprzedawanego suszu.</param>
     /// <param name="offerId">Id oferty kupna.</param>
     /// <returns>Obiekt zawierający informacje o sprzedaży.</returns>
@@ -96,8 +96,8 @@ public class CustomersHub : Hub, ITransientDependency
             var userId = AbpSession.GetUserId();
             var playerPlantationStorage = await _plantationStorageService.GetPlayerPlantationStorageForLastSelectedDistrictAsync(userId);
             var district = await _districtRepository.GetAsync(playerPlantationStorage.DistrictId);
-            var generatedType = await _generatedTypeRepository.GetAsync(typeId);
-            var currPlayerDriedFruit = await _driedFruitRepository.SingleAsync(item => item.PlantationStorageId == playerPlantationStorage.Id && item.GeneratedTypeId == generatedType.Id);
+            var currPlayerDriedFruit = await _driedFruitRepository.SingleAsync(item =>
+                item.PlantationStorageId == playerPlantationStorage.Id && item.GeneratedTypeId == typeId);
             
             if (currPlayerDriedFruit.OwnedAmount >= amount)
             {
@@ -106,17 +106,10 @@ public class CustomersHub : Hub, ITransientDependency
                 playerPlantationStorage.Gold += decimal.Parse(earnedCash.ToString("0.##"));
 
                 TokensOperator.DealerTokenProfit(district, playerPlantationStorage, amount);
-                var driedFruitAmount = currPlayerDriedFruit.OwnedAmount;
-                var driedFruitId = currPlayerDriedFruit.Id;
-                var plantationGold = playerPlantationStorage.Gold;
                 var sellMessage = "Sprzedano " + amount + "g " + currPlayerDriedFruit.Name;
 
-                ret = new CustomersSellData
-                {
-                    SellMessage = sellMessage, DriedFruitAmount = driedFruitAmount,
-                    PlantationGold = plantationGold, DriedFruitId = driedFruitId, Status = "Success"
-                };
-                    
+                ret = new CustomersSellData {SellMessage = sellMessage, Status = "Success"};
+                
                 Clients.All.removeOffer(offerId);
             }
             else

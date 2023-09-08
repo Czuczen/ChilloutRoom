@@ -3,6 +3,7 @@ using Abp.IdentityFramework;
 using Abp.UI;
 using Abp.Web.Mvc.Controllers;
 using CzuczenLand.Authorization;
+using CzuczenLand.ExtendingFunctionalities.Consts;
 using CzuczenLand.Web.Helpers;
 using Microsoft.AspNet.Identity;
 
@@ -37,6 +38,7 @@ public abstract class CzuczenLandControllerBase : AbpController
     protected CzuczenLandControllerBase()
     {
         LocalizationSourceName = CzuczenLandConsts.LocalizationSourceName;
+        ViewBag.SiteEmail = OtherConsts.ChillOutRoomEmail;
     }
 
     protected override void OnAuthentication(AuthenticationContext filterContext)

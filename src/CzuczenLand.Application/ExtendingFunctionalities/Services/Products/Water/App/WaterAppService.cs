@@ -1,10 +1,10 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
-using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.CreatePlayerDefinition;
-using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.DeletePlayerDefinition;
-using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.UpdatePlayerDefinition;
-using CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.ProductAsyncCrud;
+using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.PlayerRecords.CreateRecord;
+using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.PlayerRecords.DeleteRecord;
+using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.PlayerRecords.UpdateRecord;
+using CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.App;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder;
 using CzuczenLand.ExtendingFunctionalities.Services.Products.Water.Dto;
 using CzuczenLand.ExtendingModels.Models.General;
@@ -25,18 +25,18 @@ public class WaterAppService :
     /// <param name="repository">Repozytorium encji "Water".</param>
     /// <param name="responseBuilder">Klasa budująca odpowiedzi dla encji "Water".</param>
     /// <param name="generatedTypeRepository">Repozytorium dla typu generowanego.</param>
-    /// <param name="definitionCreator">Klasa odpowiadająca za tworzenie encji "Water" dla użytkowników na podstawie stworzonej definicji.</param>
-    /// <param name="definitionUpdater">Klasa odpowiadająca za aktualizację encji "Water" u użytkowników na podstawie aktualizowanej definicji.</param>
-    /// <param name="definitionDeleter">Klasa odpowiadająca za usuwanie encji "Water" u użytkowników na podstawie usuniętej definicji.</param>
+    /// <param name="playerRecordCreator">Klasa odpowiadająca za tworzenie encji "Water" dla użytkowników na podstawie stworzonej definicji.</param>
+    /// <param name="playerRecordUpdater">Klasa odpowiadająca za aktualizację encji "Water" u użytkowników na podstawie aktualizowanej definicji.</param>
+    /// <param name="playerRecordDeleter">Klasa odpowiadająca za usuwanie encji "Water" u użytkowników na podstawie usuniętej definicji.</param>
     public WaterAppService(
         IRepository<ExtendingModels.Models.Products.Water, int> repository,
         IResponseBuilder<WaterDto> responseBuilder,
         IRepository<GeneratedType> generatedTypeRepository,
-        ICreateDefinition<WaterCreateDto> definitionCreator,
-        IUpdateDefinition<WaterUpdateDto> definitionUpdater,
-        IDeleteDefinition<ExtendingModels.Models.Products.Water> definitionDeleter
+        ICreatePlayerRecord<WaterCreateDto> playerRecordCreator,
+        IUpdatePlayerRecord<WaterUpdateDto> playerRecordUpdater,
+        IDeletePlayerRecord<ExtendingModels.Models.Products.Water> playerRecordDeleter
     )
-        : base(repository, responseBuilder, generatedTypeRepository, definitionCreator, definitionUpdater, definitionDeleter)
+        : base(repository, responseBuilder, generatedTypeRepository, playerRecordCreator, playerRecordUpdater, playerRecordDeleter)
     {
     }
 }

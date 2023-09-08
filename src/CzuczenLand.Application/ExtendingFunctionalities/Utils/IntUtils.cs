@@ -17,11 +17,11 @@ public static class IntUtils
     /// <summary>
     /// Metoda generuje losową liczbę całkowitą z przedziału od 0 do podanej wartości.
     /// </summary>
-    /// <param name="length">Maksymalna wartość losowanej liczby całkowitej.</param>
+    /// <param name="range">Maksymalna wartość losowanej liczby całkowitej.</param>
     /// <returns>Wygenerowana losowa liczba całkowita.</returns>
-    public static int RandomInt(int length)
+    public static int RandomInt(int range)
     {
-        var currInt = Random.Next(length);
+        var currInt = Random.Next(range);
 
         return currInt;
     }

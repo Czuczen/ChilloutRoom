@@ -5,7 +5,7 @@ using Abp.Domain.Repositories;
 using CzuczenLand.ExtendingFunctionalities.Consts;
 using CzuczenLand.ExtendingFunctionalities.Consts.Requirement.Comparers;
 using CzuczenLand.ExtendingFunctionalities.Consts.Requirement.Conditions;
-using CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.DistrictEntityAsyncCrud;
+using CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.App;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder.Dto;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Dto;

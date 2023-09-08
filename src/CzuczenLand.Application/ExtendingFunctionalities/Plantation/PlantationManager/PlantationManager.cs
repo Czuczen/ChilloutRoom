@@ -322,7 +322,7 @@ public class PlantationManager : IPlantationManager
         ret.FilteredQuests = filteredQuestsAndQuestCreation.Quests;
         ret.QuestInfoCreation = filteredQuestsAndQuestCreation.QuestInfoCreation;
         ret.Plants = await _plantRepository.GetAllListAsync(currPlant => currPlant.PlantationStorageId == ret.PlantationStorage.Id);
-        ret.DonData = await SetDonData(ret);
+        ret.DonData = await GetDonData(ret);
         ret.WardensNames = await GetWardensNames(ret);
         
         await SetUserProducts(ret);
@@ -367,7 +367,7 @@ public class PlantationManager : IPlantationManager
     /// </summary>
     /// <param name="plantation">Informacje o plantacji.</param>
     /// <returns>Dane dotyczące dona dzielnicy.</returns>
-    private async Task<DonData> SetDonData(Plantation plantation)
+    private async Task<DonData> GetDonData(Plantation plantation)
     {
         var districtDon = await _districtDonRepository.FirstOrDefaultAsync(item => item.DistrictId == plantation.District.Id);
         if (districtDon == null) 
@@ -831,21 +831,17 @@ public class PlantationManager : IPlantationManager
                     if (generatedType.EntityName != EntitiesDbNames.Quest) // drop dla typu suszu, rosliny i nasiona to zawsze typ nasiona. Czyli roślina ani susz nie mogą być dropem
                     {
                         if (drop.ItemAmount == null) continue;
-                        
+
                         var repo = CustomRepositoryFactory.GetRepository(generatedType.EntityName);
-                        var connectedRecord =
-                            (await repo.GetWhereAsync(RelationFieldsNames.PlantationStorageId,
-                                completeQuest.PlantationStorage.Id)).Cast<IPlantationGeneratedEntity>()
-                            .SingleOrDefault(item => item.GeneratedTypeId == generatedType.Id);
-                            
-                        var ownedAmountProp = connectedRecord?.GetType().GetProperty(DbComparers.OwnedAmount);
-                        ownedAmountProp?.SetValue(connectedRecord, drop.ItemAmount + (decimal?) ownedAmountProp.GetValue(connectedRecord));
-                        
+                        var connectedRecord = (await repo.GetWhereAsync(RelationFieldsNames.PlantationStorageId,
+                                completeQuest.PlantationStorage.Id)).Cast<Product>()
+                            .Single(item => item.GeneratedTypeId == generatedType.Id);
+
+                        connectedRecord.OwnedAmount += (decimal) drop.ItemAmount;
                         await _ignoreChangeService.Add(connectedRecord);
+                        
                         completeQuest.DropsNotification.Add("Otrzymano " + drop.ItemAmount +
-                                                            PlantationManagerHelper.GetMeasureUnitByEntityName(
-                                                                generatedType.EntityName) + " " +
-                                                            connectedRecord?.Name);
+                            PlantationManagerHelper.GetMeasureUnitByEntityName(generatedType.EntityName) + " " + connectedRecord?.Name);
                     }
                     else
                     {
@@ -994,9 +990,9 @@ public class PlantationManager : IPlantationManager
             _generatedTypeRepository.GetAll().Where(item => item.DistrictId == plantation.District.Id),
             quest => quest.GeneratedTypeId,
             generatedType => generatedType.Id,
-            (quest, generatedType) => quest).Where(item => item.PlayerStorageId == null);
+            (quest, generatedType) => quest).Where(item => item.PlantationStorageId == null);
 
-        var definitionQuestProgress = await _questRequirementsProgressRepository.GetAll().Join(districtQuestDefinitionsQuery,
+        var definitionsQuestProgress = await _questRequirementsProgressRepository.GetAll().Join(districtQuestDefinitionsQuery,
             progress => progress.QuestId,
             quest => quest.Id,
             (progress, quest) => progress).ToListAsync();
@@ -1012,7 +1008,7 @@ public class PlantationManager : IPlantationManager
             (drop, dropQuest) => new {drop, dropQuest}).ToListAsync();
 
         var questsProgress = new List<QuestRequirementsProgress>();
-        questsProgress.AddRange(definitionQuestProgress);
+        questsProgress.AddRange(definitionsQuestProgress);
         questsProgress.AddRange(questAndQuestProgress.Select(item => item.progress));
 
         var drop = dropAndDropQuests.Select(item => item.drop).First();

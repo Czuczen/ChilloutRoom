@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
-using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.CreatePlayerDefinition;
-using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.DeletePlayerDefinition;
-using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.Definitions.UpdatePlayerDefinition;
+using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.PlayerRecords.CreateRecord;
+using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.PlayerRecords.DeleteRecord;
+using CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.PlayerRecords.UpdateRecord;
 using CzuczenLand.ExtendingFunctionalities.Consts;
 using CzuczenLand.ExtendingFunctionalities.Consts.Entities.SharedEntitiesFieldsNames.Db;
-using CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.GeneratedEntityAsyncCrud;
+using CzuczenLand.ExtendingFunctionalities.Services.Crud.AsyncCrud.App;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Builder.Dto;
 using CzuczenLand.ExtendingFunctionalities.Services.Crud.Dto;
@@ -37,22 +37,22 @@ public class QuestAppService :
     /// Konstruktor, który ustawia wstrzykiwane zależności.
     /// </summary>
     /// <param name="repository">Repozytorium zadań.</param>
-    /// <param name="questService">Serwis podstawowy dla zadań.</param>
-    /// <param name="generatedTypeRepository">Repozytorium typu generowanego.</param>
     /// <param name="responseBuilder">Budowniczy odpowiedzi dla zadań.</param>
-    /// <param name="definitionCreator">Klasa odpowiadająca za tworzenie encji "Quest" dla użytkowników na podstawie stworzonej definicji.</param>
-    /// <param name="definitionUpdater">Klasa odpowiadająca za aktualizację encji "Quest" u użytkowników na podstawie aktualizowanej definicji.</param>
-    /// <param name="definitionDeleter">Klasa odpowiadająca za usuwanie encji "Quest" u użytkowników na podstawie usuniętej definicji.</param>
+    /// <param name="generatedTypeRepository">Repozytorium typu generowanego.</param>
+    /// <param name="playerRecordCreator">Klasa odpowiadająca za tworzenie encji "Quest" dla użytkowników na podstawie stworzonej definicji.</param>
+    /// <param name="playerRecordUpdater">Klasa odpowiadająca za aktualizację encji "Quest" u użytkowników na podstawie aktualizowanej definicji.</param>
+    /// <param name="playerRecordDeleter">Klasa odpowiadająca za usuwanie encji "Quest" u użytkowników na podstawie usuniętej definicji.</param>
+    /// <param name="questService">Serwis podstawowy dla zadań.</param>
     public QuestAppService(
         IRepository<ExtendingModels.Models.General.Quest, int> repository,
-        IQuestService questService,
-        IRepository<ExtendingModels.Models.General.GeneratedType> generatedTypeRepository,
         IResponseBuilder<QuestDto> responseBuilder,
-        ICreateDefinition<QuestCreateDto> definitionCreator,
-        IUpdateDefinition<QuestUpdateDto> definitionUpdater,
-        IDeleteDefinition<ExtendingModels.Models.General.Quest> definitionDeleter
+        IRepository<ExtendingModels.Models.General.GeneratedType> generatedTypeRepository,
+        ICreatePlayerRecord<QuestCreateDto> playerRecordCreator,
+        IUpdatePlayerRecord<QuestUpdateDto> playerRecordUpdater,
+        IDeletePlayerRecord<ExtendingModels.Models.General.Quest> playerRecordDeleter,
+        IQuestService questService
     )
-        : base(repository, generatedTypeRepository, responseBuilder, definitionCreator, definitionUpdater, definitionDeleter)
+        : base(repository, responseBuilder, generatedTypeRepository, playerRecordCreator, playerRecordUpdater, playerRecordDeleter)
     {
         _questService = questService;
     }

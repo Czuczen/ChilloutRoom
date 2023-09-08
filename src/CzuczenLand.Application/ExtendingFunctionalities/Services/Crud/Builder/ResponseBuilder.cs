@@ -78,7 +78,7 @@ public class ResponseBuilder<TEntityDto> : IResponseBuilder<TEntityDto>
     /// <summary>
     /// Identyfikator opiekuna dzielnicy.
     /// </summary>
-    public int? DistrictWardenId { get; private set; }
+    public int? WardenDistrictId { get; private set; }
         
     /// <summary>
     /// Właściwości encji.
@@ -122,12 +122,12 @@ public class ResponseBuilder<TEntityDto> : IResponseBuilder<TEntityDto>
     }
     
     /// <summary>
-    /// Ustawia identyfikator opiekuna dzielnicy.
+    /// Ustawia identyfikator dzielnicy opiekuna.
     /// </summary>
     /// <returns>Obiekt ResponseBuilder z ustawionym identyfikatorem opiekuna dzielnicy.</returns>
-    public ResponseBuilder<TEntityDto> WithDistrictWardenId()
+    public ResponseBuilder<TEntityDto> WithWardenDistrictId()
     {
-        DistrictWardenId = _districtRepository.GetAllList(item => item.UserId == UserId).SingleOrDefault()?.Id;
+        WardenDistrictId = _districtRepository.GetAllList(item => item.UserId == UserId).SingleOrDefault()?.Id;
         
         return this;
     }
@@ -192,9 +192,7 @@ public class ResponseBuilder<TEntityDto> : IResponseBuilder<TEntityDto>
     }
 
     /// <summary>
-    /// Wysyła informacje o zmianie do graczy związanych z dzielnicą opiekuna.
-    /// Jeśli administrator dokonał zmiany na innej encji niż dzielnica to identyfikator dzielnicy jest ustawiany na 0 i informacja o zmianie jest wysyłana do wszystkich graczy.
-    /// --------------------------
+    /// Wysyła do graczy informacje o zmianie w konfiguracji dzielnicy.
     /// </summary>
     private void SendInfoToDistrictPlayers()
     {
@@ -205,8 +203,8 @@ public class ResponseBuilder<TEntityDto> : IResponseBuilder<TEntityDto>
         var firstElement = _items.FirstOrDefault();
         var editedDistrictId = isDistrictEntity ? firstElement is int element ? element : ((IEntityDto<int>) firstElement)?.Id : 0;
 
-        var infoMessage = ResponseBuilderHelper.GetChangeInfoMessage(isDistrictEntity);
-        var districtId = DistrictWardenId ?? editedDistrictId ?? 0 ;
+        var infoMessage = ResponseBuilderHelper.GetChangeInfoMessage(WardenDistrictId);
+        var districtId = WardenDistrictId ?? editedDistrictId ?? 0 ;
         var info = new ChangeInfo{ InfoMessage = infoMessage, DistrictId = districtId };
                      
         _infoHub.Clients.All.changeInfo(info);

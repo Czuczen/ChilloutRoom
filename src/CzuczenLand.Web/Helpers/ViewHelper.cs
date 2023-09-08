@@ -274,22 +274,22 @@ public static class ViewHelper
         ret += "<th>Opis</th>";
         ret += "</tr>";
 
-        foreach (var minorTest in test.MinorTests)
+        foreach (var subTest in test.SubTests)
         {
-            var status = minorTest.Status;
+            var status = subTest.Status;
 
             var statusColor = StructureTestsHelper.GetStatusColor(status);
             var statusText = StructureTestsHelper.GetStatusText(status);
 
             ret += "<tr>";
             ret += $"<td class='font-bold' style='background-color: {statusColor}'>{statusText}</td>";
-            ret += $"<td class='align-left'>{minorTest.Description}</td>";
+            ret += $"<td class='align-left'>{subTest.Description}</td>";
             ret += "</tr>";
         }
             
         ret += "<tr>";
         ret += "<th>Dodatkowe informacje</th>";
-        ret += $"<th>Ilość testów: {test.MinorTests.Count}</br>{test.AdditionalInfos}</th>";
+        ret += $"<th>Ilość testów: {test.SubTests.Count}</br>{test.AdditionalInfos}</th>";
         ret += "</tr>";
         ret += "</table>";
 
