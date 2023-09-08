@@ -27,17 +27,17 @@ public static class FieldDependenciesTestsHelper
     /// <param name="generatedTypes">Lista dostępnych typów generowanych.</param>
     public static void ProcessRequirementOwnedAmountComparer(Requirement req, StructureTest structureTest, List<GeneratedType> generatedTypes)
     {
-        var generatedTypeTest = new MinorTest();
+        var generatedTypeTest = new SubTest();
 
         if (req.GeneratedTypeId != null)
         {
             var reqGeneratedType = generatedTypes.FirstOrDefault(item => item.Id == req.GeneratedTypeId);
             if (reqGeneratedType != null)
             {
-                var conditionTest = new MinorTest();
-                var customEntityTest = new MinorTest();
-                var amountTest = new MinorTest();
-                var districtTest = new MinorTest();
+                var conditionTest = new SubTest();
+                var customEntityTest = new SubTest();
+                var amountTest = new SubTest();
+                var districtTest = new SubTest();
 
                 if (SelectListLoaderHelper.RequirementConditionsNamesDbToHr.Any(item => item.Key == req.Condition))
                 {
@@ -105,10 +105,10 @@ public static class FieldDependenciesTestsHelper
                     districtTest.Description = "Dzielnica ustawiona nie prawidłowo. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Id dzielnicy dla wymagania: " + req.DistrictId + ". Typ generowany - " + reqGeneratedType.Name + ". Id typu generowanego: " + reqGeneratedType.Id + ". Id dzielnicy dla typu generowanego: " + reqGeneratedType.DistrictId + ". Porównanie - " + req.Comparer;
                 }
                 
-                structureTest.MinorTests.Add(conditionTest);
-                structureTest.MinorTests.Add(customEntityTest);
-                structureTest.MinorTests.Add(amountTest);
-                structureTest.MinorTests.Add(districtTest);
+                structureTest.SubTests.Add(conditionTest);
+                structureTest.SubTests.Add(customEntityTest);
+                structureTest.SubTests.Add(amountTest);
+                structureTest.SubTests.Add(districtTest);
             }
             else
             {
@@ -122,7 +122,7 @@ public static class FieldDependenciesTestsHelper
             generatedTypeTest.Description = "Typ generowany jest wymagany. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Porównanie - " + req.Comparer;
         }
         
-        structureTest.MinorTests.Add(generatedTypeTest);
+        structureTest.SubTests.Add(generatedTypeTest);
     }
     
     /// <summary>
@@ -132,13 +132,13 @@ public static class FieldDependenciesTestsHelper
     /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessRequirementLevelComparer(Requirement req, StructureTest structureTest)
     {
-        var generatedTypeTest = new MinorTest();
+        var generatedTypeTest = new SubTest();
 
         if (req.GeneratedTypeId == null)
         {
-            var conditionTest = new MinorTest();
-            var customEntityTest = new MinorTest();
-            var amountTest = new MinorTest();
+            var conditionTest = new SubTest();
+            var customEntityTest = new SubTest();
+            var amountTest = new SubTest();
 
             generatedTypeTest.Status = EnumUtils.StructureTestsStatuses.Ok;
             generatedTypeTest.Description = "Typ generowany nie ustawiony. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Porównanie - " + req.Comparer;
@@ -185,9 +185,9 @@ public static class FieldDependenciesTestsHelper
                 amountTest.Description = "Ilość ustawiona prawidłowo. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Ilość na wymaganiu: " + req.Amount + ". Porównanie - " + req.Comparer;
             }
 
-            structureTest.MinorTests.Add(conditionTest);
-            structureTest.MinorTests.Add(customEntityTest);
-            structureTest.MinorTests.Add(amountTest);
+            structureTest.SubTests.Add(conditionTest);
+            structureTest.SubTests.Add(customEntityTest);
+            structureTest.SubTests.Add(amountTest);
         }
         else
         {
@@ -195,7 +195,7 @@ public static class FieldDependenciesTestsHelper
             generatedTypeTest.Description = "Typ generowany nie powinien być ustawiony. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Id typu generowanego: " + req.GeneratedTypeId + ". Porównanie - " + req.Comparer;
         }
         
-        structureTest.MinorTests.Add(generatedTypeTest);
+        structureTest.SubTests.Add(generatedTypeTest);
     }
 
     /// <summary>
@@ -205,12 +205,12 @@ public static class FieldDependenciesTestsHelper
     /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessRequirementGainedExperienceComparer(Requirement req, StructureTest structureTest)
     {
-        var generatedTypeTest = new MinorTest();
+        var generatedTypeTest = new SubTest();
 
         if (req.GeneratedTypeId == null)
         {
-            var conditionTest = new MinorTest();
-            var customEntityTest = new MinorTest();
+            var conditionTest = new SubTest();
+            var customEntityTest = new SubTest();
             
             generatedTypeTest.Status = EnumUtils.StructureTestsStatuses.Ok;
             generatedTypeTest.Description = "Typ generowany nie ustawiony. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Porównanie - " + req.Comparer;
@@ -245,8 +245,8 @@ public static class FieldDependenciesTestsHelper
                 }
             }
 
-            structureTest.MinorTests.Add(conditionTest);
-            structureTest.MinorTests.Add(customEntityTest);
+            structureTest.SubTests.Add(conditionTest);
+            structureTest.SubTests.Add(customEntityTest);
         }
         else
         {
@@ -254,7 +254,7 @@ public static class FieldDependenciesTestsHelper
             generatedTypeTest.Description = "Typ generowany nie powinien być ustawiony. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Id typu generowanego: " + req.GeneratedTypeId + ". Porównanie - " + req.Comparer;
         }
 
-        structureTest.MinorTests.Add(generatedTypeTest);
+        structureTest.SubTests.Add(generatedTypeTest);
     }
 
     /// <summary>
@@ -264,12 +264,12 @@ public static class FieldDependenciesTestsHelper
     /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessRequirementGoldComparer(Requirement req, StructureTest structureTest)
     {
-        var generatedTypeTest = new MinorTest();
+        var generatedTypeTest = new SubTest();
 
         if (req.GeneratedTypeId == null)
         {
-            var conditionTest = new MinorTest();
-            var customEntityTest = new MinorTest();
+            var conditionTest = new SubTest();
+            var customEntityTest = new SubTest();
             
             generatedTypeTest.Status = EnumUtils.StructureTestsStatuses.Ok;
             generatedTypeTest.Description = "Typ generowany nie ustawiony. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Porównanie - " + req.Comparer;
@@ -304,8 +304,8 @@ public static class FieldDependenciesTestsHelper
                 }
             }
             
-            structureTest.MinorTests.Add(conditionTest);
-            structureTest.MinorTests.Add(customEntityTest);
+            structureTest.SubTests.Add(conditionTest);
+            structureTest.SubTests.Add(customEntityTest);
         }
         else
         {
@@ -313,7 +313,7 @@ public static class FieldDependenciesTestsHelper
             generatedTypeTest.Description = "Typ generowany nie powinien być ustawiony. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Id typu generowanego: " + req.GeneratedTypeId + ". Porównanie - " + req.Comparer;
         }
 
-        structureTest.MinorTests.Add(generatedTypeTest);
+        structureTest.SubTests.Add(generatedTypeTest);
     }
 
     /// <summary>
@@ -323,13 +323,13 @@ public static class FieldDependenciesTestsHelper
     /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessRequirementPrestigeComparer(Requirement req, StructureTest structureTest)
     {
-        var generatedTypeTest = new MinorTest();
+        var generatedTypeTest = new SubTest();
 
         if (req.GeneratedTypeId == null)
         {
-            var conditionTest = new MinorTest();
-            var customEntityTest = new MinorTest();
-            var amountTest = new MinorTest();
+            var conditionTest = new SubTest();
+            var customEntityTest = new SubTest();
+            var amountTest = new SubTest();
             
             generatedTypeTest.Status = EnumUtils.StructureTestsStatuses.Ok;
             generatedTypeTest.Description = "Typ generowany nie ustawiony. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Porównanie - " + req.Comparer;
@@ -376,9 +376,9 @@ public static class FieldDependenciesTestsHelper
                 amountTest.Description = "Ilość ustawiona prawidłowo. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Ilość na wymaganiu: " + req.Amount + ". Porównanie - " + req.Comparer;
             }
             
-            structureTest.MinorTests.Add(conditionTest);
-            structureTest.MinorTests.Add(customEntityTest);
-            structureTest.MinorTests.Add(amountTest);
+            structureTest.SubTests.Add(conditionTest);
+            structureTest.SubTests.Add(customEntityTest);
+            structureTest.SubTests.Add(amountTest);
         }
         else
         {
@@ -386,7 +386,7 @@ public static class FieldDependenciesTestsHelper
             generatedTypeTest.Description = "Typ generowany nie powinien być ustawiony. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Id typu generowanego: " + req.GeneratedTypeId + ". Porównanie - " + req.Comparer;
         }
 
-        structureTest.MinorTests.Add(generatedTypeTest);
+        structureTest.SubTests.Add(generatedTypeTest);
     }
 
     /// <summary>
@@ -397,17 +397,17 @@ public static class FieldDependenciesTestsHelper
     /// <param name="generatedTypes">Lista generowanych typów.</param>
     public static void ProcessRequirementCompletedAmountComparer(Requirement req, StructureTest structureTest, List<GeneratedType> generatedTypes)
     {
-        var generatedTypeTest = new MinorTest();
+        var generatedTypeTest = new SubTest();
 
         if (req.GeneratedTypeId != null)
         {
             var reqGeneratedType = generatedTypes.FirstOrDefault(item => item.Id == req.GeneratedTypeId);
             if (reqGeneratedType != null)
             {
-                var conditionTest = new MinorTest();
-                var customEntityTest = new MinorTest();
-                var amountTest = new MinorTest();
-                var districtTest = new MinorTest();
+                var conditionTest = new SubTest();
+                var customEntityTest = new SubTest();
+                var amountTest = new SubTest();
+                var districtTest = new SubTest();
                 
                 if (req.Condition is DbRequirementConditionsNames.Increase or DbRequirementConditionsNames.Possession)
                 {
@@ -465,10 +465,10 @@ public static class FieldDependenciesTestsHelper
                     districtTest.Description = "Dzielnica ustawiona nie prawidłowo. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Id dzielnicy dla wymagania: " + req.DistrictId + ". Typ generowany - " + reqGeneratedType.Name + ". Id typu generowanego: " + reqGeneratedType.Id + ". Id dzielnicy dla typu generowanego: " + reqGeneratedType.DistrictId + ". Porównanie - " + req.Comparer;
                 }
                 
-                structureTest.MinorTests.Add(conditionTest);
-                structureTest.MinorTests.Add(customEntityTest);
-                structureTest.MinorTests.Add(amountTest);
-                structureTest.MinorTests.Add(districtTest);
+                structureTest.SubTests.Add(conditionTest);
+                structureTest.SubTests.Add(customEntityTest);
+                structureTest.SubTests.Add(amountTest);
+                structureTest.SubTests.Add(districtTest);
             }
             else
             {
@@ -482,7 +482,7 @@ public static class FieldDependenciesTestsHelper
             generatedTypeTest.Description = "Typ generowany jest wymagany. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Porównanie - " + req.Comparer;
         }
 
-        structureTest.MinorTests.Add(generatedTypeTest);
+        structureTest.SubTests.Add(generatedTypeTest);
     }
 
     /// <summary>
@@ -493,17 +493,17 @@ public static class FieldDependenciesTestsHelper
     /// <param name="generatedTypes">Lista generowanych typów.</param>
     public static void ProcessRequirementUsagesComparer(Requirement req, StructureTest structureTest, List<GeneratedType> generatedTypes)
     {
-        var generatedTypeTest = new MinorTest();
+        var generatedTypeTest = new SubTest();
 
         if (req.GeneratedTypeId != null)
         {
             var reqGeneratedType = generatedTypes.FirstOrDefault(item => item.Id == req.GeneratedTypeId);
             if (reqGeneratedType != null)
             {
-                var conditionTest = new MinorTest();
-                var customEntityTest = new MinorTest();
-                var amountTest = new MinorTest();
-                var districtTest = new MinorTest();
+                var conditionTest = new SubTest();
+                var customEntityTest = new SubTest();
+                var amountTest = new SubTest();
+                var districtTest = new SubTest();
                 
                 if (req.Condition is DbRequirementConditionsNames.Increase or DbRequirementConditionsNames.Possession)
                 {
@@ -561,10 +561,10 @@ public static class FieldDependenciesTestsHelper
                     districtTest.Description = "Dzielnica ustawiona nie prawidłowo. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Id dzielnicy dla wymagania: " + req.DistrictId + ". Typ generowany - " + reqGeneratedType.Name + ". Id typu generowanego: " + reqGeneratedType.Id + ". Id dzielnicy dla typu generowanego: " + reqGeneratedType.DistrictId + ". Porównanie - " + req.Comparer;
                 }
                 
-                structureTest.MinorTests.Add(conditionTest);
-                structureTest.MinorTests.Add(customEntityTest);
-                structureTest.MinorTests.Add(amountTest);
-                structureTest.MinorTests.Add(districtTest);
+                structureTest.SubTests.Add(conditionTest);
+                structureTest.SubTests.Add(customEntityTest);
+                structureTest.SubTests.Add(amountTest);
+                structureTest.SubTests.Add(districtTest);
             }
             else
             {
@@ -578,7 +578,7 @@ public static class FieldDependenciesTestsHelper
             generatedTypeTest.Description = "Typ generowany jest wymagany. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Porównanie - " + req.Comparer;
         }
         
-        structureTest.MinorTests.Add(generatedTypeTest);
+        structureTest.SubTests.Add(generatedTypeTest);
     }
 
     /// <summary>
@@ -589,17 +589,17 @@ public static class FieldDependenciesTestsHelper
     /// <param name="generatedTypes">Lista generowanych typów.</param>
     public static void ProcessRequirementCollectPlantComparer(Requirement req, StructureTest structureTest, List<GeneratedType> generatedTypes)
     {
-        var generatedTypeTest = new MinorTest();
+        var generatedTypeTest = new SubTest();
 
         if (req.GeneratedTypeId != null)
         {
             var reqGeneratedType = generatedTypes.FirstOrDefault(item => item.Id == req.GeneratedTypeId);
             if (reqGeneratedType != null)
             {
-                var conditionTest = new MinorTest();
-                var customEntityTest = new MinorTest();
-                var amountTest = new MinorTest();
-                var districtTest = new MinorTest();
+                var conditionTest = new SubTest();
+                var customEntityTest = new SubTest();
+                var amountTest = new SubTest();
+                var districtTest = new SubTest();
 
                 if (req.Condition is DbRequirementConditionsNames.Increase)
                 {
@@ -665,10 +665,10 @@ public static class FieldDependenciesTestsHelper
                     districtTest.Description = "Dzielnica ustawiona nie prawidłowo. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Id dzielnicy dla wymagania: " + req.DistrictId + ". Typ generowany - " + reqGeneratedType.Name + ". Id typu generowanego: " + reqGeneratedType.Id + ". Id dzielnicy dla typu generowanego: " + reqGeneratedType.DistrictId + ". Porównanie - " + req.Comparer;
                 }
                 
-                structureTest.MinorTests.Add(conditionTest);
-                structureTest.MinorTests.Add(customEntityTest);
-                structureTest.MinorTests.Add(amountTest);
-                structureTest.MinorTests.Add(districtTest);
+                structureTest.SubTests.Add(conditionTest);
+                structureTest.SubTests.Add(customEntityTest);
+                structureTest.SubTests.Add(amountTest);
+                structureTest.SubTests.Add(districtTest);
             }
             else
             {
@@ -682,7 +682,7 @@ public static class FieldDependenciesTestsHelper
             generatedTypeTest.Description = "Typ generowany jest wymagany. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Porównanie - " + req.Comparer;
         }
 
-        structureTest.MinorTests.Add(generatedTypeTest);
+        structureTest.SubTests.Add(generatedTypeTest);
     }
 
     /// <summary>
@@ -693,17 +693,17 @@ public static class FieldDependenciesTestsHelper
     /// <param name="generatedTypes">Lista generowanych typów.</param>
     public static void ProcessRequirementRemovePlantComparer(Requirement req, StructureTest structureTest, List<GeneratedType> generatedTypes)
     {
-        var generatedTypeTest = new MinorTest();
+        var generatedTypeTest = new SubTest();
 
         if (req.GeneratedTypeId != null)
         {
             var reqGeneratedType = generatedTypes.FirstOrDefault(item => item.Id == req.GeneratedTypeId);
             if (reqGeneratedType != null)
             {
-                var conditionTest = new MinorTest();
-                var customEntityTest = new MinorTest();
-                var amountTest = new MinorTest();
-                var districtTest = new MinorTest();
+                var conditionTest = new SubTest();
+                var customEntityTest = new SubTest();
+                var amountTest = new SubTest();
+                var districtTest = new SubTest();
                 
                 if (req.Condition is DbRequirementConditionsNames.Decrease)
                 {
@@ -769,10 +769,10 @@ public static class FieldDependenciesTestsHelper
                     districtTest.Description = "Dzielnica ustawiona nie prawidłowo. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Id dzielnicy dla wymagania: " + req.DistrictId + ". Typ generowany - " + reqGeneratedType.Name + ". Id typu generowanego: " + reqGeneratedType.Id + ". Id dzielnicy dla typu generowanego: " + reqGeneratedType.DistrictId + ". Porównanie - " + req.Comparer;
                 }
                 
-                structureTest.MinorTests.Add(conditionTest);
-                structureTest.MinorTests.Add(customEntityTest);
-                structureTest.MinorTests.Add(amountTest);
-                structureTest.MinorTests.Add(districtTest);
+                structureTest.SubTests.Add(conditionTest);
+                structureTest.SubTests.Add(customEntityTest);
+                structureTest.SubTests.Add(amountTest);
+                structureTest.SubTests.Add(districtTest);
             }
             else
             {
@@ -786,7 +786,7 @@ public static class FieldDependenciesTestsHelper
             generatedTypeTest.Description = "Typ generowany jest wymagany. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Porównanie - " + req.Comparer;
         }
 
-        structureTest.MinorTests.Add(generatedTypeTest);
+        structureTest.SubTests.Add(generatedTypeTest);
     }
 
     /// <summary>
@@ -808,17 +808,17 @@ public static class FieldDependenciesTestsHelper
     /// <param name="generatedTypes">Lista generowanych typów.</param>
     public static void ProcessRequirementSellOnBlackMarketComparer(Requirement req, StructureTest structureTest, List<GeneratedType> generatedTypes)
     {
-        var generatedTypeTest = new MinorTest();
+        var generatedTypeTest = new SubTest();
 
         if (req.GeneratedTypeId != null)
         {
             var reqGeneratedType = generatedTypes.FirstOrDefault(item => item.Id == req.GeneratedTypeId);
             if (reqGeneratedType != null)
             {
-                var conditionTest = new MinorTest();
-                var customEntityTest = new MinorTest();
-                var amountTest = new MinorTest();
-                var districtTest = new MinorTest();
+                var conditionTest = new SubTest();
+                var customEntityTest = new SubTest();
+                var amountTest = new SubTest();
+                var districtTest = new SubTest();
                 
                 if (req.Condition is DbRequirementConditionsNames.Decrease)
                 {
@@ -884,10 +884,10 @@ public static class FieldDependenciesTestsHelper
                     districtTest.Description = "Dzielnica ustawiona nie prawidłowo. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Id dzielnicy dla wymagania: " + req.DistrictId + ". Typ generowany - " + reqGeneratedType.Name + ". Id typu generowanego: " + reqGeneratedType.Id + ". Id dzielnicy dla typu generowanego: " + reqGeneratedType.DistrictId + ". Porównanie - " + req.Comparer;
                 }
                 
-                structureTest.MinorTests.Add(conditionTest);
-                structureTest.MinorTests.Add(customEntityTest);
-                structureTest.MinorTests.Add(amountTest);
-                structureTest.MinorTests.Add(districtTest);
+                structureTest.SubTests.Add(conditionTest);
+                structureTest.SubTests.Add(customEntityTest);
+                structureTest.SubTests.Add(amountTest);
+                structureTest.SubTests.Add(districtTest);
             }
             else
             {
@@ -901,7 +901,7 @@ public static class FieldDependenciesTestsHelper
             generatedTypeTest.Description = "Typ generowany jest wymagany. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Porównanie - " + req.Comparer;
         }
         
-        structureTest.MinorTests.Add(generatedTypeTest);
+        structureTest.SubTests.Add(generatedTypeTest);
     }
 
     /// <summary>
@@ -912,17 +912,17 @@ public static class FieldDependenciesTestsHelper
     /// <param name="generatedTypes">Lista generowanych typów.</param>
     public static void ProcessRequirementBuyOnBlackMarketComparer(Requirement req, StructureTest structureTest, List<GeneratedType> generatedTypes)
     {
-        var generatedTypeTest = new MinorTest();
+        var generatedTypeTest = new SubTest();
 
         if (req.GeneratedTypeId != null)
         {
             var reqGeneratedType = generatedTypes.FirstOrDefault(item => item.Id == req.GeneratedTypeId);
             if (reqGeneratedType != null)
             {
-                var conditionTest = new MinorTest();
-                var customEntityTest = new MinorTest();
-                var amountTest = new MinorTest();
-                var districtTest = new MinorTest();
+                var conditionTest = new SubTest();
+                var customEntityTest = new SubTest();
+                var amountTest = new SubTest();
+                var districtTest = new SubTest();
                 
                 if (req.Condition is DbRequirementConditionsNames.Increase)
                 {
@@ -988,10 +988,10 @@ public static class FieldDependenciesTestsHelper
                     districtTest.Description = "Dzielnica ustawiona nie prawidłowo. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Id dzielnicy dla wymagania: " + req.DistrictId + ". Typ generowany - " + reqGeneratedType.Name + ". Id typu generowanego: " + reqGeneratedType.Id + ". Id dzielnicy dla typu generowanego: " + reqGeneratedType.DistrictId + ". Porównanie - " + req.Comparer;
                 }
                 
-                structureTest.MinorTests.Add(conditionTest);
-                structureTest.MinorTests.Add(customEntityTest);
-                structureTest.MinorTests.Add(amountTest);
-                structureTest.MinorTests.Add(districtTest);
+                structureTest.SubTests.Add(conditionTest);
+                structureTest.SubTests.Add(customEntityTest);
+                structureTest.SubTests.Add(amountTest);
+                structureTest.SubTests.Add(districtTest);
             }
             else
             {
@@ -1005,7 +1005,7 @@ public static class FieldDependenciesTestsHelper
             generatedTypeTest.Description = "Typ generowany jest wymagany. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Porównanie - " + req.Comparer;
         }
 
-        structureTest.MinorTests.Add(generatedTypeTest);
+        structureTest.SubTests.Add(generatedTypeTest);
     }
 
     /// <summary>
@@ -1015,13 +1015,13 @@ public static class FieldDependenciesTestsHelper
     /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessRequirementQuestTokenComparer(Requirement req, StructureTest structureTest)
     {
-        var generatedTypeTest = new MinorTest();
+        var generatedTypeTest = new SubTest();
 
         if (req.GeneratedTypeId == null)
         {
-            var conditionTest = new MinorTest();
-            var customEntityTest = new MinorTest();
-            var amountTest = new MinorTest();
+            var conditionTest = new SubTest();
+            var customEntityTest = new SubTest();
+            var amountTest = new SubTest();
             
             generatedTypeTest.Status = EnumUtils.StructureTestsStatuses.Ok;
             generatedTypeTest.Description = "Typ generowany nie ustawiony. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Porównanie - " + req.Comparer;
@@ -1068,9 +1068,9 @@ public static class FieldDependenciesTestsHelper
                 amountTest.Description = "Ilość ustawiona prawidłowo. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Ilość na wymaganiu: " + req.Amount + ". Porównanie - " + req.Comparer;
             }
             
-            structureTest.MinorTests.Add(conditionTest);
-            structureTest.MinorTests.Add(customEntityTest);
-            structureTest.MinorTests.Add(amountTest);
+            structureTest.SubTests.Add(conditionTest);
+            structureTest.SubTests.Add(customEntityTest);
+            structureTest.SubTests.Add(amountTest);
         }
         else
         {
@@ -1078,7 +1078,7 @@ public static class FieldDependenciesTestsHelper
             generatedTypeTest.Description = "Typ generowany nie powinien być ustawiony. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Id typu generowanego: " + req.GeneratedTypeId + ". Porównanie - " + req.Comparer;
         }
 
-        structureTest.MinorTests.Add(generatedTypeTest);
+        structureTest.SubTests.Add(generatedTypeTest);
     }
 
     /// <summary>
@@ -1128,13 +1128,13 @@ public static class FieldDependenciesTestsHelper
     /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessRequirementHonorComparer(Requirement req, StructureTest structureTest)
     {
-        var generatedTypeTest = new MinorTest();
+        var generatedTypeTest = new SubTest();
 
         if (req.GeneratedTypeId == null)
         {
-            var conditionTest = new MinorTest();
-            var customEntityTest = new MinorTest();
-            var amountTest = new MinorTest();
+            var conditionTest = new SubTest();
+            var customEntityTest = new SubTest();
+            var amountTest = new SubTest();
             
             generatedTypeTest.Status = EnumUtils.StructureTestsStatuses.Ok;
             generatedTypeTest.Description = "Typ generowany nie ustawiony. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Porównanie - " + req.Comparer;
@@ -1181,9 +1181,9 @@ public static class FieldDependenciesTestsHelper
                 amountTest.Description = "Ilość ustawiona prawidłowo. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Ilość na wymaganiu: " + req.Amount + ". Porównanie - " + req.Comparer;
             }
 
-            structureTest.MinorTests.Add(conditionTest);
-            structureTest.MinorTests.Add(customEntityTest);
-            structureTest.MinorTests.Add(amountTest);
+            structureTest.SubTests.Add(conditionTest);
+            structureTest.SubTests.Add(customEntityTest);
+            structureTest.SubTests.Add(amountTest);
         }
         else
         {
@@ -1191,7 +1191,7 @@ public static class FieldDependenciesTestsHelper
             generatedTypeTest.Description = "Typ generowany nie powinien być ustawiony. Wymaganie - " + req.Name + ". Id wymagania: " + req.Id + ". Id typu generowanego: " + req.GeneratedTypeId + ". Porównanie - " + req.Comparer;
         }
 
-        structureTest.MinorTests.Add(generatedTypeTest);
+        structureTest.SubTests.Add(generatedTypeTest);
     }
 
     /// <summary>
@@ -1205,23 +1205,23 @@ public static class FieldDependenciesTestsHelper
     {
         if (!fieldsHeaveValues.Any(item => item.Value))
         {
-            var dropNotHeaveAnyReward = new MinorTest();
+            var dropNotHeaveAnyReward = new SubTest();
             dropNotHeaveAnyReward.Status = EnumUtils.StructureTestsStatuses.Error;
             dropNotHeaveAnyReward.Description = "Żadna nagroda nie została ustawiona" + ". Nagroda - " + drop.Name + ". Id nagrody: " + drop.Id;
-            structureTest.MinorTests.Add(dropNotHeaveAnyReward);
+            structureTest.SubTests.Add(dropNotHeaveAnyReward);
             return;
         }
 
         if (fieldsHeaveValues[EntitiesDbNames.GeneratedType])
         {
-            var generatedTypeSetTest = new MinorTest();
-            var generatedTypeExistTest = new MinorTest();
+            var generatedTypeSetTest = new SubTest();
+            var generatedTypeExistTest = new SubTest();
 
             var generatedType = generatedTypes.FirstOrDefault(item => item.Id == drop.GeneratedTypeId);
             if (generatedType != null)
             {
-                var itemAmountTest = new MinorTest();
-                var districtTest = new MinorTest();
+                var itemAmountTest = new SubTest();
+                var districtTest = new SubTest();
                 
                 generatedTypeExistTest.Status = EnumUtils.StructureTestsStatuses.Ok;
                 generatedTypeExistTest.Description = "Typ generowany nagrody istnieje. Typ generowany - " + generatedType.Name + ". Id typu generowanego: " + generatedType.Id + ". Nagroda - " + drop.Name + ". Id nagrody: " + drop.Id;
@@ -1278,8 +1278,8 @@ public static class FieldDependenciesTestsHelper
                     districtTest.Description = "Dzielnica ustawiona nie prawidłowo" + ". Nagroda - " + drop.Name + ". Id nagrody: " + drop.Id + ". Typ generowany - " + generatedType.Name + ". Id typu generowanego: " + generatedType.Id + ". Id dzielnicy typu generowanego: " + generatedType.DistrictId + ". Id dzielnicy nagrody: " + drop.DistrictId;
                 }
                 
-                structureTest.MinorTests.Add(itemAmountTest);
-                structureTest.MinorTests.Add(districtTest);
+                structureTest.SubTests.Add(itemAmountTest);
+                structureTest.SubTests.Add(districtTest);
             }
             else
             {
@@ -1302,20 +1302,20 @@ public static class FieldDependenciesTestsHelper
                 generatedTypeSetTest.Description = "Typ generowany ustawiony. Inne wartości nie ustawione." + " Nagroda - " + drop.Name + ". Id nagrody: " + drop.Id + ". Id typu gnerowanego: " + drop.GeneratedTypeId;
             }
 
-            structureTest.MinorTests.Add(generatedTypeSetTest);
-            structureTest.MinorTests.Add(generatedTypeExistTest);
+            structureTest.SubTests.Add(generatedTypeSetTest);
+            structureTest.SubTests.Add(generatedTypeExistTest);
         }
         else if (drop.ItemAmount != null)
         {
-            var itemAmountIsSet = new MinorTest();
+            var itemAmountIsSet = new SubTest();
             itemAmountIsSet.Status = EnumUtils.StructureTestsStatuses.Error;
             itemAmountIsSet.Description = "Ilość przedmiotu ustawiona" + " Nagroda - " + drop.Name + ". Id nagrody: " + drop.Id + ". Ilość przedmiotu: " + drop.ItemAmount;
-            structureTest.MinorTests.Add(itemAmountIsSet);
+            structureTest.SubTests.Add(itemAmountIsSet);
         }
 
         if (fieldsHeaveValues[PlantationStorageObservedFields.Gold])
         {
-            var goldTest = new MinorTest();
+            var goldTest = new SubTest();
             
             if (fieldsHeaveValues.Any(item => item.Value && item.Key != PlantationStorageObservedFields.Gold))
             {
@@ -1332,12 +1332,12 @@ public static class FieldDependenciesTestsHelper
                 goldTest.Description = "Złoto ustawione. Inne wartości nie ustawione." + " Nagroda - " + drop.Name + ". Id nagrody: " + drop.Id;
             }
             
-            structureTest.MinorTests.Add(goldTest);
+            structureTest.SubTests.Add(goldTest);
         }
         
         if (fieldsHeaveValues[PlantationStorageObservedFields.Prestige])
         {
-            var prestigeTest = new MinorTest();
+            var prestigeTest = new SubTest();
             
             if (fieldsHeaveValues.Any(item => item.Value && item.Key != PlantationStorageObservedFields.Prestige))
             {
@@ -1354,12 +1354,12 @@ public static class FieldDependenciesTestsHelper
                 prestigeTest.Description = "Prestiż ustawiony. Inne wartości nie ustawione." + " Nagroda - " + drop.Name + ". Id nagrody: " + drop.Id;
             }
             
-            structureTest.MinorTests.Add(prestigeTest);
+            structureTest.SubTests.Add(prestigeTest);
         }
         
         if (fieldsHeaveValues[PlantationStorageObservedFields.QuestToken])
         {
-            var questTokenTest = new MinorTest();
+            var questTokenTest = new SubTest();
             
             if (fieldsHeaveValues.Any(item => item.Value && item.Key != PlantationStorageObservedFields.QuestToken))
             {
@@ -1376,12 +1376,12 @@ public static class FieldDependenciesTestsHelper
                 questTokenTest.Description = "Żeton zadania ustawiony. Inne wartości nie ustawione." + " Nagroda - " + drop.Name + ". Id nagrody: " + drop.Id;
             }
             
-            structureTest.MinorTests.Add(questTokenTest);
+            structureTest.SubTests.Add(questTokenTest);
         }
         
         if (fieldsHeaveValues[PlantationStorageObservedFields.DealerToken])
         {
-            var dealerTokenTest = new MinorTest();
+            var dealerTokenTest = new SubTest();
             
             if (fieldsHeaveValues.Any(item => item.Value && item.Key != PlantationStorageObservedFields.DealerToken))
             {
@@ -1398,12 +1398,12 @@ public static class FieldDependenciesTestsHelper
                 dealerTokenTest.Description = "Żeton dealera ustawiony. Inne wartości nie ustawione." + " Nagroda - " + drop.Name + ". Id nagrody: " + drop.Id;
             }
             
-            structureTest.MinorTests.Add(dealerTokenTest);
+            structureTest.SubTests.Add(dealerTokenTest);
         }
         
         if (fieldsHeaveValues[PlantationStorageObservedFields.BlackMarketToken])
         {
-            var blackMarketTokenTest = new MinorTest();
+            var blackMarketTokenTest = new SubTest();
             
             if (fieldsHeaveValues.Any(item => item.Value && item.Key != PlantationStorageObservedFields.BlackMarketToken))
             {
@@ -1420,12 +1420,12 @@ public static class FieldDependenciesTestsHelper
                 blackMarketTokenTest.Description = "Żeton czarnego rynku ustawiony. Inne wartości nie ustawione." + " Nagroda - " + drop.Name + ". Id nagrody: " + drop.Id;
             }
             
-            structureTest.MinorTests.Add(blackMarketTokenTest);
+            structureTest.SubTests.Add(blackMarketTokenTest);
         }
         
         if (fieldsHeaveValues[PlantationStorageObservedFields.DonToken])
         {
-            var donTokenTest = new MinorTest();
+            var donTokenTest = new SubTest();
             
             if (fieldsHeaveValues.Any(item => item.Value && item.Key != PlantationStorageObservedFields.DonToken))
             {
@@ -1442,12 +1442,12 @@ public static class FieldDependenciesTestsHelper
                 donTokenTest.Description = "Żeton don'a ustawiony. Inne wartości nie ustawione." + " Nagroda - " + drop.Name + ". Id nagrody: " + drop.Id;
             }
             
-            structureTest.MinorTests.Add(donTokenTest);
+            structureTest.SubTests.Add(donTokenTest);
         }
         
         if (fieldsHeaveValues[PlantationStorageObservedFields.UnlockToken])
         {
-            var unlockTokenTest = new MinorTest();
+            var unlockTokenTest = new SubTest();
             
             if (fieldsHeaveValues.Any(item => item.Value && item.Key != PlantationStorageObservedFields.UnlockToken))
             {
@@ -1464,12 +1464,12 @@ public static class FieldDependenciesTestsHelper
                 unlockTokenTest.Description = "Żeton odblokowania ustawiony. Inne wartości nie ustawione." + " Nagroda - " + drop.Name + ". Id nagrody: " + drop.Id;
             }
             
-            structureTest.MinorTests.Add(unlockTokenTest);
+            structureTest.SubTests.Add(unlockTokenTest);
         }
         
         if (fieldsHeaveValues[PlayerStorageObservedFields.Honor])
         {
-            var honorTest = new MinorTest();
+            var honorTest = new SubTest();
             
             if (fieldsHeaveValues.Any(item => item.Value && item.Key != PlayerStorageObservedFields.Honor))
             {
@@ -1486,12 +1486,12 @@ public static class FieldDependenciesTestsHelper
                 honorTest.Description = "Honor ustawiony. Inne wartości nie ustawione." + " Nagroda - " + drop.Name + ". Id nagrody: " + drop.Id;
             }
             
-            structureTest.MinorTests.Add(honorTest);
+            structureTest.SubTests.Add(honorTest);
         }
         
         if (fieldsHeaveValues[PlantationStorageObservedFields.GainedExperience])
         {
-            var gainedExperienceTest = new MinorTest();
+            var gainedExperienceTest = new SubTest();
             
             if (fieldsHeaveValues.Any(item => item.Value && item.Key != PlantationStorageObservedFields.GainedExperience))
             {
@@ -1508,7 +1508,7 @@ public static class FieldDependenciesTestsHelper
                 gainedExperienceTest.Description = "Doświadczenie ustawione. Inne wartości nie ustawione." + " Nagroda - " + drop.Name + ". Id nagrody: " + drop.Id;
             }
             
-            structureTest.MinorTests.Add(gainedExperienceTest);
+            structureTest.SubTests.Add(gainedExperienceTest);
         }
     }
 
@@ -1520,37 +1520,37 @@ public static class FieldDependenciesTestsHelper
     /// <param name="generatedTypes">Lista dostępnych typów generowanych.</param>
     public static void ProcessProductOwnedAmountFieldDependencies(Product product, StructureTest structureTest, List<GeneratedType> generatedTypes)
     {
-        var minorTest1 = new MinorTest();
+        var subTest1 = new SubTest();
         
         var generatedType = generatedTypes.FirstOrDefault(item => item.Id == product.GeneratedTypeId);
         if (generatedType != null)
         {
-            minorTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
-            minorTest1.Description = "Typ generowany produktu istnieje. Typ generowany - " + generatedType.Name + ". Id typu generowanego: " + generatedType.Id + ". Produkt - " + product.Name + ". Id produktu: " + product.Id;
+            subTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
+            subTest1.Description = "Typ generowany produktu istnieje. Typ generowany - " + generatedType.Name + ". Id typu generowanego: " + generatedType.Id + ". Produkt - " + product.Name + ". Id produktu: " + product.Id;
 
-            var minorTest2 = new MinorTest();
+            var subTest2 = new SubTest();
             var isInt = IntUtils.IsInt(product.OwnedAmount);
             
             if (!isInt &&  generatedType.EntityName is EntitiesDbNames.Lamp or EntitiesDbNames.Pot or EntitiesDbNames.Seed or EntitiesDbNames.Bonus)
             {
-                minorTest2.Status = EnumUtils.StructureTestsStatuses.Error;
-                minorTest2.Description = "Posiadana ilość nie jest liczbą całkowitą. Ilość: " + product.OwnedAmount + ". Produkt - " + product.Name + ". Id produktu: " + product.Id;
+                subTest2.Status = EnumUtils.StructureTestsStatuses.Error;
+                subTest2.Description = "Posiadana ilość nie jest liczbą całkowitą. Ilość: " + product.OwnedAmount + ". Produkt - " + product.Name + ". Id produktu: " + product.Id;
             }
             else
             {
-                minorTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
-                minorTest2.Description = "Posiadana ilość jest prawidłowa. Ilość: " + product.OwnedAmount + ". Produkt - " + product.Name + ". Id produktu: " + product.Id;
+                subTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest2.Description = "Posiadana ilość jest prawidłowa. Ilość: " + product.OwnedAmount + ". Produkt - " + product.Name + ". Id produktu: " + product.Id;
             }
             
-            structureTest.MinorTests.Add(minorTest2);
+            structureTest.SubTests.Add(subTest2);
         }
         else
         {
-            minorTest1.Status = EnumUtils.StructureTestsStatuses.Error;
-            minorTest1.Description = "Typ generowany produktu nie istnieje. " + "Id typu generowanego: " + product.GeneratedTypeId + ". Produkt - " + product.Name + ". Id produktu: " + product.Id;
+            subTest1.Status = EnumUtils.StructureTestsStatuses.Error;
+            subTest1.Description = "Typ generowany produktu nie istnieje. " + "Id typu generowanego: " + product.GeneratedTypeId + ". Produkt - " + product.Name + ". Id produktu: " + product.Id;
         }
 
-        structureTest.MinorTests.Add(minorTest1);
+        structureTest.SubTests.Add(subTest1);
     }
 
     /// <summary>
@@ -1560,31 +1560,31 @@ public static class FieldDependenciesTestsHelper
     /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessProductPricesForShopItemFieldDependencies(Product product, StructureTest structureTest)
     {
-        var minorTest = new MinorTest();
+        var subTest = new SubTest();
         
         if (product.IsShopItem)
         {
             if (product.SellPrice != null && product.BuyPrice != null)
             {
-                minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
-                minorTest.Description = "Produkt jest dostępny w sklepie. Cena kupna i sprzedaży ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
+                subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest.Description = "Produkt jest dostępny w sklepie. Cena kupna i sprzedaży ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
             }
             else
             {
                 if (product.SellPrice == null && product.BuyPrice != null)
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest.Description = "Produkt jest dostępny w sklepie. Cena kupna ustawiona ale cena sprzedaży nie jest ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = "Produkt jest dostępny w sklepie. Cena kupna ustawiona ale cena sprzedaży nie jest ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
                 }
                 else if (product.SellPrice != null && product.BuyPrice == null)
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest.Description = "Produkt jest dostępny w sklepie. Cena sprzedaży ustawiona ale cena kupna nie jest ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = "Produkt jest dostępny w sklepie. Cena sprzedaży ustawiona ale cena kupna nie jest ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
                 }
                 else
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest.Description = "Produkt jest dostępny w sklepie. Cena kupna i sprzedaży nie ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = "Produkt jest dostępny w sklepie. Cena kupna i sprzedaży nie ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
                 }
             }
         }
@@ -1592,30 +1592,30 @@ public static class FieldDependenciesTestsHelper
         {
             if (product.SellPrice == null && product.BuyPrice == null)
             {
-                minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
-                minorTest.Description = "Produkt nie jest dostępny w sklepie. Cena kupna i sprzedaży nie ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
+                subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest.Description = "Produkt nie jest dostępny w sklepie. Cena kupna i sprzedaży nie ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
             }
             else
             {
                 if (product.SellPrice == null && product.BuyPrice != null)
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest.Description = "Produkt nie jest dostępny w sklepie. Cena sprzedaży nie ustawiona ale cena kupna jest ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = "Produkt nie jest dostępny w sklepie. Cena sprzedaży nie ustawiona ale cena kupna jest ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
                 }
                 else if (product.SellPrice != null && product.BuyPrice == null)
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest.Description = "Produkt nie jest dostępny w sklepie. Cena kupna nie ustawiona ale cena sprzedaży jest ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = "Produkt nie jest dostępny w sklepie. Cena kupna nie ustawiona ale cena sprzedaży jest ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
                 }
                 else
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest.Description = "Produkt nie jest dostępny w sklepie. Cena kupna i sprzedaży ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = "Produkt nie jest dostępny w sklepie. Cena kupna i sprzedaży ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
                 }
             }
         }
         
-        structureTest.MinorTests.Add(minorTest);
+        structureTest.SubTests.Add(subTest);
     }
 
     /// <summary>
@@ -1625,7 +1625,7 @@ public static class FieldDependenciesTestsHelper
     /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessProductPricesForBlackMarketFieldDependencies(Product product, StructureTest structureTest)
     {
-        var minorTest = new MinorTest();
+        var subTest = new SubTest();
 
         if (product.IsBlackMarketWorkerItem || product.PlayerCanSellInBlackMarket)
         {
@@ -1638,25 +1638,25 @@ public static class FieldDependenciesTestsHelper
 
             if (product.BlackMarketMinSellPrice != null && product.BlackMarketMaxSellPrice != null)
             {
-                minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
-                minorTest.Description = startMessage + "Cena minimalna i maksymalna ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;   
+                subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest.Description = startMessage + "Cena minimalna i maksymalna ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;   
             }
             else
             {
                 if (product.BlackMarketMinSellPrice == null && product.BlackMarketMaxSellPrice != null)
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest.Description = startMessage + "Cena maksymalna ustawiona ale cena minimalna nie ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;   
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = startMessage + "Cena maksymalna ustawiona ale cena minimalna nie ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;   
                 }
                 else if (product.BlackMarketMinSellPrice != null && product.BlackMarketMaxSellPrice == null)
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest.Description = startMessage + "Cena minimalna ustawiona ale cena maksymalna nie ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = startMessage + "Cena minimalna ustawiona ale cena maksymalna nie ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
                 }
                 else
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest.Description = startMessage + "Cena minimalna i maksymalna nie ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = startMessage + "Cena minimalna i maksymalna nie ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
                 }
             }
         }
@@ -1665,30 +1665,30 @@ public static class FieldDependenciesTestsHelper
             var startMessage = "Produkt nie jest dostępny dla pracownika czarnego rynku i do sprzedaży przez gracza w czarnym rynku. ";
             if (product.BlackMarketMinSellPrice == null && product.BlackMarketMaxSellPrice == null)
             {
-                minorTest.Status = EnumUtils.StructureTestsStatuses.Ok;
-                minorTest.Description = startMessage + "Cena minimalna i maksymalna nie ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;   
+                subTest.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest.Description = startMessage + "Cena minimalna i maksymalna nie ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;   
             }
             else
             {
                 if (product.BlackMarketMinSellPrice == null && product.BlackMarketMaxSellPrice != null)
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest.Description = startMessage + "Cena minimalna nie ustawiona ale cena maksymalna ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;   
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = startMessage + "Cena minimalna nie ustawiona ale cena maksymalna ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;   
                 }
                 else if (product.BlackMarketMinSellPrice != null && product.BlackMarketMaxSellPrice == null)
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest.Description = startMessage + "Cena maksymalna nie ustawiona ale cena minimalna ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = startMessage + "Cena maksymalna nie ustawiona ale cena minimalna ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
                 }
                 else
                 {
-                    minorTest.Status = EnumUtils.StructureTestsStatuses.Error;
-                    minorTest.Description = startMessage + "Cena minimalna i maksymalna ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
+                    subTest.Status = EnumUtils.StructureTestsStatuses.Error;
+                    subTest.Description = startMessage + "Cena minimalna i maksymalna ustawiona. Produkt - " + product.Name + ". Id produktu: " + product.Id;
                 }
             }
         }
         
-        structureTest.MinorTests.Add(minorTest);
+        structureTest.SubTests.Add(subTest);
     }
 
     /// <summary>
@@ -1698,60 +1698,60 @@ public static class FieldDependenciesTestsHelper
     /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessDriedFruitFieldDependencies(DriedFruit driedFruit, StructureTest structureTest)
     {
-        var minorTest1 = new MinorTest();
-        var minorTest2 = new MinorTest();
+        var subTest1 = new SubTest();
+        var subTest2 = new SubTest();
         
         if (driedFruit.AvailableInCustomerZone)
         {
             if (driedFruit.OfferChance != null)
             {
-                minorTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
-                minorTest1.Description = "Szansa na złożenie oferty ustawiona. Susz - " + driedFruit.Name + ". Id suszu: " + driedFruit.Id;
+                subTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest1.Description = "Szansa na złożenie oferty ustawiona. Susz - " + driedFruit.Name + ". Id suszu: " + driedFruit.Id;
             }
             else
             {
-                minorTest1.Status = EnumUtils.StructureTestsStatuses.Error;
-                minorTest1.Description = "Szansa na złożenie oferty nie ustawiona. Susz - " + driedFruit.Name + ". Id suszu: " + driedFruit.Id;
+                subTest1.Status = EnumUtils.StructureTestsStatuses.Error;
+                subTest1.Description = "Szansa na złożenie oferty nie ustawiona. Susz - " + driedFruit.Name + ". Id suszu: " + driedFruit.Id;
             }
 
             if (driedFruit.CustomerZonePrice != null)
             {
-                minorTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
-                minorTest2.Description = "Cena sprzedaży w strefie klienta ustawiona. Susz - " + driedFruit.Name + ". Id suszu: " + driedFruit.Id;
+                subTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest2.Description = "Cena sprzedaży w strefie klienta ustawiona. Susz - " + driedFruit.Name + ". Id suszu: " + driedFruit.Id;
             }
             else
             {
-                minorTest2.Status = EnumUtils.StructureTestsStatuses.Error;
-                minorTest2.Description = "Cena sprzedaży w strefie klienta nie ustawiona. Susz - " + driedFruit.Name + ". Id suszu: " + driedFruit.Id;
+                subTest2.Status = EnumUtils.StructureTestsStatuses.Error;
+                subTest2.Description = "Cena sprzedaży w strefie klienta nie ustawiona. Susz - " + driedFruit.Name + ". Id suszu: " + driedFruit.Id;
             }
         }
         else
         {
             if (driedFruit.OfferChance == null)
             {
-                minorTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
-                minorTest1.Description = "Szansa na złożenie oferty nie ustawiona. Susz - " + driedFruit.Name + ". Id suszu: " + driedFruit.Id;
+                subTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest1.Description = "Szansa na złożenie oferty nie ustawiona. Susz - " + driedFruit.Name + ". Id suszu: " + driedFruit.Id;
             }
             else
             {
-                minorTest1.Status = EnumUtils.StructureTestsStatuses.Error;
-                minorTest1.Description = "Szansa na złożenie oferty ustawiona. Susz - " + driedFruit.Name + ". Id suszu: " + driedFruit.Id;
+                subTest1.Status = EnumUtils.StructureTestsStatuses.Error;
+                subTest1.Description = "Szansa na złożenie oferty ustawiona. Susz - " + driedFruit.Name + ". Id suszu: " + driedFruit.Id;
             }
 
             if (driedFruit.CustomerZonePrice == null)
             {
-                minorTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
-                minorTest2.Description = "Cena sprzedaży w strefie klienta nie ustawiona. Susz - " + driedFruit.Name + ". Id suszu: " + driedFruit.Id;
+                subTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest2.Description = "Cena sprzedaży w strefie klienta nie ustawiona. Susz - " + driedFruit.Name + ". Id suszu: " + driedFruit.Id;
             }
             else
             {
-                minorTest2.Status = EnumUtils.StructureTestsStatuses.Error;
-                minorTest2.Description = "Cena sprzedaży w strefie klienta ustawiona. Susz - " + driedFruit.Name + ". Id suszu: " + driedFruit.Id;
+                subTest2.Status = EnumUtils.StructureTestsStatuses.Error;
+                subTest2.Description = "Cena sprzedaży w strefie klienta ustawiona. Susz - " + driedFruit.Name + ". Id suszu: " + driedFruit.Id;
             }
         }
 
-        structureTest.MinorTests.Add(minorTest1);
-        structureTest.MinorTests.Add(minorTest2);
+        structureTest.SubTests.Add(subTest1);
+        structureTest.SubTests.Add(subTest2);
     }
 
     /// <summary>
@@ -1761,56 +1761,56 @@ public static class FieldDependenciesTestsHelper
     /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessBonusFieldDependencies(Bonus bonus, StructureTest structureTest)
     {
-        var minorTest1 = new MinorTest();
-        var minorTest2 = new MinorTest();
-        var minorTest3 = new MinorTest();
-        var minorTest4 = new MinorTest();
+        var subTest1 = new SubTest();
+        var subTest2 = new SubTest();
+        var subTest3 = new SubTest();
+        var subTest4 = new SubTest();
 
         if (bonus.IsArtifact)
         {
             var startMessage = "Bonus jest artefaktem. ";
             if (bonus.ArtifactPullCost != null)
             {
-                minorTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
-                minorTest1.Description = startMessage + "Koszt wyciągnięcia artefaktu ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
+                subTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest1.Description = startMessage + "Koszt wyciągnięcia artefaktu ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
             }
             else
             {
-                minorTest1.Status = EnumUtils.StructureTestsStatuses.Error;
-                minorTest1.Description = startMessage + "Koszt wyciągnięcia artefaktu nie ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
+                subTest1.Status = EnumUtils.StructureTestsStatuses.Error;
+                subTest1.Description = startMessage + "Koszt wyciągnięcia artefaktu nie ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
             }
 
             if (bonus.ArtifactPutCost != null)
             {
-                minorTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
-                minorTest2.Description = startMessage + "Koszt włożenia artefaktu ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
+                subTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest2.Description = startMessage + "Koszt włożenia artefaktu ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
             }
             else
             {
-                minorTest2.Status = EnumUtils.StructureTestsStatuses.Error;
-                minorTest2.Description = startMessage + "Koszt włożenia artefaktu nie ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
+                subTest2.Status = EnumUtils.StructureTestsStatuses.Error;
+                subTest2.Description = startMessage + "Koszt włożenia artefaktu nie ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
             }
 
             if (bonus.ActiveTimePerUse == null)
             {
-                minorTest3.Status = EnumUtils.StructureTestsStatuses.Ok;
-                minorTest3.Description = startMessage + "Czas aktywności wzmocnienia po użyciu nie ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
+                subTest3.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest3.Description = startMessage + "Czas aktywności wzmocnienia po użyciu nie ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
             }
             else
             {
-                minorTest3.Status = EnumUtils.StructureTestsStatuses.Error;
-                minorTest3.Description = startMessage + "Czas aktywności wzmocnienia po użyciu ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
+                subTest3.Status = EnumUtils.StructureTestsStatuses.Error;
+                subTest3.Description = startMessage + "Czas aktywności wzmocnienia po użyciu ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
             }
 
             if (bonus.IsStackable == null)
             {
-                minorTest4.Status = EnumUtils.StructureTestsStatuses.Ok;
-                minorTest4.Description = startMessage + "Stakowanie czasu wzmocnienia nie ustawione. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
+                subTest4.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest4.Description = startMessage + "Stakowanie czasu wzmocnienia nie ustawione. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
             }
             else
             {
-                minorTest4.Status = EnumUtils.StructureTestsStatuses.Error;
-                minorTest4.Description = startMessage + "Stakowanie czasu wzmocnienia ustawione. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
+                subTest4.Status = EnumUtils.StructureTestsStatuses.Error;
+                subTest4.Description = startMessage + "Stakowanie czasu wzmocnienia ustawione. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
             }
         }
         else
@@ -1818,53 +1818,53 @@ public static class FieldDependenciesTestsHelper
             var startMessage = "Bonus jest wzmocnieniem. ";
             if (bonus.ArtifactPullCost == null)
             {
-                minorTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
-                minorTest1.Description = startMessage + "Koszt wyciągnięcia artefaktu nie ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
+                subTest1.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest1.Description = startMessage + "Koszt wyciągnięcia artefaktu nie ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
             }
             else
             {
-                minorTest1.Status = EnumUtils.StructureTestsStatuses.Error;
-                minorTest1.Description = startMessage + "Koszt wyciągnięcia artefaktu ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
+                subTest1.Status = EnumUtils.StructureTestsStatuses.Error;
+                subTest1.Description = startMessage + "Koszt wyciągnięcia artefaktu ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
             }
 
             if (bonus.ArtifactPutCost == null)
             {
-                minorTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
-                minorTest2.Description = startMessage + "Koszt włożenia artefaktu nie ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
+                subTest2.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest2.Description = startMessage + "Koszt włożenia artefaktu nie ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
             }
             else
             {
-                minorTest2.Status = EnumUtils.StructureTestsStatuses.Error;
-                minorTest2.Description = startMessage + "Koszt włożenia artefaktu ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
+                subTest2.Status = EnumUtils.StructureTestsStatuses.Error;
+                subTest2.Description = startMessage + "Koszt włożenia artefaktu ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
             }
 
             if (bonus.ActiveTimePerUse != null)
             {
-                minorTest3.Status = EnumUtils.StructureTestsStatuses.Ok;
-                minorTest3.Description = startMessage + "Czas aktywności wzmocnienia po użyciu ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
+                subTest3.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest3.Description = startMessage + "Czas aktywności wzmocnienia po użyciu ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
             }
             else
             {
-                minorTest3.Status = EnumUtils.StructureTestsStatuses.Error;
-                minorTest3.Description = startMessage + "Czas aktywności wzmocnienia po użyciu nie ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
+                subTest3.Status = EnumUtils.StructureTestsStatuses.Error;
+                subTest3.Description = startMessage + "Czas aktywności wzmocnienia po użyciu nie ustawiony. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
             }
 
             if (bonus.IsStackable != null)
             {
-                minorTest4.Status = EnumUtils.StructureTestsStatuses.Ok;
-                minorTest4.Description = startMessage + "Stakowanie czasu wzmocnienia ustawione. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
+                subTest4.Status = EnumUtils.StructureTestsStatuses.Ok;
+                subTest4.Description = startMessage + "Stakowanie czasu wzmocnienia ustawione. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
             }
             else
             {
-                minorTest4.Status = EnumUtils.StructureTestsStatuses.Error;
-                minorTest4.Description = startMessage + "Stakowanie czasu wzmocnienia nie ustawione. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
+                subTest4.Status = EnumUtils.StructureTestsStatuses.Error;
+                subTest4.Description = startMessage + "Stakowanie czasu wzmocnienia nie ustawione. Bonus - " + bonus.Name + ". Id bonusu: " + bonus.Id;
             }
         }
 
-        structureTest.MinorTests.Add(minorTest1);
-        structureTest.MinorTests.Add(minorTest2);
-        structureTest.MinorTests.Add(minorTest3);
-        structureTest.MinorTests.Add(minorTest4);
+        structureTest.SubTests.Add(subTest1);
+        structureTest.SubTests.Add(subTest2);
+        structureTest.SubTests.Add(subTest3);
+        structureTest.SubTests.Add(subTest4);
     }
 
     /// <summary>
@@ -1874,9 +1874,9 @@ public static class FieldDependenciesTestsHelper
     /// <param name="structureTest">Test struktury, do którego dodawane są wyniki testu.</param>
     public static void ProcessQuestFieldDependencies(Quest quest, StructureTest structureTest)
     {
-        var levelRequirementTest = new MinorTest();
-        var timesTest = new MinorTest();
-        var cyclicTimeTest = new MinorTest();
+        var levelRequirementTest = new SubTest();
+        var timesTest = new SubTest();
+        var cyclicTimeTest = new SubTest();
 
         if (quest.QuestType == DbQuestTypesNames.Achievement)
         {
@@ -1954,8 +1954,8 @@ public static class FieldDependenciesTestsHelper
             }
         }
 
-        structureTest.MinorTests.Add(levelRequirementTest);
-        structureTest.MinorTests.Add(timesTest);
-        structureTest.MinorTests.Add(cyclicTimeTest);
+        structureTest.SubTests.Add(levelRequirementTest);
+        structureTest.SubTests.Add(timesTest);
+        structureTest.SubTests.Add(cyclicTimeTest);
     }
 }

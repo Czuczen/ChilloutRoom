@@ -390,7 +390,7 @@
     <Compile Include="ExtendingFunctionalities\ConfigurationPanel\PlayerRecords\UpdateRecord\UpdatePlayerRecord.cs" />
     <Compile Include="ExtendingFunctionalities\ConfigurationPanel\Parser\ParserHelper.cs" />
     <Compile Include="ExtendingFunctionalities\ConfigurationPanel\SelectListLoader\SelectListLoaderHelper.cs" />
-    <Compile Include="ExtendingFunctionalities\ConfigurationPanel\StructureTests\Dto\MinorTest.cs" />
+    <Compile Include="ExtendingFunctionalities\ConfigurationPanel\StructureTests\Dto\SubTest.cs" />
     <Compile Include="ExtendingFunctionalities\ConfigurationPanel\StructureTests\Dto\StructureTest.cs" />
     <Compile Include="ExtendingFunctionalities\ConfigurationPanel\StructureTests\FieldDependenciesTestsHelper.cs" />
     <Compile Include="ExtendingFunctionalities\ConfigurationPanel\StructureTests\StructureTestsHelper.cs" />

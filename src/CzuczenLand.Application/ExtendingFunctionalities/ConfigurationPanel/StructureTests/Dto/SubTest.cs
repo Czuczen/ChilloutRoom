@@ -5,7 +5,7 @@ namespace CzuczenLand.ExtendingFunctionalities.ConfigurationPanel.StructureTests
 /// <summary>
 /// Klasa reprezentująca podtest struktury.
 /// </summary>
-public class MinorTest
+public class SubTest
 {
     /// <summary>
     /// Status podtestu struktury.

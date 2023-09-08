@@ -44,15 +44,15 @@ public class StructureTest
         get
         {
             var ret = EnumUtils.StructureTestsStatuses.Ok;
-            foreach (var minorTest in MinorTests)
+            foreach (var subTest in SubTests)
             {
-                if (minorTest.Status == EnumUtils.StructureTestsStatuses.Error)
+                if (subTest.Status == EnumUtils.StructureTestsStatuses.Error)
                 {
                     ret = EnumUtils.StructureTestsStatuses.Error;
                     break;
                 }
 
-                if (minorTest.Status == EnumUtils.StructureTestsStatuses.Warn)
+                if (subTest.Status == EnumUtils.StructureTestsStatuses.Warn)
                 {
                     ret = EnumUtils.StructureTestsStatuses.Warn;
                 }
@@ -75,5 +75,5 @@ public class StructureTest
     /// <summary>
     /// Lista podtestów.
     /// </summary>
-    public List<MinorTest> MinorTests { get; } = new();
+    public List<SubTest> SubTests { get; } = new();
 }
