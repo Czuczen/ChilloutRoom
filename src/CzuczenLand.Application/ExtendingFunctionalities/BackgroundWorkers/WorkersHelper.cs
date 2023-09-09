@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using CzuczenLand.ExtendingModels.Models.General;
 using Newtonsoft.Json;
 
@@ -30,5 +31,20 @@ public static class WorkersHelper
         quest.CurrentDuration = 0;
         quest.IsComplete = false;
         quest.IsAvailableInitially = true;
+    }
+
+    public static void ResetStartedQuestsLimit(List<PlantationStorage> allPlantationStorages, List<District> allDistricts, bool weeklyLimitTimeHasPassed)
+    {
+        if (!allDistricts.Any() || !allPlantationStorages.Any()) return;
+        
+        foreach (var plantationStorage in allPlantationStorages)
+        {
+            var district = allDistricts.Single(item => item.Id == plantationStorage.DistrictId);
+            if (!district.IsDefined) continue;
+            
+            plantationStorage.StartedDailyQuestsCount = 0;
+            if (weeklyLimitTimeHasPassed)
+                plantationStorage.StartedWeeklyQuestsCount = 0;
+        }
     }
 }
