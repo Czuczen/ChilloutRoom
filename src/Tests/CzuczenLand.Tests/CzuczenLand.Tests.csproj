@@ -306,6 +306,8 @@
     <Compile Include="ExtendingFunctionalities\Parser\Parser_DisplayStrategy_Tests.cs" />
     <Compile Include="ExtendingFunctionalities\Parser\Parser_Factory_Tests.cs" />
     <Compile Include="ExtendingFunctionalities\Parser\Parser_EditStrategy_Tests.cs" />
+    <Compile Include="ExtendingFunctionalities\ViewParser\ViewParserHelper_Tests.cs" />
+    <Compile Include="ExtendingFunctionalities\ViewParser\ViewParser_Tests.cs" />
     <Compile Include="MultiTenantFactAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sessions\SessionAppService_Tests.cs" />
