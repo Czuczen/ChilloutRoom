@@ -42,6 +42,12 @@ public static class WorkersHelper
         quest.IsAvailableInitially = true;
     }
 
+    /// <summary>
+    /// Resetuje limit rozpoczętych zadań dla plantacji.
+    /// </summary>
+    /// <param name="allPlantationStorages">Lista wszystkich magazynów plantacji</param>
+    /// <param name="allDistricts">Lista wszystkich dzielnic</param>
+    /// <param name="weeklyLimitTimeHasPassed">Czy minął czas tygodniowego limitu</param>
     public static void ResetStartedQuestsLimit(List<PlantationStorage> allPlantationStorages, List<District> allDistricts, bool weeklyLimitTimeHasPassed)
     {
         if (!allDistricts.Any() || !allPlantationStorages.Any()) return;

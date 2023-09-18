@@ -10,6 +10,9 @@ using CzuczenLand.ExtendingModels.Models.General;
 
 namespace CzuczenLand.ExtendingFunctionalities.StateUpdater.EntityAnalysisStateBuilder;
 
+/// <summary>
+/// Klasa pomocnicza dla budowniczego stanu analizy encji.
+/// </summary>
 public static class EntityAnalysisStateBuilderHelper
 {
     /// <summary>

@@ -605,7 +605,7 @@ public class StructureTests : IStructureTests
             const string nameSpace = "CzuczenLand.ExtendingFunctionalities.Services";
             var types = (from t in Assembly.GetExecutingAssembly().GetTypes()
                 where t.IsClass && !string.IsNullOrWhiteSpace(t.Namespace) && t.Namespace.StartsWith(nameSpace) &&
-                      !t.Namespace.Contains("SharedDto") && t.Name.EndsWith("UpdateDefinitionDto")
+                      !t.Namespace.Contains("SharedDto") && t.Name.EndsWith("UpdatePlayerRecordDto")
                 select t).ToList();
 
             typesCount = types.Count;
