@@ -11,7 +11,6 @@ using Abp.Web.Mvc;
 using Abp.Web.SignalR;
 using CzuczenLand.Api;
 using Castle.MicroKernel.Registration;
-using CzuczenLand.ExtendingFunctionalities.BackgroundWorkers.AppReviver;
 using CzuczenLand.ExtendingFunctionalities.BackgroundWorkers.BlackMarket;
 using CzuczenLand.ExtendingFunctionalities.BackgroundWorkers.Bonuses;
 using CzuczenLand.ExtendingFunctionalities.BackgroundWorkers.CustomerZone;
@@ -66,7 +65,6 @@ public class CzuczenLandWebModule : AbpModule
         BundleConfig.RegisterBundles(BundleTable.Bundles);
             
         var workManager = IocManager.Resolve<IBackgroundWorkerManager>();
-        workManager.Add(IocManager.Resolve<AppReviverWorker>());
         workManager.Add(IocManager.Resolve<DonWorker>());
         workManager.Add(IocManager.Resolve<CustomerZoneWorker>());
         workManager.Add(IocManager.Resolve<ResetQuestsWorker>());

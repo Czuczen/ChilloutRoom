@@ -335,7 +335,6 @@
     <Compile Include="Configuration\IConfigurationAppService.cs" />
     <Compile Include="Configuration\Ui\UiThemeInfo.cs" />
     <Compile Include="Configuration\Ui\UiThemes.cs" />
-    <Compile Include="ExtendingFunctionalities\BackgroundWorkers\AppReviver\AppReviverWorker.cs" />
     <Compile Include="ExtendingFunctionalities\BackgroundWorkers\BlackMarket\BlackMarketWorkerHelper.cs" />
     <Compile Include="ExtendingFunctionalities\BackgroundWorkers\BlackMarket\Dto\BlackMarketItem.cs" />
     <Compile Include="ExtendingFunctionalities\BackgroundWorkers\BlackMarket\Dto\BlackMarketSellItem.cs" />
@@ -709,7 +708,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ExtendingFunctionalities\Consts\Entities\EntitiesFieldsNames\Db" />
+    <Folder Include="ExtendingFunctionalities\Consts\Entities\EntitiesFieldsNames\Db\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
