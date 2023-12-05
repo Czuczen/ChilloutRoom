@@ -6,6 +6,8 @@ W ramach "**ChilloutRoom**" użyto narzędzi takich jak **ASP.NET MVC 5.x.** Dod
 
 Celem stworzenia aplikacji było zgłębienie technologii .NET oraz zastosowanie jej w praktyce.  
 
+[Sprawdź online](http://chilloutroom1-001-site1.atempurl.com)
+
 ## Funkcjonalności
 
 Główną funkcjonalnością aplikacji jest gra "**Plantacja**", która polega na hodowaniu roślin. Został dla niej stworzony panel konfiguracyjny (system CMS).
