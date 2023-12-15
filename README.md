@@ -6,7 +6,7 @@ W ramach "**ChilloutRoom**" użyto narzędzi takich jak **ASP.NET MVC 5.x.** Dod
 
 Celem stworzenia aplikacji było zgłębienie technologii .NET oraz zastosowanie jej w praktyce.  
 
-[Sprawdź online](http://chilloutroom1-001-site1.atempurl.com)
+[Sprawdź online](http://chilloutroom2-001-site1.gtempurl.com)
 
 ## Funkcjonalności
 
