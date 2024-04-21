@@ -1,8 +1,8 @@
-# ChilloutRoom
+# Chillout Room
 
-"**ChilloutRoom**" to aplikacja webowa oparta na frameworku [ASP.NET Boilerplate](https://aspnetboilerplate.com/Templates) w wersji 6.0.0.
+"**Chillout Room**" to aplikacja webowa oparta na frameworku [ASP.NET Boilerplate](https://aspnetboilerplate.com/Templates) w wersji 6.0.0.
 Boilerplate ten zawiera gotowe rozwiązania dla aplikacji webowych, takie jak autoryzacja, uwierzytelnianie, zarządzanie sesjami oraz wiele innych przydatnych funkcjonalności.
-W ramach "**ChilloutRoom**" użyto narzędzi takich jak **ASP.NET MVC 5.x.** Dodatkowo, do zarządzania bazą danych wykorzystano **Entity Framework**, a do tworzenia interaktywnych elementów w interfejsie użytkownika **jQuery**.  
+W ramach "**Chillout Room**" użyto narzędzi takich jak **ASP.NET MVC 5.x.** Dodatkowo, do zarządzania bazą danych wykorzystano **Entity Framework**, a do tworzenia interaktywnych elementów w interfejsie użytkownika **jQuery**.  
 
 Celem stworzenia aplikacji było zgłębienie technologii .NET oraz zastosowanie jej w praktyce.  
 
