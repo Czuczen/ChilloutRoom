@@ -13,7 +13,7 @@
     <text name="DistrictWarden" value="Opiekun dzielnicy" />
     
     <text name="About" value="O mnie" />
-    <text name="WellcomeMessage" value="Witaj w ChilloutRoom!" />
+    <text name="WellcomeMessage" value="Witaj w Chillout Room!" />
     
     <text name="FormIsNotValidMessage" value="Formularz jest nieprawidłowy. Sprawdź i napraw błędy." />
     <text name="TenantNameCanNotBeEmpty" value="Nazwa najemcy nie może być pusta" />
